@@ -1,0 +1,158 @@
+{%- comment -%}
+  volta-cart-drawer.liquid
+  Custom cart drawer. Slides in from right. AJAX, no page reload.
+  Rendered once from layout/theme.liquid.
+
+  Free shipping threshold read from `settings.volta_free_shipping_threshold`
+  (defined in settings_schema.json), defaulting to €25 (2500 cents).
+{%- endcomment -%}
+{%- assign free_threshold = settings.volta_free_shipping_threshold | default: 2500 -%}
+
+<aside
+  class="v-drawer"
+  id="VoltaCartDrawer"
+  data-volta-drawer
+  data-free-threshold="{{ free_threshold }}"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="VoltaCartDrawerTitle"
+  aria-hidden="true"
+>
+  <div class="v-drawer__overlay" data-volta-drawer-overlay tabindex="-1"></div>
+
+  <div class="v-drawer__panel" role="document">
+    <header class="v-drawer__header">
+      <h2 id="VoltaCartDrawerTitle" class="v-drawer__title v-display">
+        {{ 'sections.volta_cart.title' | t }}
+        <span class="v-mono v-drawer__count" data-volta-drawer-count>({{ cart.item_count }})</span>
+      </h2>
+      <button type="button" class="v-drawer__close" data-volta-drawer-close aria-label="{{ 'sections.volta_cart.close' | t }}">
+        <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M6 6l12 12M6 18L18 6"/>
+        </svg>
+      </button>
+    </header>
+
+    <div class="v-drawer__progress" data-volta-free-shipping hidden>
+      <div class="v-drawer__progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+        <div class="v-drawer__progress-fill" data-volta-free-shipping-fill></div>
+      </div>
+      <p class="v-mono v-drawer__progress-text" data-volta-free-shipping-text>—</p>
+    </div>
+
+    <ul class="v-drawer__items" data-volta-drawer-items role="list">
+      {%- for item in cart.items -%}
+        {%- render 'volta-cart-line-item', item: item -%}
+      {%- endfor -%}
+    </ul>
+
+    <div class="v-drawer__empty" data-volta-drawer-empty {% unless cart.item_count == 0 %}hidden{% endunless %}>
+      {%- render 'volta-mascot', variant: 'drawer', id: 'drawer' -%}
+      <p class="v-drawer__empty-title v-display">{{ 'sections.volta_cart.empty_title' | t }}</p>
+      <a href="{{ routes.all_products_collection_url }}" class="v-btn v-btn--primary v-magnetic" data-cursor="hover">
+        {{ 'sections.volta_cart.empty_cta' | t }}
+      </a>
+    </div>
+
+    <footer class="v-drawer__footer" data-volta-drawer-footer {% if cart.item_count == 0 %}hidden{% endif %}>
+      <div class="v-drawer__subtotal">
+        <span class="v-mono">{{ 'sections.volta_cart.subtotal' | t }}</span>
+        <span class="v-drawer__subtotal-amount" data-volta-subtotal>{{ cart.total_price | money }}</span>
+      </div>
+      <p class="v-mono v-drawer__notice">{{ 'sections.volta_cart.tax_notice' | t }}</p>
+      <a href="{{ routes.cart_url }}/checkout" class="v-btn v-btn--primary v-btn--huge v-magnetic" data-volta-checkout data-cursor="hover">
+        {{ 'sections.volta_cart.checkout' | t }}
+      </a>
+    </footer>
+  </div>
+</aside>
+
+{% stylesheet %}
+  .v-drawer {
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-drawer);
+    pointer-events: none;
+    visibility: hidden;
+    transition: visibility var(--duration-base);
+  }
+  .v-drawer.is-open {
+    pointer-events: auto;
+    visibility: visible;
+  }
+  .v-drawer__overlay {
+    position: absolute;
+    inset: 0;
+    background: color-mix(in srgb, var(--volta-ink) 40%, transparent);
+    opacity: 0;
+    transition: opacity var(--duration-base) var(--ease-out-expo);
+  }
+  .v-drawer.is-open .v-drawer__overlay { opacity: 1; }
+
+  .v-drawer__panel {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 420px;
+    max-width: 100vw;
+    height: 100%;
+    background: var(--volta-cream);
+    display: flex;
+    flex-direction: column;
+    transform: translateX(100%);
+    transition: transform 500ms var(--ease-out-expo);
+    box-shadow: -20px 0 60px -20px var(--volta-shadow-strong);
+  }
+  .v-drawer.is-open .v-drawer__panel { transform: translateX(0); }
+
+  .v-drawer__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-6);
+    border-bottom: 1px solid color-mix(in srgb, var(--volta-ink) 10%, transparent);
+  }
+  .v-drawer__title { font-size: var(--text-xl); margin: 0; display: flex; align-items: baseline; gap: var(--space-2); }
+  .v-drawer__count { color: color-mix(in srgb, var(--volta-ink) 50%, transparent); font-size: var(--text-xs); }
+  .v-drawer__close { background: transparent; border: 0; cursor: pointer; padding: var(--space-2); color: var(--volta-ink); }
+
+  .v-drawer__progress { padding: var(--space-4) var(--space-6); background: color-mix(in srgb, var(--volta-green) 20%, transparent); }
+  .v-drawer__progress-bar { height: 4px; background: color-mix(in srgb, var(--volta-ink) 10%, transparent); border-radius: 2px; overflow: hidden; }
+  .v-drawer__progress-fill { height: 100%; background: var(--volta-green); transform-origin: left; transform: scaleX(0); transition: transform var(--duration-base) var(--ease-out-expo); }
+  .v-drawer__progress-text { margin: var(--space-2) 0 0; color: var(--volta-ink); }
+
+  .v-drawer__items {
+    flex: 1;
+    margin: 0;
+    padding: var(--space-4) var(--space-6);
+    list-style: none;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .v-drawer__empty {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-4);
+    padding: var(--space-8);
+    text-align: center;
+  }
+  .v-drawer__empty-title { font-size: var(--text-xl); margin: 0; }
+
+  .v-drawer__footer {
+    padding: var(--space-6);
+    border-top: 1px solid color-mix(in srgb, var(--volta-ink) 10%, transparent);
+    background: var(--volta-cream-warm);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+  .v-drawer__subtotal { display: flex; justify-content: space-between; align-items: baseline; font-size: var(--text-lg); }
+  .v-drawer__subtotal-amount { font-family: var(--font-display); font-weight: 700; }
+  .v-drawer__notice { color: color-mix(in srgb, var(--volta-ink) 55%, transparent); margin: 0; }
+{% endstylesheet %}

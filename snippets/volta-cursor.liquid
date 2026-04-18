@@ -1,0 +1,10 @@
+{%- comment -%}
+  volta-cursor.liquid
+  Custom cursor shell. Hidden on touch devices and when prefers-reduced-motion.
+  Rendered once from layout/theme.liquid just after <body>.
+{%- endcomment -%}
+<div class="v-cursor" aria-hidden="true">
+  <div class="v-cursor__ring"></div>
+  <div class="v-cursor__dot"></div>
+  <div class="v-cursor__label"></div>
+</div>

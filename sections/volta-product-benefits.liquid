@@ -1,0 +1,60 @@
+{%- comment -%}
+  volta-product-benefits.liquid
+  Below-fold on product page: 3 benefit blocks, icon + headline + description.
+{%- endcomment -%}
+
+<section class="v-pbenefits">
+  <div class="v-container">
+    {%- if section.settings.heading != blank -%}
+      <h2 class="v-pbenefits__title v-display v-reveal">{{ section.settings.heading }}</h2>
+    {%- endif -%}
+    <div class="v-pbenefits__grid">
+      {%- for block in section.blocks -%}
+        <article class="v-pbenefits__item v-reveal" {{ block.shopify_attributes }}>
+          <span class="v-pbenefits__icon" aria-hidden="true">{{ block.settings.icon | default: '⚡' }}</span>
+          <h3 class="v-pbenefits__heading">{{ block.settings.heading }}</h3>
+          <p>{{ block.settings.body }}</p>
+        </article>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .v-pbenefits { padding-block: var(--space-section); background: var(--volta-cream-warm); }
+  .v-pbenefits__title { font-size: var(--text-3xl); text-align: center; margin: 0 0 var(--space-12); letter-spacing: -0.03em; }
+  .v-pbenefits__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-8); }
+  .v-pbenefits__item { text-align: center; display: flex; flex-direction: column; gap: var(--space-3); align-items: center; }
+  .v-pbenefits__icon { font-size: 48px; }
+  .v-pbenefits__heading { font-family: var(--font-display); font-size: var(--text-xl); margin: 0; }
+  .v-pbenefits__item p { color: color-mix(in srgb, var(--volta-ink) 75%, transparent); max-width: 28ch; margin: 0; }
+  @media (max-width: 800px) { .v-pbenefits__grid { grid-template-columns: 1fr; } }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:sections.volta_product_benefits.name",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "t:sections.volta_product_benefits.settings.heading.label", "default": "Ce qu'il fait" }
+  ],
+  "max_blocks": 3,
+  "blocks": [
+    {
+      "type": "benefit",
+      "name": "t:sections.volta_product_benefits.blocks.benefit.name",
+      "settings": [
+        { "type": "text", "id": "icon", "label": "t:sections.volta_product_benefits.blocks.benefit.settings.icon.label", "default": "⚡" },
+        { "type": "text", "id": "heading", "label": "t:sections.volta_product_benefits.blocks.benefit.settings.heading.label", "default": "Titre" },
+        { "type": "text", "id": "body", "label": "t:sections.volta_product_benefits.blocks.benefit.settings.body.label", "default": "Description" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.volta_product_benefits.name",
+      "blocks": [{ "type": "benefit" }, { "type": "benefit" }, { "type": "benefit" }]
+    }
+  ],
+  "enabled_on": { "templates": ["product"] }
+}
+{% endschema %}

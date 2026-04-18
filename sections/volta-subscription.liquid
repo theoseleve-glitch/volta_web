@@ -1,0 +1,272 @@
+{%- comment -%}
+  volta-subscription.liquid
+  Full-width yellow band. Split layout:
+    left  — offer card (price, includes, CTA, guarantee)
+    right — 3 benefit rows with icons
+  Mascot floats in the empty top-right, rotated, for personality without clutter.
+{%- endcomment -%}
+
+{%- assign price_from = section.settings.price_from | default: '€21' -%}
+
+<section class="v-sub" aria-labelledby="sub-heading-{{ section.id }}">
+  {%- render 'volta-mascot', variant: 'band', scroll: 'charge' -%}
+
+  <div class="v-container v-sub__inner">
+    <header class="v-sub__header">
+      <p class="v-mono v-sub__eyebrow v-reveal">
+        {{ 'sections.volta_subscription.eyebrow' | t }}
+        <span class="v-sub__badge">{{ 'sections.volta_subscription.badge' | t }}</span>
+      </p>
+      <h2 id="sub-heading-{{ section.id }}" class="v-sub__title v-display v-reveal">
+        {{ 'sections.volta_subscription.title' | t }}
+      </h2>
+    </header>
+
+    <div class="v-sub__grid">
+      {%- comment -%} ── Offer card ────────────────────────────────────── {%- endcomment -%}
+      <article class="v-sub__card v-reveal">
+        <div class="v-sub__price">
+          <span class="v-mono v-sub__price-from">{{ 'sections.volta_subscription.price_from' | t }}</span>
+          <span class="v-sub__price-amount">
+            <strong>{{ price_from }}</strong>
+            <span class="v-sub__price-unit">{{ 'sections.volta_subscription.price_per_month' | t }}</span>
+          </span>
+        </div>
+
+        <ul class="v-sub__includes" role="list">
+          <li>{{ 'sections.volta_subscription.includes_1' | t }}</li>
+          <li>{{ 'sections.volta_subscription.includes_2' | t }}</li>
+          <li>{{ 'sections.volta_subscription.includes_3' | t }}</li>
+        </ul>
+
+        <a href="{{ section.settings.cta_link | default: '/products/abonnement' }}"
+           class="v-btn v-btn--ink v-btn--huge v-magnetic"
+           data-cursor="hover">
+          {{ 'sections.volta_subscription.cta' | t }}
+        </a>
+
+        <p class="v-mono v-sub__guarantee">{{ 'sections.volta_subscription.guarantee' | t }}</p>
+      </article>
+
+      {%- comment -%} ── Benefits column ──────────────────────────────── {%- endcomment -%}
+      <ul class="v-sub__benefits" role="list">
+        <li class="v-sub__benefit v-reveal">
+          <span class="v-sub__benefit-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 12a9 9 0 0 1 15-6.7L21 8"/>
+              <path d="M21 3v5h-5"/>
+              <path d="M21 12a9 9 0 0 1-15 6.7L3 16"/>
+              <path d="M3 21v-5h5"/>
+            </svg>
+          </span>
+          <div>
+            <h3 class="v-sub__benefit-title">{{ 'sections.volta_subscription.benefit_1_title' | t }}</h3>
+            <p>{{ 'sections.volta_subscription.benefit_1' | t }}</p>
+          </div>
+        </li>
+
+        <li class="v-sub__benefit v-reveal">
+          <span class="v-sub__benefit-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="6" y="5" width="3.5" height="14" rx="1"/>
+              <rect x="14.5" y="5" width="3.5" height="14" rx="1"/>
+            </svg>
+          </span>
+          <div>
+            <h3 class="v-sub__benefit-title">{{ 'sections.volta_subscription.benefit_2_title' | t }}</h3>
+            <p>{{ 'sections.volta_subscription.benefit_2' | t }}</p>
+          </div>
+        </li>
+
+        <li class="v-sub__benefit v-reveal">
+          <span class="v-sub__benefit-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 17h1V7a1 1 0 0 1 1-1h10v11"/>
+              <path d="M15 10h4l3 3v4h-7"/>
+              <circle cx="7" cy="18" r="2"/>
+              <circle cx="17" cy="18" r="2"/>
+            </svg>
+          </span>
+          <div>
+            <h3 class="v-sub__benefit-title">{{ 'sections.volta_subscription.benefit_3_title' | t }}</h3>
+            <p>{{ 'sections.volta_subscription.benefit_3' | t }}</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .v-sub {
+    position: relative;
+    background: var(--volta-yellow);
+    color: var(--volta-ink);
+    padding-block: var(--space-section);
+    overflow: hidden;
+  }
+
+  .v-sub__inner {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-12);
+  }
+
+  .v-sub__header { max-width: 900px; }
+  .v-sub__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin: 0 0 var(--space-3);
+  }
+  .v-sub__badge {
+    display: inline-block;
+    background: var(--volta-ink);
+    color: var(--volta-yellow);
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-weight: 500;
+  }
+  .v-sub__title {
+    font-size: clamp(48px, 7vw, 120px);
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    text-transform: uppercase;
+    margin: 0;
+    max-width: 18ch;
+  }
+
+  .v-sub__grid {
+    display: grid;
+    grid-template-columns: minmax(320px, 420px) 1fr;
+    gap: var(--space-12);
+    align-items: start;
+  }
+
+  /* ── Offer card ─────────────────────────────────────────────────────── */
+  .v-sub__card {
+    background: var(--volta-cream);
+    color: var(--volta-ink);
+    padding: var(--space-8);
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+    box-shadow: 0 20px 60px -30px rgba(14, 14, 16, 0.25);
+  }
+  .v-sub__price {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    padding-bottom: var(--space-5);
+    border-bottom: 1px solid color-mix(in srgb, var(--volta-ink) 12%, transparent);
+  }
+  .v-sub__price-from { color: color-mix(in srgb, var(--volta-ink) 55%, transparent); }
+  .v-sub__price-amount {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-2);
+  }
+  .v-sub__price-amount strong {
+    font-family: var(--font-display);
+    font-size: clamp(48px, 6vw, 72px);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+  .v-sub__price-unit {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: color-mix(in srgb, var(--volta-ink) 60%, transparent);
+  }
+
+  .v-sub__includes {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    font-size: var(--text-base);
+  }
+  .v-sub__includes li { position: relative; padding-left: var(--space-5); }
+  .v-sub__includes li::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0.7em;
+    width: 14px; height: 2px;
+    background: var(--volta-green);
+  }
+
+  .v-sub__card .v-btn--huge {
+    width: 100%;
+    padding: var(--space-5) var(--space-6);
+    justify-content: center;
+    font-size: var(--text-sm);
+  }
+
+  .v-sub__guarantee {
+    font-size: var(--text-xs);
+    letter-spacing: 0.1em;
+    color: color-mix(in srgb, var(--volta-ink) 60%, transparent);
+    text-align: center;
+    margin: 0;
+  }
+
+  /* ── Benefits column ────────────────────────────────────────────────── */
+  .v-sub__benefits {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+  }
+  .v-sub__benefit {
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    gap: var(--space-4);
+    align-items: start;
+    padding-top: var(--space-6);
+    border-top: 1.5px solid var(--volta-ink);
+  }
+  .v-sub__benefit-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    color: var(--volta-ink);
+  }
+  .v-sub__benefit-icon svg { width: 32px; height: 32px; }
+  .v-sub__benefit-title {
+    font-family: var(--font-display);
+    font-size: var(--text-lg);
+    font-weight: 700;
+    margin: 0 0 var(--space-1);
+    letter-spacing: -0.01em;
+  }
+  .v-sub__benefit p {
+    font-size: var(--text-base);
+    margin: 0;
+    color: color-mix(in srgb, var(--volta-ink) 80%, transparent);
+  }
+
+  @media (max-width: 900px) {
+    .v-sub__grid { grid-template-columns: 1fr; }
+    .v-sub__card { order: 2; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:sections.volta_subscription.name",
+  "settings": [
+    { "type": "text", "id": "price_from", "label": "Prix à partir de (€)", "default": "€21" },
+    { "type": "url", "id": "cta_link", "label": "t:sections.volta_subscription.settings.cta_link.label" }
+  ],
+  "presets": [{ "name": "t:sections.volta_subscription.name" }]
+}
+{% endschema %}

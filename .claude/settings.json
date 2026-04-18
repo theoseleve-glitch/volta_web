@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "allow": [
+      "Bash(shopify theme check)",
+      "Bash(shopify theme check:*)",
+      "Bash(shopify theme dev)",
+      "Bash(shopify theme dev:*)",
+      "Bash(shopify theme pull)",
+      "Bash(shopify theme pull:*)",
+      "Bash(shopify theme push --unpublished)",
+      "Bash(shopify theme push --unpublished:*)",
+      "Bash(shopify theme list)",
+      "Bash(shopify theme info)",
+      "Bash(git status)",
+      "Bash(git diff)",
+      "Bash(git diff:*)",
+      "Bash(git log)",
+      "Bash(git log:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git branch)",
+      "Bash(git branch:*)",
+      "Bash(git checkout:*)",
+      "Bash(git stash)",
+      "Bash(git stash:*)",
+      "Bash(ls:*)",
+      "Bash(find:*)",
+      "Bash(grep:*)",
+      "Bash(rg:*)",
+      "Bash(cat:*)",
+      "Bash(wc:*)",
+      "Bash(du:*)",
+      "Bash(head:*)",
+      "Bash(tail:*)",
+      "Bash(jq:*)",
+      "Bash(npx lighthouse:*)",
+      "Bash(npx @axe-core/cli:*)",
+      "Bash(npx pa11y:*)",
+      "Bash(npx prettier --write assets/*.css)",
+      "Bash(npx prettier --write assets/*.js)"
+    ],
+    "deny": [
+      "Bash(shopify theme push --live)",
+      "Bash(shopify theme publish)",
+      "Bash(shopify theme delete:*)",
+      "Bash(git push --force:*)",
+      "Bash(git push -f:*)",
+      "Bash(git reset --hard:*)",
+      "Bash(rm -rf:*)",
+      "Bash(sudo:*)",
+      "Write(config/settings_data.json)",
+      "Edit(config/settings_data.json)"
+    ],
+    "ask": [
+      "Bash(git push:*)",
+      "Bash(shopify theme push:*)",
+      "Bash(npm install:*)",
+      "Bash(yarn:*)",
+      "Write(config/settings_schema.json)",
+      "Edit(config/settings_schema.json)"
+    ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/format-on-save.sh",
+            "timeout": 10000
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/verify-before-stop.sh",
+            "timeout": 5000
+          }
+        ]
+      }
+    ]
+  },
+  "env": {
+    "VOLTA_STORE_HANDLE": "volta-drinks",
+    "VOLTA_DEFAULT_LOCALE": "fr",
+    "VOLTA_LIGHTHOUSE_PERF_THRESHOLD": "90",
+    "VOLTA_LIGHTHOUSE_A11Y_THRESHOLD": "95"
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "echo \"⚡ Volta Drinks | $(git branch --show-current 2>/dev/null || echo 'no-git') | $(shopify theme list 2>/dev/null | grep -c development || echo '?') dev themes\""
+  },
+  "includeCoAuthoredBy": false,
+  "enableAllProjectMcpServers": false,
+  "autoMemoryEnabled": true
+}

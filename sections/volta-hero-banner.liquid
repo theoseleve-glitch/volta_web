@@ -1,0 +1,90 @@
+{%- comment -%}
+  volta-hero-banner.liquid
+  Minimalist static image banner. Background image is the only visual;
+  single buy-now button floats at the bottom. No headline, no eyebrow,
+  no subhead — the product photography does all the talking.
+{%- endcomment -%}
+
+{%- assign bg_image = section.settings.image -%}
+
+<section
+  class="v-hero-banner"
+  aria-label="{{ 'sections.volta_hero.banner_aria_label' | t }}"
+  {% if bg_image != blank %}
+    style="background-image: url('{{ bg_image | image_url: width: 2400 }}');"
+  {% else %}
+    style="background-image: url('{{ 'volta-hero-bg.png' | asset_url }}');"
+  {% endif %}
+>
+  <div class="v-hero-banner__cta v-reveal">
+    <a href="{{ section.settings.cta_link | default: routes.all_products_collection_url }}"
+       class="v-btn v-btn--primary v-btn--huge v-magnetic"
+       data-cursor="hover">
+      {{ 'sections.volta_hero.simple_cta' | t }}
+    </a>
+  </div>
+
+  <div class="v-hero-banner__scroll-cue v-mono" aria-hidden="true">
+    <span>{{ 'sections.volta_hero.scroll_cue' | t }}</span>
+    <span>↓</span>
+  </div>
+</section>
+
+{% stylesheet %}
+  .v-hero-banner {
+    position: relative;
+    min-height: 100svh;
+    margin: 0;
+    background-repeat: no-repeat;
+    background-position: center 65%;
+    background-size: cover;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: clamp(80px, 12vh, 140px);
+  }
+
+  .v-hero-banner__cta {
+    position: relative;
+    z-index: 2;
+  }
+
+  .v-hero-banner .v-btn--huge {
+    padding: var(--space-5) var(--space-16);
+    font-size: var(--text-sm);
+    letter-spacing: 0.25em;
+  }
+
+  .v-hero-banner__scroll-cue {
+    position: absolute;
+    bottom: var(--space-5);
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    color: color-mix(in srgb, var(--volta-ink) 45%, transparent);
+    z-index: 3;
+    font-size: 10px;
+  }
+
+  @media (max-width: 768px) {
+    .v-hero-banner {
+      padding-bottom: clamp(60px, 10vh, 100px);
+      background-position: center 70%;
+    }
+    .v-hero-banner .v-btn--huge { padding: var(--space-4) var(--space-10); }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Volta · Hero Banner",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Image de fond", "info": "Par défaut : assets/volta-hero-bg.png" },
+    { "type": "url", "id": "cta_link", "label": "Lien du bouton" }
+  ],
+  "presets": [{ "name": "Volta · Hero Banner" }]
+}
+{% endschema %}

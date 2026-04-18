@@ -1,0 +1,9 @@
+{%- comment -%}
+  volta-analytics-body.liquid
+  GTM <noscript> iframe (required) — renders just after <body>.
+{%- endcomment -%}
+{%- if settings.volta_gtm_id != blank -%}
+  <noscript>
+    <iframe src="https://www.googletagmanager.com/ns.html?id={{ settings.volta_gtm_id }}" height="0" width="0" style="display:none;visibility:hidden" title="gtm"></iframe>
+  </noscript>
+{%- endif -%}

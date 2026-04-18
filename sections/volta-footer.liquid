@@ -1,0 +1,174 @@
+{%- comment -%}
+  volta-footer.liquid
+  Footer with big newsletter signup, link columns, social, and copyright.
+  Newsletter POSTs to Shopify's customer form endpoint; Klaviyo tracking added in Prompt 13.
+{%- endcomment -%}
+
+<footer class="v-footer" role="contentinfo">
+  <div class="v-container">
+    <div class="v-footer__newsletter v-reveal">
+      <p class="v-mono v-footer__eyebrow">{{ 'sections.volta_footer.newsletter.eyebrow' | t }}</p>
+      <h2 class="v-footer__headline v-display">{{ 'sections.volta_footer.newsletter.headline' | t }}</h2>
+      <p class="v-footer__subhead">{{ 'sections.volta_footer.newsletter.subhead' | t }}</p>
+
+      {%- form 'customer', class: 'v-footer__form', novalidate: 'novalidate' -%}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        <label class="visually-hidden" for="FooterEmail-{{ section.id }}">
+          {{ 'sections.volta_footer.newsletter.email_label' | t }}
+        </label>
+        <input
+          type="email"
+          id="FooterEmail-{{ section.id }}"
+          name="contact[email]"
+          class="v-footer__input"
+          placeholder="{{ 'sections.volta_footer.newsletter.placeholder' | t }}"
+          required
+          autocomplete="email"
+        >
+        <button type="submit" class="v-btn v-btn--primary v-magnetic" data-cursor="hover">
+          {{ 'sections.volta_footer.newsletter.submit' | t }}
+        </button>
+      {%- endform -%}
+    </div>
+
+    <div class="v-footer__grid">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'link_list' -%}
+          <nav class="v-footer__col" {{ block.shopify_attributes }} aria-label="{{ block.settings.heading }}">
+            <h3 class="v-mono v-footer__col-title">{{ block.settings.heading }}</h3>
+            <ul>
+              {%- for link in block.settings.menu.links -%}
+                <li>
+                  <a href="{{ link.url }}" class="v-footer__link" data-cursor="hover">{{ link.title }}</a>
+                </li>
+              {%- endfor -%}
+            </ul>
+          </nav>
+        {%- elsif block.type == 'social' -%}
+          <div class="v-footer__col" {{ block.shopify_attributes }}>
+            <h3 class="v-mono v-footer__col-title">{{ block.settings.heading | default: 'Social' }}</h3>
+            <ul class="v-footer__social">
+              {%- if block.settings.instagram != blank -%}
+                <li><a href="{{ block.settings.instagram }}" class="v-footer__link" target="_blank" rel="noopener" data-cursor="hover">Instagram</a></li>
+              {%- endif -%}
+              {%- if block.settings.tiktok != blank -%}
+                <li><a href="{{ block.settings.tiktok }}" class="v-footer__link" target="_blank" rel="noopener" data-cursor="hover">TikTok</a></li>
+              {%- endif -%}
+            </ul>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+
+    <div class="v-footer__base">
+      <span class="v-mono v-footer__copy">
+        © {{ 'now' | date: '%Y' }} {{ shop.name }} · {{ 'sections.volta_footer.made_with' | t }}
+      </span>
+    </div>
+  </div>
+</footer>
+
+{% stylesheet %}
+  .v-footer {
+    background: var(--volta-ink);
+    color: var(--volta-cream);
+    padding-block: var(--space-section) var(--space-12);
+  }
+  .v-footer__newsletter {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    max-width: 720px;
+    margin-bottom: var(--space-section);
+  }
+  .v-footer__eyebrow { color: var(--volta-green); margin: 0; }
+  .v-footer__headline {
+    font-size: var(--text-3xl);
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    margin: 0;
+  }
+  .v-footer__subhead { color: color-mix(in srgb, var(--volta-cream) 60%, transparent); margin: 0; }
+  .v-footer__form {
+    display: flex;
+    gap: var(--space-3);
+    margin-top: var(--space-4);
+    flex-wrap: wrap;
+  }
+  .v-footer__input {
+    flex: 1;
+    min-width: 260px;
+    background: transparent;
+    border: 0;
+    border-bottom: 1.5px solid var(--volta-cream);
+    padding: var(--space-3) 0;
+    color: var(--volta-cream);
+    font-family: var(--font-body);
+    font-size: var(--text-lg);
+  }
+  .v-footer__input:focus { outline: none; border-color: var(--volta-green); }
+  .v-footer .v-btn--primary { background: var(--volta-green); color: var(--volta-ink); }
+  .v-footer .v-btn--primary:hover { background: var(--volta-cream); }
+
+  .v-footer__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-8);
+    padding-block: var(--space-12);
+    border-top: 1px solid color-mix(in srgb, var(--volta-cream) 15%, transparent);
+  }
+  .v-footer__col ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--space-2); }
+  .v-footer__col-title { color: var(--volta-green); margin: 0 0 var(--space-4); }
+  .v-footer__link {
+    color: var(--volta-cream);
+    text-decoration: none;
+    opacity: 0.8;
+    transition: opacity var(--duration-fast);
+  }
+  .v-footer__link:hover { opacity: 1; }
+
+  .v-footer__base {
+    padding-top: var(--space-6);
+    border-top: 1px solid color-mix(in srgb, var(--volta-cream) 15%, transparent);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+  }
+  .v-footer__copy { opacity: 0.6; }
+
+  @media (max-width: 800px) {
+    .v-footer__grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 480px) {
+    .v-footer__grid { grid-template-columns: 1fr; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:sections.volta_footer.name",
+  "max_blocks": 6,
+  "blocks": [
+    {
+      "type": "link_list",
+      "name": "t:sections.volta_footer.blocks.link_list.name",
+      "settings": [
+        { "type": "text", "id": "heading", "label": "t:sections.volta_footer.blocks.link_list.settings.heading.label", "default": "Navigation" },
+        { "type": "link_list", "id": "menu", "label": "t:sections.volta_footer.blocks.link_list.settings.menu.label" }
+      ]
+    },
+    {
+      "type": "social",
+      "name": "t:sections.volta_footer.blocks.social.name",
+      "settings": [
+        { "type": "text", "id": "heading", "label": "t:sections.volta_footer.blocks.social.settings.heading.label", "default": "Suivez-nous" },
+        { "type": "url", "id": "instagram", "label": "Instagram" },
+        { "type": "url", "id": "tiktok", "label": "TikTok" }
+      ]
+    }
+  ],
+  "enabled_on": { "groups": ["footer"] }
+}
+{% endschema %}

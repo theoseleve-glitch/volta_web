@@ -1,0 +1,36 @@
+{
+  "name": "t:sections.footer.name",
+  "type": "footer",
+  "sections": {
+    "footer": {
+      "type": "volta-footer",
+      "blocks": {
+        "shop": {
+          "type": "link_list",
+          "settings": {
+            "heading": "Boutique",
+            "menu": "footer"
+          }
+        },
+        "support": {
+          "type": "link_list",
+          "settings": {
+            "heading": "Aide",
+            "menu": "footer"
+          }
+        },
+        "social": {
+          "type": "social",
+          "settings": {
+            "heading": "Suis-nous",
+            "instagram": "https://instagram.com/",
+            "tiktok": "https://tiktok.com/"
+          }
+        }
+      },
+      "block_order": ["shop", "support", "social"],
+      "settings": {}
+    }
+  },
+  "order": ["footer"]
+}

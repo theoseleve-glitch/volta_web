@@ -1,0 +1,98 @@
+{%- comment -%}
+  volta-reviews.liquid
+  Infinite horizontal marquee of customer quotes. Duplicated in place so the
+  animation loops seamlessly. Pauses on hover.
+{%- endcomment -%}
+
+<section class="v-reviews" aria-labelledby="reviews-heading-{{ section.id }}">
+  <h2 id="reviews-heading-{{ section.id }}" class="visually-hidden">
+    {{ 'sections.volta_reviews.title' | t }}
+  </h2>
+
+  <div class="v-reviews__marquee" aria-hidden="true">
+    <div class="v-reviews__track">
+      {%- for block in section.blocks -%}
+        <div class="v-reviews__item" {{ block.shopify_attributes }}>
+          <span class="v-reviews__stars" aria-hidden="true">{% for i in (1..5) %}★{% endfor %}</span>
+          <p class="v-reviews__quote">"{{ block.settings.quote }}"</p>
+          <span class="v-mono v-reviews__author">— {{ block.settings.author }}</span>
+        </div>
+      {%- endfor -%}
+      {%- comment -%} Duplicate once to create seamless loop {%- endcomment -%}
+      {%- for block in section.blocks -%}
+        <div class="v-reviews__item" aria-hidden="true">
+          <span class="v-reviews__stars">{% for i in (1..5) %}★{% endfor %}</span>
+          <p class="v-reviews__quote">"{{ block.settings.quote }}"</p>
+          <span class="v-mono v-reviews__author">— {{ block.settings.author }}</span>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .v-reviews {
+    background: var(--volta-ink);
+    color: var(--volta-cream);
+    padding-block: var(--space-12);
+    overflow: hidden;
+  }
+  .v-reviews__marquee {
+    position: relative;
+    overflow: hidden;
+  }
+  .v-reviews__track {
+    display: flex;
+    gap: var(--space-12);
+    padding-inline: var(--space-12);
+    animation: v-scroll 40s linear infinite;
+    width: max-content;
+  }
+  .v-reviews__marquee:hover .v-reviews__track { animation-play-state: paused; }
+  @keyframes v-scroll {
+    to { transform: translateX(-50%); }
+  }
+  .v-reviews__item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    min-width: 420px;
+    max-width: 480px;
+    padding: var(--space-4) 0;
+    border-left: 1px solid color-mix(in srgb, var(--volta-cream) 20%, transparent);
+    padding-left: var(--space-6);
+  }
+  .v-reviews__stars { color: var(--volta-yellow); font-size: var(--text-sm); }
+  .v-reviews__quote { font-size: var(--text-lg); margin: 0; }
+  .v-reviews__author { opacity: 0.6; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .v-reviews__track { animation: none; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:sections.volta_reviews.name",
+  "max_blocks": 12,
+  "blocks": [
+    {
+      "type": "review",
+      "name": "t:sections.volta_reviews.blocks.review.name",
+      "settings": [
+        { "type": "text", "id": "quote", "label": "t:sections.volta_reviews.blocks.review.settings.quote.label", "default": "Un shot qui frappe." },
+        { "type": "text", "id": "author", "label": "t:sections.volta_reviews.blocks.review.settings.author.label", "default": "Client vérifié" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.volta_reviews.name",
+      "blocks": [
+        { "type": "review" }, { "type": "review" }, { "type": "review" },
+        { "type": "review" }, { "type": "review" }, { "type": "review" }
+      ]
+    }
+  ]
+}
+{% endschema %}

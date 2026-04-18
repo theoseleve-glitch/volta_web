@@ -1,0 +1,160 @@
+{%- comment -%}
+  volta-hero.liquid
+  100vh landing banner. Display "CHARGE TON JUS" headline, subhead, dual CTAs,
+  and the mascot placeholder (animated by volta-mascot.js, scroll-bound for the
+  "CHARGE UP" signature moment).
+{%- endcomment -%}
+
+<section class="v-hero" aria-labelledby="hero-heading-{{ section.id }}">
+  <div class="v-hero__bg" aria-hidden="true"></div>
+
+  {%- render 'volta-mascot', variant: 'hero', scroll: 'charge' -%}
+
+  <div class="v-container v-hero__inner">
+    <p class="v-hero__eyebrow v-mono v-reveal">{{ 'sections.volta_hero.eyebrow' | t }}</p>
+
+    <h1 id="hero-heading-{{ section.id }}" class="v-hero__headline v-display v-reveal">
+      {{ 'sections.volta_hero.headline' | t }}
+    </h1>
+
+    <p class="v-hero__subhead v-reveal">
+      {{ 'sections.volta_hero.subhead' | t }}
+    </p>
+
+    <div class="v-hero__actions v-reveal">
+      <a href="{{ section.settings.primary_cta_link | default: routes.all_products_collection_url }}"
+         class="v-btn v-btn--primary v-magnetic"
+         data-cursor="hover">
+        {{ 'sections.volta_hero.primary_cta' | t }}
+      </a>
+      <a href="{{ section.settings.secondary_cta_link | default: '/products/abonnement' }}"
+         class="v-btn v-btn--ghost"
+         data-cursor="hover">
+        {{ 'sections.volta_hero.secondary_cta' | t }}
+      </a>
+    </div>
+  </div>
+
+  <div class="v-hero__scroll-cue v-mono" aria-hidden="true">
+    <span>{{ 'sections.volta_hero.scroll_cue' | t }}</span>
+    <span class="v-hero__scroll-arrow">↓</span>
+  </div>
+</section>
+
+{% stylesheet %}
+  .v-hero {
+    position: relative;
+    min-height: 100svh;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    padding-block: var(--space-20) var(--space-16);
+  }
+  .v-hero__bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: radial-gradient(
+      circle at 70% 30%,
+      color-mix(in srgb, var(--volta-green) 10%, transparent) 0%,
+      transparent 60%
+    );
+  }
+  .v-hero__inner {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-6);
+    max-width: 900px;
+  }
+  .v-hero__eyebrow {
+    color: var(--volta-green);
+    font-weight: 500;
+  }
+  .v-hero__headline {
+    font-size: var(--text-hero);
+    letter-spacing: -0.04em;
+    line-height: 0.95;
+    text-transform: uppercase;
+    text-wrap: balance;
+    margin: 0;
+  }
+  .v-hero__subhead {
+    font-size: var(--text-xl);
+    line-height: 1.3;
+    max-width: 560px;
+    color: color-mix(in srgb, var(--volta-ink) 80%, transparent);
+    margin: 0;
+  }
+  .v-hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    margin-top: var(--space-4);
+  }
+
+  .v-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-4) var(--space-8);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: 1.5px solid transparent;
+    border-radius: 999px;
+    transition: background var(--duration-base), color var(--duration-base), border-color var(--duration-base);
+    cursor: pointer;
+  }
+  .v-btn--primary {
+    background: var(--volta-ink);
+    color: var(--volta-cream);
+  }
+  .v-btn--primary:hover { background: var(--volta-green); color: var(--volta-ink); }
+  .v-btn--ghost {
+    background: transparent;
+    color: var(--volta-ink);
+    border-color: var(--volta-ink);
+  }
+  .v-btn--ghost:hover { background: var(--volta-ink); color: var(--volta-cream); }
+
+  .v-hero__scroll-cue {
+    position: absolute;
+    bottom: var(--space-8);
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    color: color-mix(in srgb, var(--volta-ink) 60%, transparent);
+    z-index: 2;
+  }
+  .v-hero__scroll-arrow { animation: v-bounce 2s var(--ease-in-out-quart) infinite; }
+  @keyframes v-bounce {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(6px); }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:sections.volta_hero.name",
+  "settings": [
+    {
+      "type": "url",
+      "id": "primary_cta_link",
+      "label": "t:sections.volta_hero.settings.primary_cta_link.label"
+    },
+    {
+      "type": "url",
+      "id": "secondary_cta_link",
+      "label": "t:sections.volta_hero.settings.secondary_cta_link.label"
+    }
+  ],
+  "presets": [{ "name": "t:sections.volta_hero.name" }]
+}
+{% endschema %}

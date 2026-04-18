@@ -1,0 +1,65 @@
+{%- comment -%}
+  volta-shot-band.liquid
+  Full-width green band. Bold "LE SHOT" type left, copy middle, CTA right.
+{%- endcomment -%}
+
+<section class="v-shot-band" aria-labelledby="shot-heading-{{ section.id }}">
+  <div class="v-container v-shot-band__row">
+    <h2 id="shot-heading-{{ section.id }}" class="v-shot-band__title v-display v-reveal">
+      {{ 'sections.volta_shot_band.title' | t }}
+    </h2>
+    <p class="v-shot-band__copy v-reveal">
+      {{ 'sections.volta_shot_band.copy' | t }}
+    </p>
+    <a href="{{ section.settings.cta_link | default: '#products' }}"
+       class="v-btn v-btn--ink v-magnetic v-reveal"
+       data-cursor="hover">
+      {{ 'sections.volta_shot_band.cta' | t }}
+    </a>
+  </div>
+</section>
+
+{% stylesheet %}
+  .v-shot-band {
+    background: var(--volta-green);
+    color: var(--volta-ink);
+    padding-block: var(--space-section);
+  }
+  .v-shot-band__row {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: var(--space-12);
+    align-items: center;
+  }
+  .v-shot-band__title {
+    font-size: var(--text-hero);
+    line-height: 0.9;
+    text-transform: uppercase;
+    letter-spacing: -0.04em;
+    margin: 0;
+  }
+  .v-shot-band__copy {
+    font-size: var(--text-lg);
+    max-width: 520px;
+    margin: 0;
+  }
+  .v-btn--ink {
+    background: var(--volta-ink);
+    color: var(--volta-green);
+  }
+  .v-btn--ink:hover { background: var(--volta-cream); color: var(--volta-ink); }
+
+  @media (max-width: 900px) {
+    .v-shot-band__row { grid-template-columns: 1fr; gap: var(--space-6); }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:sections.volta_shot_band.name",
+  "settings": [
+    { "type": "url", "id": "cta_link", "label": "t:sections.volta_shot_band.settings.cta_link.label" }
+  ],
+  "presets": [{ "name": "t:sections.volta_shot_band.name" }]
+}
+{% endschema %}

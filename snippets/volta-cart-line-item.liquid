@@ -1,0 +1,73 @@
+{%- comment -%}
+  volta-cart-line-item.liquid
+  A single line item row in the drawer. Receives `item` (a cart line).
+{%- endcomment -%}
+<li class="v-drawer-item" data-volta-line-item data-key="{{ item.key }}">
+  <a href="{{ item.url }}" class="v-drawer-item__media" data-cursor="hover">
+    {%- if item.image != blank -%}
+      {{ item.image | image_url: width: 180 | image_tag:
+        class: 'v-drawer-item__img',
+        loading: 'lazy',
+        alt: item.product.title
+      }}
+    {%- endif -%}
+  </a>
+  <div class="v-drawer-item__body">
+    <a href="{{ item.url }}" class="v-drawer-item__title">{{ item.product.title }}</a>
+    {%- if item.variant.title != 'Default Title' -%}
+      <span class="v-mono v-drawer-item__variant">{{ item.variant.title }}</span>
+    {%- endif -%}
+    {%- if item.selling_plan_allocation -%}
+      <span class="v-mono v-drawer-item__badge">{{ 'sections.volta_cart.subscription_badge' | t: cadence: item.selling_plan_allocation.selling_plan.name }}</span>
+    {%- endif -%}
+    <div class="v-drawer-item__row">
+      <div class="v-drawer-item__qty">
+        <button type="button" data-volta-qty-change="-1" aria-label="−">−</button>
+        <input type="number" min="0" value="{{ item.quantity }}" data-volta-qty-input>
+        <button type="button" data-volta-qty-change="1" aria-label="+">+</button>
+      </div>
+      <button type="button" class="v-drawer-item__remove" data-volta-remove>
+        {{ 'sections.volta_cart.remove' | t }}
+      </button>
+    </div>
+  </div>
+  <div class="v-drawer-item__price v-mono" data-volta-line-price>{{ item.final_line_price | money }}</div>
+
+  {% stylesheet %}
+    .v-drawer-item {
+      display: grid;
+      grid-template-columns: 60px 1fr auto;
+      gap: var(--space-3);
+      align-items: start;
+    }
+    .v-drawer-item__media { overflow: hidden; border-radius: 6px; background: var(--volta-cream-warm); aspect-ratio: 1; }
+    .v-drawer-item__img { width: 100%; height: 100%; object-fit: cover; }
+    .v-drawer-item__body { display: flex; flex-direction: column; gap: var(--space-1); min-width: 0; }
+    .v-drawer-item__title { color: var(--volta-ink); text-decoration: none; font-weight: 500; }
+    .v-drawer-item__variant { color: color-mix(in srgb, var(--volta-ink) 60%, transparent); }
+    .v-drawer-item__badge {
+      display: inline-block;
+      width: fit-content;
+      background: var(--volta-green);
+      color: var(--volta-ink);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 10px;
+    }
+    .v-drawer-item__row { display: flex; gap: var(--space-3); align-items: center; margin-top: var(--space-1); }
+    .v-drawer-item__qty {
+      display: inline-flex;
+      align-items: center;
+      border: 1.5px solid color-mix(in srgb, var(--volta-ink) 20%, transparent);
+      border-radius: 999px;
+    }
+    .v-drawer-item__qty button { background: transparent; border: 0; width: 28px; height: 28px; cursor: pointer; font-size: var(--text-base); }
+    .v-drawer-item__qty input { width: 32px; text-align: center; border: 0; background: transparent; font-family: var(--font-mono); font-size: var(--text-xs); -moz-appearance: textfield; }
+    .v-drawer-item__qty input::-webkit-outer-spin-button,
+    .v-drawer-item__qty input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+    .v-drawer-item__remove { background: transparent; border: 0; padding: 0; color: color-mix(in srgb, var(--volta-ink) 55%, transparent); font-size: var(--text-xs); font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.1em; cursor: pointer; }
+    .v-drawer-item__remove:hover { color: var(--volta-ink); text-decoration: underline; }
+    .v-drawer-item__price { font-size: var(--text-sm); }
+    .v-drawer-item.is-updating { opacity: 0.5; pointer-events: none; }
+  {% endstylesheet %}
+</li>

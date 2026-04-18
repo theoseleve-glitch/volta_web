@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "//": "This file is LOCAL and gitignored. Copy it to .claude/settings.local.json and customize. Do not commit your version.",
+  "env": {
+    "VOLTA_DEV_THEME_ID": "REPLACE_WITH_YOUR_DEV_THEME_ID",
+    "VOLTA_STORE_URL": "volta-drinks.myshopify.com",
+    "SHOPIFY_CLI_THEME_TOKEN": ""
+  },
+  "permissions": {
+    "allow": [],
+    "//": "Add any dev-machine-specific permissions here. Example: local tooling paths."
+  },
+  "preferredNotifChannel": "terminal"
+}

@@ -1,0 +1,145 @@
+{%- comment -%}
+  volta-hero-3d.liquid
+  Three.js 3D hero — 4 bottles in a horizontal row, fruits, studio lighting.
+  Falls back to a static image on mobile + reduced-motion (see volta-hero-3d.js).
+
+  Companion JS: /assets/volta-hero-3d.js
+  Three.js loaded via ES module importmap in the <head> of layout/theme.liquid.
+{%- endcomment -%}
+
+<section class="v-hero3d" aria-labelledby="hero3d-heading-{{ section.id }}">
+  <div class="v-hero3d__stage" data-volta-hero-3d>
+    <canvas class="v-hero3d__canvas" aria-hidden="true"></canvas>
+    {%- if section.settings.fallback_image != blank -%}
+      <img
+        class="v-hero3d__fallback"
+        src="{{ section.settings.fallback_image | image_url: width: 1800 }}"
+        alt=""
+        loading="eager"
+        fetchpriority="high"
+        sizes="100vw"
+      >
+    {%- endif -%}
+  </div>
+
+  <div class="v-container v-hero3d__copy">
+    <p class="v-hero3d__eyebrow v-mono v-reveal">{{ 'sections.volta_hero.eyebrow' | t }}</p>
+    <h1 id="hero3d-heading-{{ section.id }}" class="v-hero3d__headline v-display v-reveal">
+      {{ 'sections.volta_hero.headline' | t }}
+    </h1>
+    <p class="v-hero3d__subhead v-reveal">{{ 'sections.volta_hero.subhead' | t }}</p>
+    <div class="v-hero3d__actions v-reveal">
+      <a href="{{ section.settings.primary_cta_link | default: routes.all_products_collection_url }}"
+         class="v-btn v-btn--primary v-magnetic" data-cursor="hover">
+        {{ 'sections.volta_hero.primary_cta' | t }}
+      </a>
+      <a href="{{ section.settings.secondary_cta_link | default: '/products/abonnement' }}"
+         class="v-btn v-btn--ghost" data-cursor="hover">
+        {{ 'sections.volta_hero.secondary_cta' | t }}
+      </a>
+    </div>
+  </div>
+
+  <div class="v-hero3d__scroll-cue v-mono" aria-hidden="true">
+    <span>{{ 'sections.volta_hero.scroll_cue' | t }}</span>
+    <span>↓</span>
+  </div>
+</section>
+
+{% stylesheet %}
+  .v-hero3d {
+    position: relative;
+    min-height: 100svh;
+    overflow: hidden;
+    padding-block: var(--space-20) var(--space-16);
+    background:
+      radial-gradient(1200px 600px at 50% 40%, #F2EFE5 0%, var(--volta-cream) 60%, var(--volta-cream-warm) 100%);
+  }
+  .v-hero3d__stage {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: auto;
+  }
+  .v-hero3d__canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+  .v-hero3d__fallback {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: none;
+    pointer-events: none;
+  }
+  .v-hero3d--static .v-hero3d__canvas  { display: none; }
+  .v-hero3d--static .v-hero3d__fallback { display: block; }
+
+  .v-hero3d__copy {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-6);
+    max-width: 900px;
+    pointer-events: none;
+  }
+  .v-hero3d__copy > * { pointer-events: auto; }
+
+  .v-hero3d__eyebrow { color: var(--volta-green); margin: 0; }
+  .v-hero3d__headline {
+    font-size: var(--text-hero);
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    text-transform: uppercase;
+    text-wrap: balance;
+    margin: 0;
+    mix-blend-mode: multiply;
+  }
+  .v-hero3d__subhead {
+    font-size: var(--text-xl);
+    line-height: 1.3;
+    max-width: 560px;
+    color: color-mix(in srgb, var(--volta-ink) 80%, transparent);
+    margin: 0;
+  }
+  .v-hero3d__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    margin-top: var(--space-4);
+  }
+  .v-hero3d__scroll-cue {
+    position: absolute;
+    bottom: var(--space-8);
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    color: color-mix(in srgb, var(--volta-ink) 60%, transparent);
+    z-index: 3;
+  }
+
+  @media (max-width: 768px) {
+    .v-hero3d__headline { font-size: clamp(42px, 11vw, 80px); }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Volta · Hero 3D",
+  "settings": [
+    { "type": "image_picker", "id": "fallback_image", "label": "Image de secours (mobile + reduced-motion)" },
+    { "type": "url", "id": "primary_cta_link", "label": "Lien CTA principal" },
+    { "type": "url", "id": "secondary_cta_link", "label": "Lien CTA secondaire" }
+  ],
+  "presets": [{ "name": "Volta · Hero 3D" }]
+}
+{% endschema %}

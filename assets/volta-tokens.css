@@ -1,0 +1,238 @@
+/*
+ * volta-tokens.css
+ * Design system foundation — colors, typography, spacing, motion.
+ * Loaded after Dawn's base.css so our tokens override Dawn's defaults.
+ * NEVER animate layout properties — only transform + opacity.
+ */
+
+:root {
+  /* ── Colors ─────────────────────────────────────────────────────────── */
+  --volta-green: #7FEFA8;              /* from logo v1 (2026-04-17) — tweak per final CMYK/Pantone */
+  --volta-green-dim: rgba(127, 239, 168, 0.5);
+  --volta-yellow: #FDE047;             /* neon accent */
+  --volta-ink: #0E0E10;                /* near-black text */
+  --volta-cream: #F7F7F2;              /* default background, NEVER #fff */
+  --volta-cream-warm: #F2EFE5;         /* section-break variant */
+  --volta-shadow: rgba(14, 14, 16, 0.08);
+  --volta-shadow-strong: rgba(14, 14, 16, 0.16);
+
+  /* ── Typography ─────────────────────────────────────────────────────── */
+  --font-display: 'Bricolage Grotesque', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  /* Fluid type scale (clamp min / ideal / max) */
+  --text-xs:   clamp(11px, 0.7vw, 12px);
+  --text-sm:   clamp(13px, 0.85vw, 14px);
+  --text-base: clamp(15px, 1vw, 17px);
+  --text-lg:   clamp(18px, 1.3vw, 22px);
+  --text-xl:   clamp(22px, 1.8vw, 28px);
+  --text-2xl:  clamp(28px, 2.4vw, 40px);
+  --text-3xl:  clamp(36px, 3.5vw, 56px);
+  --text-hero: clamp(56px, 9vw, 160px);
+
+  /* Line heights */
+  --lh-display: 1.05;
+  --lh-heading: 1.2;
+  --lh-body: 1.6;
+
+  /* ── Spacing (4px base) ─────────────────────────────────────────────── */
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;
+  --space-8:  32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+  --space-section: clamp(80px, 10vw, 160px);
+
+  /* ── Motion tokens ──────────────────────────────────────────────────── */
+  --ease-out-expo:    cubic-bezier(0.19, 1, 0.22, 1);
+  --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
+  --ease-out-back:    cubic-bezier(0.34, 1.56, 0.64, 1);
+  --duration-fast:    0.2s;
+  --duration-base:    0.4s;
+  --duration-slow:    0.8s;
+  --duration-luxury:  1.2s;
+
+  /* ── Layout ─────────────────────────────────────────────────────────── */
+  --container-max: 1440px;
+  --gutter: clamp(20px, 4vw, 48px);
+  --z-cursor: 9999;
+  --z-preloader: 9998;
+  --z-drawer: 9000;
+  --z-header: 100;
+  --z-mascot: 50;
+}
+
+/* ── Global resets (override Dawn's base where needed) ─────────────────── */
+html {
+  scroll-behavior: auto; /* Lenis takes over */
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: var(--lh-body);
+  color: var(--volta-ink);
+  background-color: var(--volta-cream);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Noise/grain overlay — SVG data URL, 3% opacity, fixed, ignores pointer */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode: multiply;
+}
+
+/* Selection */
+::selection {
+  background: var(--volta-green);
+  color: var(--volta-ink);
+}
+
+/* Headings inherit the display font by default */
+h1, h2, h3, h4, h5, h6,
+.v-display {
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: var(--lh-heading);
+  letter-spacing: -0.01em;
+}
+
+h1, .v-display--hero {
+  font-size: var(--text-hero);
+  line-height: var(--lh-display);
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+/* Mono utility */
+.v-mono {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+/* Focus style — overrides Dawn's outline: none anywhere it appears */
+*:focus-visible {
+  outline: 2px solid var(--volta-yellow);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Skip to content */
+.skip-to-content-link {
+  background: var(--volta-ink);
+  color: var(--volta-cream);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: var(--space-3) var(--space-4);
+  transform: translateY(-110%);
+  transition: transform var(--duration-base) var(--ease-out-expo);
+}
+.skip-to-content-link:focus {
+  transform: translateY(0);
+}
+
+/* Reveal utility — GSAP animates these */
+.v-reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  will-change: transform, opacity;
+}
+.v-reveal.is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Container */
+.v-container {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding-inline: var(--gutter);
+}
+
+/* ── Custom cursor ─────────────────────────────────────────────────────── */
+.v-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: var(--z-cursor);
+}
+.v-cursor__dot,
+.v-cursor__ring,
+.v-cursor__label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translate(-50%, -50%);
+  will-change: transform;
+}
+.v-cursor__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--volta-ink);
+  mix-blend-mode: difference;
+}
+.v-cursor__ring {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1.5px solid var(--volta-ink);
+  mix-blend-mode: difference;
+  transition: width var(--duration-fast) var(--ease-out-expo),
+              height var(--duration-fast) var(--ease-out-expo),
+              border-color var(--duration-fast);
+}
+.v-cursor__label {
+  margin-left: 24px;
+  margin-top: 24px;
+  transform: translate(0, 0);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--volta-ink);
+  opacity: 0;
+  transition: opacity var(--duration-fast);
+}
+.v-cursor--hover .v-cursor__ring { width: 56px; height: 56px; }
+.v-cursor--hover .v-cursor__dot  { transform: translate(-50%, -50%) scale(0.5); }
+.v-cursor--view .v-cursor__ring  { width: 90px; height: 90px; border-color: var(--volta-green); }
+.v-cursor--view .v-cursor__label { opacity: 1; }
+.v-cursor--drag .v-cursor__ring  { width: 90px; height: 90px; background: var(--volta-yellow); border-color: transparent; mix-blend-mode: normal; }
+.v-cursor--drag .v-cursor__label { opacity: 1; color: var(--volta-ink); }
+body.cursor-hidden .v-cursor     { display: none !important; }
+
+/* ── Reduced motion ────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .v-reveal {
+    opacity: 1;
+    transform: none;
+  }
+}

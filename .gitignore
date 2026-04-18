@@ -1,0 +1,53 @@
+# Shopify
+config/settings_data.json
+
+# Claude Code local overrides
+.claude/settings.local.json
+
+# Node / npm
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# OS
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# Editors
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Logs
+*.log
+logs/
+
+# Build artifacts
+dist/
+build/
+.cache/
+mockup/
+
+# Lighthouse / audit outputs
+lighthouse-report.*
+lh.json
+axe-report.*
+audits/*.local.md
+
+# Shopify CLI state
+.shopify/
+
+# Temporary
+tmp/
+.tmp/
+*.tmp

@@ -1,0 +1,69 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-volta-product",
+      "blocks": {
+        "acc-ingredients": {
+          "type": "accordion",
+          "settings": {
+            "heading": "Ingrédients complets",
+            "body": "<p>Gingembre frais pressé, citron, eau, pomme.</p>"
+          }
+        },
+        "acc-nutrition": {
+          "type": "accordion",
+          "settings": {
+            "heading": "Valeurs nutritionnelles",
+            "body": "<p>60 ml · 18 kcal · 0 g sucre ajouté.</p>"
+          }
+        },
+        "acc-how": {
+          "type": "accordion",
+          "settings": {
+            "heading": "Comment le boire",
+            "body": "<p>À jeun le matin, ou comme alternative au café l'après-midi.</p>"
+          }
+        },
+        "acc-delivery": {
+          "type": "accordion",
+          "settings": {
+            "heading": "Livraison & retours",
+            "body": "<p>Livraison 48h en France. Retour gratuit sous 14 jours (droit de rétractation applicable hors produits entamés).</p>"
+          }
+        }
+      },
+      "block_order": ["acc-ingredients", "acc-nutrition", "acc-how", "acc-delivery"],
+      "settings": {}
+    },
+    "benefits": {
+      "type": "volta-product-benefits",
+      "blocks": {
+        "b1": { "type": "benefit", "settings": { "icon": "\u26A1", "heading": "Montée nette", "body": "Une sensation claire, sans pic ni crash." } },
+        "b2": { "type": "benefit", "settings": { "icon": "\uD83C\uDF4B", "heading": "Ingrédients frais", "body": "Gingembre, citron, pomme. Rien d'autre." } },
+        "b3": { "type": "benefit", "settings": { "icon": "\uD83C\uDF31", "heading": "Zéro compromis", "body": "Vegan. Sans sucre ajouté. Made in France." } }
+      },
+      "block_order": ["b1", "b2", "b3"],
+      "settings": {
+        "heading": "Ce qu'il fait"
+      }
+    },
+    "related": {
+      "type": "related-products",
+      "settings": {
+        "heading": "Autres saveurs",
+        "heading_size": "h2",
+        "products_to_show": 4,
+        "columns_desktop": 4,
+        "color_scheme": "scheme-1",
+        "image_ratio": "square",
+        "show_secondary_image": false,
+        "show_vendor": false,
+        "show_rating": false,
+        "columns_mobile": "2",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    }
+  },
+  "order": ["main", "benefits", "related"]
+}

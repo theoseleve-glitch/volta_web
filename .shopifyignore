@@ -1,0 +1,50 @@
+# Prevent these files from being pushed to Shopify via `shopify theme push`
+# See https://shopify.dev/docs/themes/tools/cli/config
+
+# Repo documentation and config
+README.md
+CLAUDE.md
+.claude/
+docs/
+.github/
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# Dependencies
+node_modules/
+package.json
+package-lock.json
+yarn.lock
+
+# Environment and secrets
+.env*
+
+# OS and editor
+.DS_Store
+.vscode/
+.idea/
+*.swp
+Thumbs.db
+
+# Build / audit artifacts
+lighthouse-report.*
+lh.json
+audits/
+
+# Local Shopify CLI state
+.shopify/
+
+# Scripts / tooling
+scripts/
+tools/
+
+# Logs
+*.log
+logs/
+
+# Temp
+tmp/
+.tmp/

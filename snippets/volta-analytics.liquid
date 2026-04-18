@@ -1,0 +1,39 @@
+{%- comment -%}
+  volta-analytics.liquid
+  Third-party tracking scripts. Fires nothing unless the matching setting
+  is populated in Theme Settings → Volta · Analytics.
+
+  ⚠  Shopify Web Pixels (via Customer Events) is the preferred channel for
+     checkout-level conversion tracking on the Basic plan. The scripts below
+     are theme-level only — they handle storefront PageView and custom dataLayer
+     events. Meta/Klaviyo should also be installed as Shopify apps for full
+     order-level attribution.
+{%- endcomment -%}
+
+{%- if settings.volta_gtm_id != blank -%}
+  {%- comment -%} Google Tag Manager — head tag {%- endcomment -%}
+  <script>
+    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','{{ settings.volta_gtm_id }}');
+  </script>
+{%- endif -%}
+
+{%- if settings.volta_meta_pixel_id != blank -%}
+  {%- comment -%} Meta Pixel fallback (prefer Shopify native integration for checkout events) {%- endcomment -%}
+  <script>
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+    n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+    document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '{{ settings.volta_meta_pixel_id }}');
+    fbq('track', 'PageView');
+  </script>
+{%- endif -%}
+
+{%- if settings.volta_klaviyo_public_key != blank -%}
+  <script async src="https://static.klaviyo.com/onsite/js/klaviyo.js?company_id={{ settings.volta_klaviyo_public_key }}"></script>
+{%- endif -%}

@@ -1,0 +1,14 @@
+{%- comment -%}
+  volta-preloader.liquid
+  First-visit preloader. Skipped on subsequent visits (sessionStorage flag)
+  and when prefers-reduced-motion. Keyboard-skippable via Escape.
+{%- endcomment -%}
+<div class="v-preloader" id="VoltaPreloader" data-volta-preloader aria-hidden="true">
+  <div class="v-preloader__mascot">
+    {%- render 'volta-mascot', variant: 'preloader', id: 'preloader' -%}
+  </div>
+  <div class="v-preloader__counter v-mono">
+    <span data-volta-preloader-num>0</span>%
+  </div>
+  <div class="v-preloader__wipe" data-volta-preloader-wipe aria-hidden="true"></div>
+</div>

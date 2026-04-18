@@ -1,0 +1,254 @@
+{%- comment -%}
+  volta-header.liquid
+  Sticky header. Hides on scroll-down, shows on scroll-up. Logo left, nav center,
+  FR/EN toggle + cart icon right. Mobile: drawer menu triggered by hamburger.
+{%- endcomment -%}
+
+<volta-header class="v-header" data-sticky>
+  <div class="v-container v-header__row">
+    <a class="v-header__logo" href="{{ routes.root_url }}" aria-label="{{ shop.name }}">
+      {%- if section.settings.logo != blank -%}
+        {{ section.settings.logo | image_url: width: 320 | image_tag: class: 'v-header__logo-img', alt: shop.name, loading: 'eager', fetchpriority: 'high', widths: '160,320,480' }}
+      {%- else -%}
+        <img src="{{ 'volta-logo-v2.png' | asset_url }}" class="v-header__logo-img" alt="{{ shop.name }}" loading="eager" fetchpriority="high">
+      {%- endif -%}
+    </a>
+
+    <nav class="v-header__nav" aria-label="{{ 'sections.volta_header.nav_label' | t }}">
+      <ul class="v-header__menu">
+        {%- for link in section.settings.menu.links -%}
+          <li>
+            <a href="{{ link.url }}" class="v-header__link{% if link.active %} is-active{% endif %}" data-cursor="hover">
+              {{- link.title -}}
+            </a>
+          </li>
+        {%- endfor -%}
+      </ul>
+    </nav>
+
+    <div class="v-header__actions">
+      {%- if localization.available_languages.size > 1 -%}
+        {%- form 'localization', class: 'v-header__locale' -%}
+          <input type="hidden" name="locale_code" value="{{ localization.language.iso_code }}">
+          <ul class="v-header__locale-list" role="list">
+            {%- for language in localization.available_languages -%}
+              <li>
+                <button
+                  type="submit"
+                  name="locale_code"
+                  value="{{ language.iso_code }}"
+                  class="v-header__locale-btn {% if language.iso_code == localization.language.iso_code %}is-active{% endif %}"
+                  aria-pressed="{% if language.iso_code == localization.language.iso_code %}true{% else %}false{% endif %}"
+                  aria-label="{{ 'sections.volta_header.switch_language_html' | t: language: language.endonym_name }}"
+                >
+                  {{ language.iso_code | upcase }}
+                </button>
+              </li>
+            {%- endfor -%}
+          </ul>
+        {%- endform -%}
+      {%- endif -%}
+
+      <a
+        href="{{ routes.cart_url }}"
+        class="v-header__cart"
+        aria-label="{{ 'sections.volta_header.cart_label' | t }}"
+        data-volta-cart-toggle
+        data-cursor="hover"
+      >
+        <svg class="v-header__cart-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+          <path d="M3 6h18"/>
+          <path d="M16 10a4 4 0 01-8 0"/>
+        </svg>
+        <span class="v-header__cart-count" data-volta-cart-count>{{ cart.item_count }}</span>
+      </a>
+
+      <button
+        type="button"
+        class="v-header__menu-toggle"
+        aria-label="{{ 'sections.volta_header.menu_toggle' | t }}"
+        aria-expanded="false"
+        data-volta-menu-toggle
+      >
+        <span></span><span></span>
+      </button>
+    </div>
+  </div>
+</volta-header>
+
+{% stylesheet %}
+  .v-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: var(--z-header);
+    background: transparent;
+    padding-block: var(--space-4);
+    transition: background-color var(--duration-base) var(--ease-out-expo),
+                transform var(--duration-base) var(--ease-out-expo),
+                backdrop-filter var(--duration-base) var(--ease-out-expo);
+    border-bottom: 1px solid transparent;
+  }
+  .v-header.is-hidden { transform: translateY(-100%); }
+  .v-header.is-scrolled {
+    background: color-mix(in srgb, var(--volta-cream) 82%, transparent);
+    backdrop-filter: blur(14px) saturate(140%);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    border-bottom-color: var(--volta-shadow);
+  }
+
+  .v-header__row {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: var(--space-6);
+  }
+
+  .v-header__logo {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    color: var(--volta-ink);
+  }
+  .v-header__wordmark {
+    font-family: var(--font-display);
+    font-size: var(--text-lg);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+  .v-header__logo-img { height: 56px; width: auto; display: block; }
+
+  .v-header__nav { justify-self: center; }
+  .v-header__menu {
+    display: flex;
+    gap: var(--space-8);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .v-header__link {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--volta-ink);
+    text-decoration: none;
+    position: relative;
+    padding-block: var(--space-1);
+  }
+  .v-header__link::after {
+    content: '';
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--duration-base) var(--ease-out-expo);
+  }
+  .v-header__link:hover::after,
+  .v-header__link.is-active::after { transform: scaleX(1); }
+
+  .v-header__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+  }
+
+  .v-header__locale,
+  .v-header__locale-list {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .v-header__locale-btn {
+    background: transparent;
+    border: 0;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: 0.15em;
+    color: var(--volta-ink);
+    padding: var(--space-1) var(--space-2);
+    cursor: pointer;
+    opacity: 0.5;
+    transition: opacity var(--duration-fast);
+  }
+  .v-header__locale-btn.is-active { opacity: 1; text-decoration: underline; text-underline-offset: 4px; }
+
+  .v-header__cart {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    color: var(--volta-ink);
+    text-decoration: none;
+  }
+  .v-header__cart-icon { width: 24px; height: 24px; }
+  .v-header__cart-count {
+    position: absolute;
+    top: -6px;
+    right: -8px;
+    min-width: 18px;
+    height: 18px;
+    padding-inline: 4px;
+    border-radius: 9px;
+    background: var(--volta-green);
+    color: var(--volta-ink);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: scale(0);
+    transition: transform var(--duration-fast) var(--ease-out-back);
+  }
+  .v-header__cart[data-count]:not([data-count="0"]) .v-header__cart-count { transform: scale(1); }
+
+  .v-header__menu-toggle {
+    display: none;
+    width: 32px; height: 32px;
+    background: transparent;
+    border: 0;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    padding: 0;
+    cursor: pointer;
+  }
+  .v-header__menu-toggle span {
+    display: block;
+    height: 1.5px;
+    background: var(--volta-ink);
+    transition: transform var(--duration-base);
+  }
+
+  @media (max-width: 768px) {
+    .v-header__nav { display: none; }
+    .v-header__menu-toggle { display: inline-flex; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:sections.volta_header.name",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "t:sections.volta_header.settings.logo.label"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "default": "main-menu",
+      "label": "t:sections.volta_header.settings.menu.label"
+    }
+  ],
+  "enabled_on": { "groups": ["header"] }
+}
+{% endschema %}

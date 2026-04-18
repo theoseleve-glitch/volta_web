@@ -1,0 +1,119 @@
+{%- comment -%}
+  volta-subscription-toggle.liquid
+  Custom subscription toggle that consumes Shopify's `product.selling_plan_groups`
+  (which Seal Subscriptions populates automatically once installed). Falls back
+  gracefully when Seal is not installed (`has_plan` = false → toggle is hidden).
+
+  "Mixed Pack" products (tagged `mixed-pack` OR with metafield volta.mixed_pack=true)
+  are subscription-only — we hide the one-time option entirely.
+
+  Accepts:
+    - product
+    - selling_plans (product.selling_plan_groups)
+{%- endcomment -%}
+
+{%- liquid
+  assign has_plan = false
+  assign first_plan = null
+  assign first_plan_price = product.price
+
+  for group in selling_plans
+    for plan in group.selling_plans
+      if first_plan == null
+        assign first_plan = plan
+        assign price_adj = plan.price_adjustments[0]
+        if price_adj != blank
+          if price_adj.value_type == 'percentage'
+            assign discount = product.price | times: price_adj.value | divided_by: 100
+            assign first_plan_price = product.price | minus: discount
+          elsif price_adj.value_type == 'price'
+            assign first_plan_price = price_adj.value
+          else
+            assign first_plan_price = product.price | minus: price_adj.value
+          endif
+        endif
+      endif
+      assign has_plan = true
+    endfor
+  endfor
+
+  assign is_mixed_pack = false
+  if product.tags contains 'mixed-pack'
+    assign is_mixed_pack = true
+  endif
+  if product.metafields.volta.mixed_pack == true
+    assign is_mixed_pack = true
+  endif
+-%}
+
+{%- if has_plan -%}
+  <fieldset
+    class="v-sub-toggle v-reveal{% if is_mixed_pack %} v-sub-toggle--forced{% endif %}"
+    data-volta-sub-toggle
+    data-mixed-pack="{{ is_mixed_pack }}"
+  >
+    <legend class="v-mono v-product__label">{{ 'sections.volta_product.purchase_type' | t }}</legend>
+    <div class="v-sub-toggle__grid">
+      {%- unless is_mixed_pack -%}
+        <label class="v-sub-toggle__option is-active">
+          <input type="radio" name="purchase_type" value="onetime" data-volta-sub-value="" checked>
+          <span class="v-sub-toggle__title">{{ 'sections.volta_product.purchase_onetime' | t }}</span>
+          <span class="v-mono v-sub-toggle__sub">{{ product.price | money }}</span>
+        </label>
+      {%- endunless -%}
+
+      <label class="v-sub-toggle__option v-sub-toggle__option--promo{% if is_mixed_pack %} is-active{% endif %}">
+        <input
+          type="radio"
+          name="purchase_type"
+          value="subscription"
+          data-volta-sub-value="{{ first_plan.id }}"
+          {% if is_mixed_pack %}checked{% endif %}
+        >
+        <span class="v-sub-toggle__title">{{ 'sections.volta_product.purchase_subscription' | t }}</span>
+        <span class="v-mono v-sub-toggle__sub">
+          {{ first_plan_price | money }} · {{ 'sections.volta_product.purchase_subscription_badge' | t }}
+        </span>
+      </label>
+    </div>
+
+    {%- if is_mixed_pack -%}
+      <p class="v-sub-toggle__note v-mono">
+        {{ 'sections.volta_product.mixed_pack_note' | t }}
+      </p>
+    {%- endif -%}
+  </fieldset>
+
+  {% stylesheet %}
+    .v-sub-toggle { border: 0; padding: 0; margin: 0; display: flex; flex-direction: column; gap: var(--space-2); }
+    .v-sub-toggle__grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-2); }
+    .v-sub-toggle--forced .v-sub-toggle__grid { grid-template-columns: 1fr; }
+    .v-sub-toggle__option {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-1);
+      padding: var(--space-4);
+      border: 1.5px solid color-mix(in srgb, var(--volta-ink) 15%, transparent);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: border-color var(--duration-fast), background var(--duration-fast);
+    }
+    .v-sub-toggle__option input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+    .v-sub-toggle__option:has(input:checked),
+    .v-sub-toggle__option.is-active { border-color: var(--volta-ink); background: color-mix(in srgb, var(--volta-green) 8%, transparent); }
+    .v-sub-toggle__option--promo:has(input:checked) { background: color-mix(in srgb, var(--volta-yellow) 30%, transparent); border-color: var(--volta-ink); }
+    .v-sub-toggle__title { font-weight: 500; font-size: var(--text-base); }
+    .v-sub-toggle__sub { color: color-mix(in srgb, var(--volta-ink) 60%, transparent); }
+    .v-sub-toggle__note {
+      margin: var(--space-2) 0 0;
+      font-size: var(--text-xs);
+      color: color-mix(in srgb, var(--volta-ink) 60%, transparent);
+    }
+
+    /* Hide Seal Subscriptions' default widget — we control the UI */
+    .seal-subscriptions-widget,
+    .seal-subscriptions-options,
+    .ssw-container { display: none !important; }
+  {% endstylesheet %}
+{%- endif -%}

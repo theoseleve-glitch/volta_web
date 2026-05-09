@@ -69,13 +69,13 @@
 }
 
 .v-hero-v1__buy-form {
-  margin-top: 24px;
+  margin-top: var(--space-6);
 }
 
 .v-hero-v1__cta {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-2);
   background: var(--volta-yellow, #FDE047);
   color: var(--volta-ink, #0E0E10);
   font-family: var(--font-body, system-ui);
@@ -83,7 +83,7 @@
   font-weight: 800;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  padding: 16px 32px;
+  padding: var(--space-4) var(--space-8);
   border: none;
   border-radius: 999px;
   cursor: pointer;
@@ -97,7 +97,7 @@
 }
 
 .v-hero-v1__cta:focus-visible {
-  outline: 2px solid #fff;
+  outline: 2px solid var(--volta-cream, #F7F7F2);
   outline-offset: 4px;
 }
 

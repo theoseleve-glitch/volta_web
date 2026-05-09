@@ -217,6 +217,8 @@ git commit -m "feat(v1): bootstrap hero-v1 + footer-legal skeletons; switch inde
 
 ## Task 2: Hero — text overlay layer
 
+**Note:** All settings-with-locale-fallback use `{%- if X != blank -%}{{ X }}{%- else -%}{{ 'key' | t }}{%- endif -%}` — never `| default: 'key' | t` (Liquid pipes any non-blank value through `| t` and produces 'translation missing').
+
 **Goal:** Replace the centered placeholder title with the full text content (eyebrow, title, tagline, description, format) positioned bottom-left, with proper schema settings for owner editing.
 
 **Files:**
@@ -230,10 +232,18 @@ git commit -m "feat(v1): bootstrap hero-v1 + footer-legal skeletons; switch inde
   <div class="v-hero-v1__overlay">
     <p class="v-hero-v1__eyebrow">{{ 'sections.volta_hero_v1.eyebrow' | t }}</p>
     <h1 id="hero-v1-heading-{{ section.id }}" class="v-hero-v1__title">
-      {{ section.settings.title | default: 'sections.volta_hero_v1.title_default' | t }}
+      {%- if section.settings.title != blank -%}
+        {{ section.settings.title }}
+      {%- else -%}
+        {{ 'sections.volta_hero_v1.title_default' | t }}
+      {%- endif -%}
     </h1>
     <p class="v-hero-v1__tagline">
-      {{ section.settings.tagline | default: 'sections.volta_hero_v1.tagline_default' | t }}
+      {%- if section.settings.tagline != blank -%}
+        {{ section.settings.tagline }}
+      {%- else -%}
+        {{ 'sections.volta_hero_v1.tagline_default' | t }}
+      {%- endif -%}
     </p>
     <div class="v-hero-v1__description">
       {%- if section.settings.description != blank -%}
@@ -250,7 +260,7 @@ git commit -m "feat(v1): bootstrap hero-v1 + footer-legal skeletons; switch inde
 ```
 
 Notes on the fallback pattern:
-- `title` and `tagline` are plain text — `{{ ... | default: 'key' | t }}` outputs the locale string when the setting is empty, and the merchant value when it's set.
+- `title`, `tagline`, and (later) `cta_label` are plain text settings. Use the explicit `{%- if X != blank -%}{{ X }}{%- else -%}{{ 'key' | t }}{%- endif -%}` form. **Do NOT** use `{{ X | default: 'key' | t }}` — Liquid pipes the merchant's literal text through `| t`, producing `"translation missing: <text>"` whenever the setting is filled.
 - `description` is a richtext setting whose default we want to render as HTML. We branch explicitly so the locale fallback gets wrapped in `<p>` and the merchant's richtext (which is already HTML) is output untouched.
 - Because we rely on locale fallbacks, the schema settings have NO `default:` values — at install time settings start empty, render-time fallback fires, content still appears.
 
@@ -437,7 +447,12 @@ git commit -m "feat(hero-v1): add text overlay layer with editable copy"
     <input type="hidden" name="quantity" value="1">
     <input type="hidden" name="return_to" value="/checkout">
     <button type="submit" class="v-hero-v1__cta">
-      {{ section.settings.cta_label | default: 'sections.volta_hero_v1.cta_default' | t }} — {{ variant.price | money }} →
+      {%- if section.settings.cta_label != blank -%}
+        {{ section.settings.cta_label }}
+      {%- else -%}
+        {{ 'sections.volta_hero_v1.cta_default' | t }}
+      {%- endif -%}
+      — {{ variant.price | money }} →
     </button>
   </form>
 {%- else -%}

@@ -489,10 +489,18 @@
       "eyebrow": "Le shot fonctionnel",
       "title_default": "Golden Kick",
       "tagline_default": "Le shot qui frappe.",
-      "description_default": "<p>Gingembre 10%, ananas, mangue. 60 ml. Pressé en France, sans sucre ajouté.</p>",
+      "description_default": "Gingembre 10%, ananas, mangue. 60 ml. Pressé en France, sans sucre ajouté.",
       "format": "Pack de 12",
       "cta_default": "Acheter",
-      "cta_unavailable": "Bientôt de retour"
+      "cta_unavailable": "Bientôt de retour",
+      "settings": {
+        "text_header": "Texte du hero",
+        "title_label": "Titre",
+        "title_info": "Affiché en grand. Laisser vide pour utiliser la valeur par défaut.",
+        "tagline_label": "Tagline",
+        "description_label": "Description",
+        "description_info": "Court paragraphe sous le titre. Texte simple ou HTML. Laisser vide pour la valeur par défaut."
+      }
     },
     "volta_footer_legal": {
       "name": "Footer V1 — Légal",

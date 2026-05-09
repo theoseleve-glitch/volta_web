@@ -9,13 +9,17 @@
   <div class="v-hero-v1__overlay">
     <p class="v-hero-v1__eyebrow">{{ 'sections.volta_hero_v1.eyebrow' | t }}</p>
     <h1 id="hero-v1-heading-{{ section.id }}" class="v-hero-v1__title">
-      {{ section.settings.title | default: 'GOLDEN KICK' }}
+      {{ section.settings.title | default: 'sections.volta_hero_v1.title_default' | t }}
     </h1>
     <p class="v-hero-v1__tagline">
-      {{ section.settings.tagline | default: 'Le shot qui frappe.' }}
+      {{ section.settings.tagline | default: 'sections.volta_hero_v1.tagline_default' | t }}
     </p>
     <div class="v-hero-v1__description">
-      {{ section.settings.description }}
+      {%- if section.settings.description != blank -%}
+        {{ section.settings.description }}
+      {%- else -%}
+        <p>{{ 'sections.volta_hero_v1.description_default' | t }}</p>
+      {%- endif -%}
     </div>
     <p class="v-hero-v1__format">
       {{ 'sections.volta_hero_v1.format' | t }}
@@ -29,24 +33,23 @@
   "tag": "section",
   "class": "v-hero-v1-section",
   "settings": [
-    { "type": "header", "content": "Texte" },
+    { "type": "header", "content": "t:sections.volta_hero_v1.settings.text_header" },
     {
       "type": "text",
       "id": "title",
-      "label": "Titre",
-      "default": "GOLDEN KICK"
+      "label": "t:sections.volta_hero_v1.settings.title_label",
+      "info": "t:sections.volta_hero_v1.settings.title_info"
     },
     {
       "type": "text",
       "id": "tagline",
-      "label": "Tagline",
-      "default": "Le shot qui frappe."
+      "label": "t:sections.volta_hero_v1.settings.tagline_label"
     },
     {
       "type": "richtext",
       "id": "description",
-      "label": "Description",
-      "default": "<p>Gingembre 10%, ananas, mangue. 60 ml. Pressé en France, sans sucre ajouté.</p>"
+      "label": "t:sections.volta_hero_v1.settings.description_label",
+      "info": "t:sections.volta_hero_v1.settings.description_info"
     }
   ],
   "presets": [

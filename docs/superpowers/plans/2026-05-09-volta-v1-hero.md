@@ -223,20 +223,24 @@ git commit -m "feat(v1): bootstrap hero-v1 + footer-legal skeletons; switch inde
 - Modify: `sections/volta-hero-v1.liquid` (markup + schema)
 - Modify: `assets/volta-hero-v1.css` (text overlay styles)
 
-- [ ] **Step 1:** Replace the section markup in `sections/volta-hero-v1.liquid` (between `{{ ... | stylesheet_tag }}` and `{% schema %}`) with:
+- [ ] **Step 1:** Replace the section markup in `sections/volta-hero-v1.liquid` (between `{{ ... | stylesheet_tag }}` and `{% schema %}`) with the locale-driven version below. *This step also requires adding schema-label keys to both locales — see Step 1a below.*
 
 ```liquid
 <section class="v-hero-v1" aria-labelledby="hero-v1-heading-{{ section.id }}">
   <div class="v-hero-v1__overlay">
     <p class="v-hero-v1__eyebrow">{{ 'sections.volta_hero_v1.eyebrow' | t }}</p>
     <h1 id="hero-v1-heading-{{ section.id }}" class="v-hero-v1__title">
-      {{ section.settings.title | default: 'GOLDEN KICK' }}
+      {{ section.settings.title | default: 'sections.volta_hero_v1.title_default' | t }}
     </h1>
     <p class="v-hero-v1__tagline">
-      {{ section.settings.tagline | default: 'Le shot qui frappe.' }}
+      {{ section.settings.tagline | default: 'sections.volta_hero_v1.tagline_default' | t }}
     </p>
     <div class="v-hero-v1__description">
-      {{ section.settings.description }}
+      {%- if section.settings.description != blank -%}
+        {{ section.settings.description }}
+      {%- else -%}
+        <p>{{ 'sections.volta_hero_v1.description_default' | t }}</p>
+      {%- endif -%}
     </div>
     <p class="v-hero-v1__format">
       {{ 'sections.volta_hero_v1.format' | t }}
@@ -245,28 +249,78 @@ git commit -m "feat(v1): bootstrap hero-v1 + footer-legal skeletons; switch inde
 </section>
 ```
 
-- [ ] **Step 2:** In the same file, replace the `"settings": []` line in the schema with these four settings:
+Notes on the fallback pattern:
+- `title` and `tagline` are plain text — `{{ ... | default: 'key' | t }}` outputs the locale string when the setting is empty, and the merchant value when it's set.
+- `description` is a richtext setting whose default we want to render as HTML. We branch explicitly so the locale fallback gets wrapped in `<p>` and the merchant's richtext (which is already HTML) is output untouched.
+- Because we rely on locale fallbacks, the schema settings have NO `default:` values — at install time settings start empty, render-time fallback fires, content still appears.
+
+- [ ] **Step 1a:** Add the schema-label locale keys before touching the schema. Open `locales/fr.default.json`, find the existing `sections.volta_hero_v1` block (added in Task 1), remove the `<p>...</p>` wrapping from `description_default` (markup now provides the wrapper), and add a nested `settings` block:
+
+```json
+"volta_hero_v1": {
+  "name": "Hero V1 — Golden Kick",
+  "eyebrow": "Le shot fonctionnel",
+  "title_default": "Golden Kick",
+  "tagline_default": "Le shot qui frappe.",
+  "description_default": "Gingembre 10%, ananas, mangue. 60 ml. Pressé en France, sans sucre ajouté.",
+  "format": "Pack de 12",
+  "cta_default": "Acheter",
+  "cta_unavailable": "Bientôt de retour",
+  "settings": {
+    "text_header": "Texte du hero",
+    "title_label": "Titre",
+    "title_info": "Affiché en grand. Laisser vide pour utiliser la valeur par défaut.",
+    "tagline_label": "Tagline",
+    "description_label": "Description",
+    "description_info": "Court paragraphe sous le titre. Texte simple ou HTML. Laisser vide pour la valeur par défaut."
+  }
+},
+```
+
+Mirror the same change in `locales/en.json` — strip the `<p>...</p>` from `description_default` and add the `settings` block with `[EN: TODO]` prefixes:
+
+```json
+"volta_hero_v1": {
+  "name": "[EN: TODO] Hero V1 — Golden Kick",
+  "eyebrow": "[EN: TODO] The functional shot",
+  "title_default": "Golden Kick",
+  "tagline_default": "[EN: TODO] The shot that hits.",
+  "description_default": "[EN: TODO] Ginger 10%, pineapple, mango. 60 ml. Pressed in France, no added sugar.",
+  "format": "[EN: TODO] Pack of 12",
+  "cta_default": "[EN: TODO] Buy",
+  "cta_unavailable": "[EN: TODO] Back soon",
+  "settings": {
+    "text_header": "[EN: TODO] Hero text",
+    "title_label": "[EN: TODO] Title",
+    "title_info": "[EN: TODO] Displayed large. Leave empty to use the default value.",
+    "tagline_label": "[EN: TODO] Tagline",
+    "description_label": "[EN: TODO] Description",
+    "description_info": "[EN: TODO] Short paragraph below the title. Plain text or HTML. Leave empty for the default value."
+  }
+},
+```
+
+- [ ] **Step 2:** In `sections/volta-hero-v1.liquid`, replace the `"settings": []` line in the schema with these four settings (note: NO `default:` values — locale-driven fallback handles all defaults):
 
 ```json
 "settings": [
-  { "type": "header", "content": "Texte" },
+  { "type": "header", "content": "t:sections.volta_hero_v1.settings.text_header" },
   {
     "type": "text",
     "id": "title",
-    "label": "Titre",
-    "default": "GOLDEN KICK"
+    "label": "t:sections.volta_hero_v1.settings.title_label",
+    "info": "t:sections.volta_hero_v1.settings.title_info"
   },
   {
     "type": "text",
     "id": "tagline",
-    "label": "Tagline",
-    "default": "Le shot qui frappe."
+    "label": "t:sections.volta_hero_v1.settings.tagline_label"
   },
   {
     "type": "richtext",
     "id": "description",
-    "label": "Description",
-    "default": "<p>Gingembre 10%, ananas, mangue. 60 ml. Pressé en France, sans sucre ajouté.</p>"
+    "label": "t:sections.volta_hero_v1.settings.description_label",
+    "info": "t:sections.volta_hero_v1.settings.description_info"
   }
 ],
 ```
@@ -346,7 +400,7 @@ git commit -m "feat(v1): bootstrap hero-v1 + footer-legal skeletons; switch inde
 - [ ] **Step 7:** Commit:
 
 ```bash
-git add sections/volta-hero-v1.liquid assets/volta-hero-v1.css
+git add locales/fr.default.json locales/en.json sections/volta-hero-v1.liquid assets/volta-hero-v1.css
 git commit -m "feat(hero-v1): add text overlay layer with editable copy"
 ```
 

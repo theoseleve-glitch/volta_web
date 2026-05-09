@@ -477,10 +477,18 @@
       "eyebrow": "[EN: TODO] The functional shot",
       "title_default": "Golden Kick",
       "tagline_default": "[EN: TODO] The shot that hits.",
-      "description_default": "<p>[EN: TODO] Ginger 10%, pineapple, mango. 60 ml. Pressed in France, no added sugar.</p>",
+      "description_default": "[EN: TODO] Ginger 10%, pineapple, mango. 60 ml. Pressed in France, no added sugar.",
       "format": "[EN: TODO] Pack of 12",
       "cta_default": "[EN: TODO] Buy",
-      "cta_unavailable": "[EN: TODO] Back soon"
+      "cta_unavailable": "[EN: TODO] Back soon",
+      "settings": {
+        "text_header": "[EN: TODO] Hero text",
+        "title_label": "[EN: TODO] Title",
+        "title_info": "[EN: TODO] Displayed large. Leave empty to use the default value.",
+        "tagline_label": "[EN: TODO] Tagline",
+        "description_label": "[EN: TODO] Description",
+        "description_info": "[EN: TODO] Short paragraph below the title. Plain text or HTML. Leave empty for the default value."
+      }
     },
     "volta_footer_legal": {
       "name": "[EN: TODO] Footer V1 — Legal",

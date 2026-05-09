@@ -9,21 +9,61 @@
   background: linear-gradient(135deg, #7b3dd4 0%, var(--volta-yellow, #FDE047) 100%);
 }
 
-.v-hero-v1__title {
-  /* Placeholder centering for skeleton — will be repositioned in Task 2 */
+/* Replace the placeholder .v-hero-v1__title rule with this overlay block */
+
+.v-hero-v1__overlay {
   position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  left: clamp(20px, 4vw, 64px);
+  bottom: clamp(48px, 10vh, 120px);
+  max-width: min(560px, 60vw);
+  z-index: 5;
+  color: #fff;
+}
+
+.v-hero-v1__eyebrow {
+  font-family: var(--font-body, system-ui);
+  font-size: clamp(10px, 1vw, 12px);
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  margin: 0 0 16px;
+  opacity: 0.9;
+}
+
+.v-hero-v1__title {
   font-family: var(--font-display, system-ui);
   font-style: italic;
   font-weight: 900;
   font-size: var(--text-hero, clamp(48px, 9vw, 144px));
+  line-height: 0.85;
   letter-spacing: -0.04em;
   text-transform: uppercase;
-  color: #fff;
+  margin: 0 0 16px;
+}
+
+.v-hero-v1__tagline {
+  font-family: var(--font-display, system-ui);
+  font-style: italic;
+  font-size: clamp(20px, 2.5vw, 32px);
+  line-height: 1.1;
+  margin: 0 0 12px;
+}
+
+.v-hero-v1__description {
+  font-family: var(--font-body, system-ui);
+  font-size: clamp(14px, 1.4vw, 18px);
+  line-height: 1.4;
+  margin: 0 0 16px;
+  opacity: 0.95;
+}
+
+.v-hero-v1__description p { margin: 0; }
+
+.v-hero-v1__format {
+  font-family: var(--font-body, system-ui);
+  font-size: clamp(11px, 1vw, 13px);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
   margin: 0;
-  text-align: center;
-  z-index: 5;
+  opacity: 0.85;
 }

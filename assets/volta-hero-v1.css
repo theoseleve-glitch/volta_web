@@ -1,0 +1,29 @@
+/* assets/volta-hero-v1.css — V1 hero layout */
+
+.v-hero-v1 {
+  position: relative;
+  width: 100%;
+  min-height: 100svh;
+  overflow: hidden;
+  /* Brand gradient — fallback when no video/poster uploaded */
+  background: linear-gradient(135deg, #7b3dd4 0%, #fbee49 100%);
+}
+
+.v-hero-v1__title {
+  /* Placeholder centering for skeleton — will be repositioned in Task 2 */
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--ff-display, system-ui);
+  font-style: italic;
+  font-weight: 900;
+  font-size: clamp(48px, 9vw, 144px);
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  color: #fff;
+  margin: 0;
+  text-align: center;
+  z-index: 5;
+}

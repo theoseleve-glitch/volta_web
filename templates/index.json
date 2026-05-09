@@ -1,73 +1,13 @@
 {
   "sections": {
     "hero": {
-      "type": "volta-hero-banner",
+      "type": "volta-hero-v1",
       "settings": {}
     },
-    "shot_band": {
-      "type": "volta-shot-band",
-      "settings": {
-        "cta_link": "#products"
-      }
-    },
-    "products": {
-      "type": "volta-products",
-      "settings": {
-        "collection": "all"
-      }
-    },
-    "subscription": {
-      "type": "volta-subscription",
-      "settings": {}
-    },
-    "story": {
-      "type": "volta-story",
-      "blocks": {
-        "panel-1": {
-          "type": "panel",
-          "settings": {
-            "heading": "Origine",
-            "body": "<p>Une idée simple. Un shot qui donne un coup de fouet, sans compromis.</p>"
-          }
-        },
-        "panel-2": {
-          "type": "panel",
-          "settings": {
-            "heading": "Ingrédients",
-            "body": "<p>Gingembre frais. Citron. Aucun additif. Fabriqué en France.</p>"
-          }
-        },
-        "panel-3": {
-          "type": "panel",
-          "settings": {
-            "heading": "Production",
-            "body": "<p>Pressé à froid. Embouteillé à la main. 60ml de pure énergie.</p>"
-          }
-        },
-        "panel-4": {
-          "type": "panel",
-          "settings": {
-            "heading": "Vision",
-            "body": "<p>Un rituel quotidien. Une marque française. Zéro compromis.</p>"
-          }
-        }
-      },
-      "block_order": ["panel-1", "panel-2", "panel-3", "panel-4"],
-      "settings": {}
-    },
-    "reviews": {
-      "type": "volta-reviews",
-      "blocks": {
-        "review-1": { "type": "review", "settings": { "quote": "Un shot qui frappe. Je recommande.", "author": "Camille L." } },
-        "review-2": { "type": "review", "settings": { "quote": "Le goût est dingue. Adieu le café.", "author": "Thomas R." } },
-        "review-3": { "type": "review", "settings": { "quote": "Efficace, net. 10/10.", "author": "Sarah M." } },
-        "review-4": { "type": "review", "settings": { "quote": "Le design de la bouteille, incroyable.", "author": "Léa K." } },
-        "review-5": { "type": "review", "settings": { "quote": "L'abonnement mensuel, c'est parfait.", "author": "Julien B." } },
-        "review-6": { "type": "review", "settings": { "quote": "Meilleur shot que j'ai testé.", "author": "Marie D." } }
-      },
-      "block_order": ["review-1", "review-2", "review-3", "review-4", "review-5", "review-6"],
+    "footer": {
+      "type": "volta-footer-legal",
       "settings": {}
     }
   },
-  "order": ["hero", "shot_band", "products", "subscription", "story", "reviews"]
+  "order": ["hero", "footer"]
 }

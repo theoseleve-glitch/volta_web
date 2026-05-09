@@ -483,6 +483,23 @@
       "empty_title": "Ton panier est vide. Charge-toi.",
       "empty_cta": "Voir les shots",
       "subscription_badge": "Abonnement · {{ cadence }}"
+    },
+    "volta_hero_v1": {
+      "name": "Hero V1 — Golden Kick",
+      "eyebrow": "Le shot fonctionnel",
+      "title_default": "Golden Kick",
+      "tagline_default": "Le shot qui frappe.",
+      "description_default": "<p>Gingembre 10%, ananas, mangue. 60 ml. Pressé en France, sans sucre ajouté.</p>",
+      "format": "Pack de 12",
+      "cta_default": "Acheter",
+      "cta_unavailable": "Bientôt de retour"
+    },
+    "volta_footer_legal": {
+      "name": "Footer V1 — Légal",
+      "mentions": "Mentions légales",
+      "cgv": "CGV",
+      "confidentialite": "Confidentialité",
+      "livraison": "Livraison & retour"
     }
   },
   "localization": {

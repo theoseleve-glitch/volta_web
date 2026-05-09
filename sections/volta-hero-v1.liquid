@@ -1,0 +1,24 @@
+{%- comment -%}
+  volta-hero-v1.liquid — V1 hero (full-bleed video + photo + text overlay)
+  Spec: docs/superpowers/specs/2026-05-09-volta-v1-hero-design.md
+{%- endcomment -%}
+
+{{ 'volta-hero-v1.css' | asset_url | stylesheet_tag }}
+
+<section class="v-hero-v1" aria-labelledby="hero-v1-heading-{{ section.id }}">
+  <h1 id="hero-v1-heading-{{ section.id }}" class="v-hero-v1__title">
+    {{ 'sections.volta_hero_v1.title_default' | t }}
+  </h1>
+</section>
+
+{% schema %}
+{
+  "name": "t:sections.volta_hero_v1.name",
+  "tag": "section",
+  "class": "v-hero-v1-section",
+  "settings": [],
+  "presets": [
+    { "name": "t:sections.volta_hero_v1.name" }
+  ]
+}
+{% endschema %}

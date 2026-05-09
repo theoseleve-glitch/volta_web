@@ -471,6 +471,23 @@
       "empty_title": "Your cart is empty. Charge up.",
       "empty_cta": "Shop the shots",
       "subscription_badge": "Subscription · {{ cadence }}"
+    },
+    "volta_hero_v1": {
+      "name": "[EN: TODO] Hero V1 — Golden Kick",
+      "eyebrow": "[EN: TODO] The functional shot",
+      "title_default": "Golden Kick",
+      "tagline_default": "[EN: TODO] The shot that hits.",
+      "description_default": "<p>[EN: TODO] Ginger 10%, pineapple, mango. 60 ml. Pressed in France, no added sugar.</p>",
+      "format": "[EN: TODO] Pack of 12",
+      "cta_default": "[EN: TODO] Buy",
+      "cta_unavailable": "[EN: TODO] Back soon"
+    },
+    "volta_footer_legal": {
+      "name": "[EN: TODO] Footer V1 — Legal",
+      "mentions": "[EN: TODO] Legal notices",
+      "cgv": "[EN: TODO] Terms",
+      "confidentialite": "[EN: TODO] Privacy",
+      "livraison": "[EN: TODO] Shipping & returns"
     }
   },
   "localization": {

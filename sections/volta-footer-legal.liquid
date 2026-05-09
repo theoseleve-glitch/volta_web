@@ -1,0 +1,26 @@
+{%- comment -%}
+  volta-footer-legal.liquid — Single-line legal footer
+  Spec: docs/superpowers/specs/2026-05-09-volta-v1-hero-design.md
+{%- endcomment -%}
+
+<footer class="v-footer-legal" role="contentinfo">
+  <p>© {{ 'now' | date: '%Y' }} {{ shop.name }}</p>
+</footer>
+
+{% schema %}
+{
+  "name": "t:sections.volta_footer_legal.name",
+  "tag": "footer",
+  "settings": [
+    {
+      "type": "email",
+      "id": "contact_email",
+      "label": "Email contact",
+      "default": "contact@voltadrinks.com"
+    }
+  ],
+  "presets": [
+    { "name": "t:sections.volta_footer_legal.name" }
+  ]
+}
+{% endschema %}

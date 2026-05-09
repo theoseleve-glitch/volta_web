@@ -8,7 +8,9 @@
 {%- assign hero_product = section.settings.hero_product -%}
 {%- assign variant = hero_product.first_available_variant -%}
 
-<section class="v-hero-v1" aria-labelledby="hero-v1-heading-{{ section.id }}">
+<section class="v-hero-v1
+                {%- if section.settings.hero_video == blank and section.settings.hero_poster == blank %} v-hero-v1--no-media{% endif -%}"
+         aria-labelledby="hero-v1-heading-{{ section.id }}">
   {%- if section.settings.hero_video != blank -%}
     <video class="v-hero-v1__video"
            autoplay muted loop playsinline

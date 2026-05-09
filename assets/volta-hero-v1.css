@@ -1,4 +1,5 @@
 /* assets/volta-hero-v1.css — V1 hero layout */
+/* Local hero z-stack: video=0, scrim=1, photo=2, overlay=5, chrome=var(--z-header) */
 
 .v-hero-v1 {
   position: relative;
@@ -107,16 +108,11 @@
   opacity: 0.6;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .v-hero-v1__cta { transition: none; }
-  .v-hero-v1__cta:hover { transform: none; }
-}
-
 .v-hero-v1__logo {
   position: absolute;
   top: clamp(16px, 2vw, 32px);
   left: clamp(16px, 2vw, 32px);
-  z-index: 10;
+  z-index: var(--z-header, 100);
   display: block;
 }
 
@@ -128,7 +124,7 @@
 
 .v-hero-v1__logo:focus-visible {
   outline: 2px solid var(--volta-yellow, #FDE047);
-  outline-offset: 4px;
+  outline-offset: var(--space-1, 4px);
   border-radius: 4px;
 }
 
@@ -136,13 +132,13 @@
   position: absolute;
   top: clamp(16px, 2vw, 32px);
   right: clamp(16px, 2vw, 32px);
-  z-index: 10;
+  z-index: var(--z-header, 100);
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 10px 14px;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.18);
+  background: rgba(14, 14, 16, 0.32);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   color: #fff;
@@ -151,17 +147,17 @@
 }
 
 .v-hero-v1__cart:hover {
-  background: rgba(255, 255, 255, 0.32);
+  background: rgba(14, 14, 16, 0.48);
 }
 
 .v-hero-v1__cart:focus-visible {
   outline: 2px solid var(--volta-yellow, #FDE047);
-  outline-offset: 4px;
+  outline-offset: var(--space-1, 4px);
 }
 
 .v-hero-v1__cart-count {
   font-family: var(--font-body, system-ui);
-  font-size: 11px;
+  font-size: var(--text-xs, 11px);
   font-weight: 800;
   background: var(--volta-yellow, #FDE047);
   color: var(--volta-ink, #0E0E10);
@@ -172,5 +168,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .v-hero-v1__cta { transition: none; }
+  .v-hero-v1__cta:hover { transform: none; }
   .v-hero-v1__cart { transition: none; }
 }

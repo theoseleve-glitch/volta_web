@@ -561,35 +561,45 @@ git commit -m "feat(hero-v1): add direct-to-checkout buy form"
 - [ ] **Step 1:** In `sections/volta-hero-v1.liquid`, INSIDE `<section class="v-hero-v1">` and BEFORE `<div class="v-hero-v1__overlay">`, add:
 
 ```liquid
-<a href="{{ routes.root_url }}" class="v-hero-v1__logo" aria-label="{{ shop.name }} — accueil">
-  <img src="{{ 'volta-logo-v1.png' | asset_url }}"
+<a href="{{ routes.root_url }}" class="v-hero-v1__logo" aria-label="{{ 'accessibility.home' | t: shop_name: shop.name }}">
+  <img src="{{ 'volta-logo-v2.png' | asset_url }}"
        alt="{{ shop.name }}"
        width="120" height="40"
-       loading="eager">
+       loading="eager"
+       fetchpriority="high">
 </a>
 
 <a href="{{ routes.cart_url }}"
-   class="v-hero-v1__cart{% if cart.item_count == 0 %} v-hero-v1__cart--empty{% endif %}"
-   aria-label="{{ 'general.cart.view' | t: count: cart.item_count }}">
+   class="v-hero-v1__cart"
+   aria-label="{% if cart.item_count > 0 %}{{ 'general.cart.view' | t: count: cart.item_count }}{% else %}{{ 'general.cart.view_empty_cart' | t }}{% endif %}">
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
        width="22" height="22" aria-hidden="true">
     <path d="M6 7h12l-1.5 11h-9z"/>
     <path d="M9 7V5a3 3 0 0 1 6 0v2"/>
   </svg>
   {%- if cart.item_count > 0 -%}
-    <span class="v-hero-v1__cart-count">{{ cart.item_count }}</span>
+    <span class="v-hero-v1__cart-count" aria-hidden="true">{{ cart.item_count }}</span>
   {%- endif -%}
 </a>
 ```
 
-- [ ] **Step 2:** Append to `assets/volta-hero-v1.css`:
+> **Notes:**
+> - Use `volta-logo-v2.png` (≈42 KB), NOT `volta-logo-v1.png` (~495 KB — kills LCP).
+> - `fetchpriority="high"` on the eager-loaded LCP-region logo.
+> - No `--empty` modifier on the cart link — the badge already self-hides when count = 0.
+> - The aria-label branches on count so screen readers don't hear "View cart (0)" when the cart is empty (`general.cart.view_empty_cart` is Dawn's empty-state key, present in both `fr.default.json` and `en.json`).
+> - The visible count span is `aria-hidden="true"` — its value is already in the parent `aria-label`, so leaving it readable would announce the count twice.
+
+- [ ] **Step 2:** Append to `assets/volta-hero-v1.css` (and add the local z-stack comment at the top of the file if not already present):
 
 ```css
+/* Local hero z-stack: video=0, scrim=1, photo=2, overlay=5, chrome=var(--z-header) */
+
 .v-hero-v1__logo {
   position: absolute;
   top: clamp(16px, 2vw, 32px);
   left: clamp(16px, 2vw, 32px);
-  z-index: 10;
+  z-index: var(--z-header, 100);
   display: block;
 }
 
@@ -601,7 +611,7 @@ git commit -m "feat(hero-v1): add direct-to-checkout buy form"
 
 .v-hero-v1__logo:focus-visible {
   outline: 2px solid var(--volta-yellow, #FDE047);
-  outline-offset: 4px;
+  outline-offset: var(--space-1, 4px);
   border-radius: 4px;
 }
 
@@ -609,13 +619,14 @@ git commit -m "feat(hero-v1): add direct-to-checkout buy form"
   position: absolute;
   top: clamp(16px, 2vw, 32px);
   right: clamp(16px, 2vw, 32px);
-  z-index: 10;
+  z-index: var(--z-header, 100);
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 10px 14px;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.18);
+  /* Dark glass — survives both bright video frames and Task 7's transparent-tail scrim corner */
+  background: rgba(14, 14, 16, 0.32);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   color: #fff;
@@ -624,17 +635,17 @@ git commit -m "feat(hero-v1): add direct-to-checkout buy form"
 }
 
 .v-hero-v1__cart:hover {
-  background: rgba(255, 255, 255, 0.32);
+  background: rgba(14, 14, 16, 0.48);
 }
 
 .v-hero-v1__cart:focus-visible {
   outline: 2px solid var(--volta-yellow, #FDE047);
-  outline-offset: 4px;
+  outline-offset: var(--space-1, 4px);
 }
 
 .v-hero-v1__cart-count {
   font-family: var(--font-body, system-ui);
-  font-size: 11px;
+  font-size: var(--text-xs, 11px);
   font-weight: 800;
   background: var(--volta-yellow, #FDE047);
   color: var(--volta-ink, #0E0E10);
@@ -643,11 +654,12 @@ git commit -m "feat(hero-v1): add direct-to-checkout buy form"
   min-width: 18px;
   text-align: center;
 }
-
-@media (prefers-reduced-motion: reduce) {
-  .v-hero-v1__cart { transition: none; }
-}
 ```
+
+> **Notes:**
+> - Logo + cart use `var(--z-header, 100)` (defined in `assets/volta-tokens.css`) — they ARE the floating header.
+> - Cart background is dark-translucent so it always darkens the area behind it, regardless of video frame brightness or where Task 7's scrim is opaque vs. transparent.
+> - All `prefers-reduced-motion` rules in this file go in a SINGLE consolidated `@media` block at the bottom of the file — do NOT add a second one for the cart. Add `.v-hero-v1__cart { transition: none; }` to the existing `@media (prefers-reduced-motion: reduce)` block from Task 3.
 
 - [ ] **Step 3:** Run `shopify theme check`. Expected: zero errors.
 

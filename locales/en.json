@@ -487,7 +487,12 @@
         "title_info": "[EN: TODO] Displayed large. Leave empty to use the default value.",
         "tagline_label": "[EN: TODO] Tagline",
         "description_label": "[EN: TODO] Description",
-        "description_info": "[EN: TODO] Short paragraph below the title. Plain text or HTML. Leave empty for the default value."
+        "description_info": "[EN: TODO] Short paragraph below the title. Plain text or HTML. Leave empty for the default value.",
+        "product_header": "[EN: TODO] Product",
+        "product_label": "[EN: TODO] Main product",
+        "product_info": "[EN: TODO] Select Golden Kick",
+        "cta_label_label": "[EN: TODO] Button label",
+        "cta_label_info": "[EN: TODO] Leave empty to use \"Buy\" by default."
       }
     },
     "volta_footer_legal": {

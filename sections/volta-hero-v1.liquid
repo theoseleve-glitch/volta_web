@@ -5,6 +5,9 @@
 
 {{ 'volta-hero-v1.css' | asset_url | stylesheet_tag }}
 
+{%- assign hero_product = section.settings.hero_product -%}
+{%- assign variant = hero_product.first_available_variant -%}
+
 <section class="v-hero-v1" aria-labelledby="hero-v1-heading-{{ section.id }}">
   <div class="v-hero-v1__overlay">
     <p class="v-hero-v1__eyebrow">{{ 'sections.volta_hero_v1.eyebrow' | t }}</p>
@@ -23,7 +26,23 @@
     </div>
     <p class="v-hero-v1__format">
       {{ 'sections.volta_hero_v1.format' | t }}
+      {%- if variant -%} · <strong>{{ variant.price | money }}</strong>{%- endif -%}
     </p>
+
+    {%- if variant and variant.available -%}
+      <form action="{{ routes.cart_add_url }}" method="post" class="v-hero-v1__buy-form">
+        <input type="hidden" name="id" value="{{ variant.id }}">
+        <input type="hidden" name="quantity" value="1">
+        <input type="hidden" name="return_to" value="/checkout">
+        <button type="submit" class="v-hero-v1__cta">
+          {{ section.settings.cta_label | default: 'sections.volta_hero_v1.cta_default' | t }} — {{ variant.price | money }} →
+        </button>
+      </form>
+    {%- else -%}
+      <button type="button" class="v-hero-v1__cta v-hero-v1__cta--disabled" disabled>
+        {{ 'sections.volta_hero_v1.cta_unavailable' | t }}
+      </button>
+    {%- endif -%}
   </div>
 </section>
 
@@ -50,6 +69,19 @@
       "id": "description",
       "label": "t:sections.volta_hero_v1.settings.description_label",
       "info": "t:sections.volta_hero_v1.settings.description_info"
+    },
+    { "type": "header", "content": "t:sections.volta_hero_v1.settings.product_header" },
+    {
+      "type": "product",
+      "id": "hero_product",
+      "label": "t:sections.volta_hero_v1.settings.product_label",
+      "info": "t:sections.volta_hero_v1.settings.product_info"
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "t:sections.volta_hero_v1.settings.cta_label_label",
+      "info": "t:sections.volta_hero_v1.settings.cta_label_info"
     }
   ],
   "presets": [

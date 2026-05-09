@@ -499,7 +499,12 @@
         "title_info": "Affiché en grand. Laisser vide pour utiliser la valeur par défaut.",
         "tagline_label": "Tagline",
         "description_label": "Description",
-        "description_info": "Court paragraphe sous le titre. Texte simple ou HTML. Laisser vide pour la valeur par défaut."
+        "description_info": "Court paragraphe sous le titre. Texte simple ou HTML. Laisser vide pour la valeur par défaut.",
+        "product_header": "Produit",
+        "product_label": "Produit principal",
+        "product_info": "Sélectionner Golden Kick",
+        "cta_label_label": "Label du bouton",
+        "cta_label_info": "Laisser vide pour utiliser « Acheter » par défaut."
       }
     },
     "volta_footer_legal": {

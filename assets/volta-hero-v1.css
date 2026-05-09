@@ -67,3 +67,47 @@
   margin: 0;
   opacity: 0.85;
 }
+
+.v-hero-v1__buy-form {
+  margin-top: 24px;
+}
+
+.v-hero-v1__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--volta-yellow, #FDE047);
+  color: var(--volta-ink, #0E0E10);
+  font-family: var(--font-body, system-ui);
+  font-size: clamp(13px, 1.2vw, 16px);
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 16px 32px;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: transform 0.2s var(--ease-out-expo, ease-out),
+              box-shadow 0.2s var(--ease-out-expo, ease-out);
+}
+
+.v-hero-v1__cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25);
+}
+
+.v-hero-v1__cta:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 4px;
+}
+
+.v-hero-v1__cta--disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .v-hero-v1__cta { transition: none; }
+  .v-hero-v1__cta:hover { transform: none; }
+}

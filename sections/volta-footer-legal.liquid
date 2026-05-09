@@ -4,8 +4,80 @@
 {%- endcomment -%}
 
 <footer class="v-footer-legal" role="contentinfo">
-  <p>© {{ 'now' | date: '%Y' }} {{ shop.name }}</p>
+  <div class="v-footer-legal__inner">
+    <ul class="v-footer-legal__links" role="list">
+      <li><a href="/pages/mentions-legales">{{ 'sections.volta_footer_legal.mentions' | t }}</a></li>
+      <li><a href="/pages/cgv">{{ 'sections.volta_footer_legal.cgv' | t }}</a></li>
+      <li><a href="/pages/confidentialite">{{ 'sections.volta_footer_legal.confidentialite' | t }}</a></li>
+      <li><a href="/pages/livraison-retour">{{ 'sections.volta_footer_legal.livraison' | t }}</a></li>
+      {%- assign contact = section.settings.contact_email | default: 'contact@voltadrinks.com' -%}
+      <li><a href="mailto:{{ contact }}">{{ contact }}</a></li>
+    </ul>
+    <p class="v-footer-legal__copyright">© {{ 'now' | date: '%Y' }} {{ shop.name }}</p>
+  </div>
 </footer>
+
+{% stylesheet %}
+.v-footer-legal {
+  background: var(--volta-cream, #F7F7F2);
+  color: var(--volta-ink, #0E0E10);
+  padding: clamp(16px, 2vw, 24px) clamp(16px, 4vw, 64px);
+  border-top: 1px solid rgba(18, 16, 75, 0.1);
+}
+
+.v-footer-legal__inner {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px 24px;
+  font-family: var(--font-body, system-ui);
+  font-size: clamp(11px, 1vw, 12px);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.v-footer-legal__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(12px, 1.5vw, 24px);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.v-footer-legal__links a {
+  color: inherit;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.v-footer-legal__links a:hover {
+  opacity: 0.6;
+}
+
+.v-footer-legal__links a:focus-visible {
+  outline: 2px solid var(--volta-yellow, #FDE047);
+  outline-offset: 3px;
+}
+
+.v-footer-legal__copyright {
+  margin: 0;
+  opacity: 0.6;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 600px) {
+  .v-footer-legal__inner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .v-footer-legal__links a { transition: none; }
+}
+{% endstylesheet %}
 
 {% schema %}
 {

@@ -9,6 +9,26 @@
 {%- assign variant = hero_product.first_available_variant -%}
 
 <section class="v-hero-v1" aria-labelledby="hero-v1-heading-{{ section.id }}">
+  <a href="{{ routes.root_url }}" class="v-hero-v1__logo" aria-label="{{ 'accessibility.home' | t: shop_name: shop.name }}">
+    <img src="{{ 'volta-logo-v1.png' | asset_url }}"
+         alt="{{ shop.name }}"
+         width="120" height="40"
+         loading="eager">
+  </a>
+
+  <a href="{{ routes.cart_url }}"
+     class="v-hero-v1__cart{% if cart.item_count == 0 %} v-hero-v1__cart--empty{% endif %}"
+     aria-label="{{ 'general.cart.view' | t: count: cart.item_count }}">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+         width="22" height="22" aria-hidden="true">
+      <path d="M6 7h12l-1.5 11h-9z"/>
+      <path d="M9 7V5a3 3 0 0 1 6 0v2"/>
+    </svg>
+    {%- if cart.item_count > 0 -%}
+      <span class="v-hero-v1__cart-count">{{ cart.item_count }}</span>
+    {%- endif -%}
+  </a>
+
   <div class="v-hero-v1__overlay">
     <p class="v-hero-v1__eyebrow">{{ 'sections.volta_hero_v1.eyebrow' | t }}</p>
     <h1 id="hero-v1-heading-{{ section.id }}" class="v-hero-v1__title">

@@ -68,6 +68,7 @@
   },
   "accessibility": {
     "skip_to_text": "Ignorer et passer au contenu",
+    "home": "{{ shop_name }} — accueil",
     "close": "Fermer",
     "unit_price_separator": "par",
     "vendor": "Fournisseur :",

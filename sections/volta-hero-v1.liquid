@@ -128,10 +128,20 @@
 
 {%- if section.settings.hero_video != blank -%}
   <script>
-    if (window.Shopify && window.Shopify.designMode) {
-      var v = document.querySelector('.v-hero-v1__video');
-      if (v) v.pause();
-    }
+    (function () {
+      var rm = window.matchMedia('(prefers-reduced-motion: reduce)');
+      function applyMotionPolicy() {
+        var v = document.querySelector('.v-hero-v1__video');
+        if (!v) return;
+        if (rm.matches || window.Shopify?.designMode) {
+          v.pause();
+          v.removeAttribute('autoplay');
+        }
+      }
+      applyMotionPolicy();
+      document.addEventListener('shopify:section:load', applyMotionPolicy);
+      if (rm.addEventListener) rm.addEventListener('change', applyMotionPolicy);
+    })();
   </script>
 {%- endif -%}
 

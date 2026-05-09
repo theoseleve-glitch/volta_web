@@ -815,7 +815,8 @@ git commit -m "feat(hero-v1): add photo packshot overlay with responsive srcset"
 {
   "type": "video",
   "id": "hero_video",
-  "label": "Vidéo de fond"
+  "label": "Vidéo de fond",
+  "info": "Format MP4 recommandé. Taille max 3 MB pour préserver les performances mobiles (LCP < 2.5s)."
 },
 {
   "type": "image_picker",
@@ -826,6 +827,8 @@ git commit -m "feat(hero-v1): add photo packshot overlay with responsive srcset"
 ```
 
 (Place them so the schema "Médias" group reads: header → hero_video → hero_poster → hero_photo.)
+
+The `video_info` locale value (FR/EN) surfaces the 3 MB budget directly in the Theme Editor so merchants see the perf constraint before uploading.
 
 - [ ] **Step 3:** Append to `assets/volta-hero-v1.css`:
 
@@ -847,18 +850,30 @@ git commit -m "feat(hero-v1): add photo packshot overlay with responsive srcset"
 }
 ```
 
-- [ ] **Step 4:** Add the design-mode pause script. At the BOTTOM of `sections/volta-hero-v1.liquid`, BEFORE `{% schema %}`, add:
+- [ ] **Step 4:** Add the motion-policy script. At the BOTTOM of `sections/volta-hero-v1.liquid`, BEFORE `{% schema %}`, add:
 
 ```liquid
 {%- if section.settings.hero_video != blank -%}
   <script>
-    if (window.Shopify && window.Shopify.designMode) {
-      var v = document.querySelector('.v-hero-v1__video');
-      if (v) v.pause();
-    }
+    (function () {
+      var rm = window.matchMedia('(prefers-reduced-motion: reduce)');
+      function applyMotionPolicy() {
+        var v = document.querySelector('.v-hero-v1__video');
+        if (!v) return;
+        if (rm.matches || window.Shopify?.designMode) {
+          v.pause();
+          v.removeAttribute('autoplay');
+        }
+      }
+      applyMotionPolicy();
+      document.addEventListener('shopify:section:load', applyMotionPolicy);
+      if (rm.addEventListener) rm.addEventListener('change', applyMotionPolicy);
+    })();
   </script>
 {%- endif -%}
 ```
+
+Why a single combined script: (a) `prefers-reduced-motion` users still pay for video decode/loop if we only hide the element via CSS — pausing and removing `autoplay` actually stops playback; (b) Theme Editor dispatches `shopify:section:load` on every setting change, swapping in a fresh `<video>` element — without re-running the policy, that new node autoplays in design mode; (c) the `change` listener on the media query handles users toggling reduced-motion at the OS level mid-session. IIFE prevents `applyMotionPolicy` and `rm` from leaking into the global scope.
 
 - [ ] **Step 5:** Run `shopify theme check`. Expected: zero errors.
 

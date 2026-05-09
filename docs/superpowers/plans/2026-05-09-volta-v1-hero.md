@@ -690,6 +690,17 @@ git commit -m "feat(hero-v1): add floating logo and cart icon"
 
 ```liquid
 {%- if section.settings.hero_photo != blank -%}
+  {%- liquid
+    assign photo_alt = section.settings.hero_photo.alt
+    if photo_alt == blank
+      assign photo_alt = 'sections.volta_hero_v1.photo_alt_default' | t
+    endif
+  -%}
+  {%- comment -%}
+    Photo packshot — LCP candidate while no video/poster set. When Task 6 adds
+    hero_poster, downgrade fetchpriority on this <img> to "auto" (the poster
+    becomes the LCP candidate at full viewport size).
+  {%- endcomment -%}
   <img class="v-hero-v1__photo"
        src="{{ section.settings.hero_photo | image_url: width: 1200 }}"
        srcset="{{ section.settings.hero_photo | image_url: width: 600 }} 600w,
@@ -699,9 +710,11 @@ git commit -m "feat(hero-v1): add floating logo and cart icon"
        width="1200" height="1500"
        loading="eager"
        fetchpriority="high"
-       alt="{{ section.settings.hero_photo.alt | default: hero_product.title | default: 'Bouteille Golden Kick' }}">
+       alt="{{ photo_alt | escape }}">
 {%- endif -%}
 ```
+
+**Alt-chain rationale:** Two-step fallback only — image picker's alt text first, then locale `photo_alt_default` (which is descriptive: "Bouteille Volta Golden Kick — pack de 12 shots de 60 ml"). Skipping `hero_product.title` because it returns just the product name ("Golden Kick") without bottle/format context.
 
 - [ ] **Step 2:** Add a new schema settings group "Médias" with the photo picker. Insert in the schema settings array after the "Produit" group:
 
@@ -763,6 +776,8 @@ git commit -m "feat(hero-v1): add photo packshot overlay with responsive srcset"
 ## Task 6: Hero — video background + poster + reduced-motion + designMode pause
 
 **Goal:** Add the video background layer with all required attributes (autoplay, muted, loop, playsinline), poster image fallback, reduced-motion CSS, and a 5-line script that pauses the video in Theme Editor design mode (per CLAUDE.md gotcha).
+
+**LCP coordination (carry-over from Task 5):** When you add `hero_poster` here, the poster (full viewport, 1920w) replaces `.v-hero-v1__photo` as the LCP candidate. Downgrade the `fetchpriority` attribute on the `<img class="v-hero-v1__photo">` element from `"high"` to `"auto"` in the same task — otherwise both elements compete for high priority and LCP regresses.
 
 **Files:**
 - Modify: `sections/volta-hero-v1.liquid`

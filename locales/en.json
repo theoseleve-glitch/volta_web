@@ -482,6 +482,7 @@
       "format": "[EN: TODO] Pack of 12",
       "cta_default": "[EN: TODO] Buy",
       "cta_unavailable": "[EN: TODO] Back soon",
+      "photo_alt_default": "[EN: TODO] Volta Golden Kick bottle",
       "settings": {
         "text_header": "[EN: TODO] Hero text",
         "title_label": "[EN: TODO] Title",
@@ -493,7 +494,10 @@
         "product_label": "[EN: TODO] Main product",
         "product_info": "[EN: TODO] Select Golden Kick",
         "cta_label_label": "[EN: TODO] Button label",
-        "cta_label_info": "[EN: TODO] Leave empty to use \"Buy\" by default."
+        "cta_label_info": "[EN: TODO] Leave empty to use \"Buy\" by default.",
+        "media_header": "[EN: TODO] Media",
+        "photo_label": "[EN: TODO] Bottle packshot photo",
+        "photo_info": "[EN: TODO] Recommended: 1200x1500px or larger, neutral background"
       }
     },
     "volta_footer_legal": {

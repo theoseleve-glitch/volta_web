@@ -494,6 +494,7 @@
       "format": "Pack de 12",
       "cta_default": "Acheter",
       "cta_unavailable": "Bientôt de retour",
+      "photo_alt_default": "Bouteille Volta Golden Kick",
       "settings": {
         "text_header": "Texte du hero",
         "title_label": "Titre",
@@ -505,7 +506,10 @@
         "product_label": "Produit principal",
         "product_info": "Sélectionner Golden Kick",
         "cta_label_label": "Label du bouton",
-        "cta_label_info": "Laisser vide pour utiliser « Acheter » par défaut."
+        "cta_label_info": "Laisser vide pour utiliser « Acheter » par défaut.",
+        "media_header": "Médias",
+        "photo_label": "Photo packshot bouteille",
+        "photo_info": "Recommandé : 1200×1500px ou plus, fond neutre"
       }
     },
     "volta_footer_legal": {

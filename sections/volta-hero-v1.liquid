@@ -30,6 +30,28 @@
     {%- endif -%}
   </a>
 
+  {%- if section.settings.hero_photo != blank -%}
+    {%- liquid
+      assign photo_alt = section.settings.hero_photo.alt
+      if photo_alt == blank
+        assign photo_alt = hero_product.title
+      endif
+      if photo_alt == blank
+        assign photo_alt = 'sections.volta_hero_v1.photo_alt_default' | t
+      endif
+    -%}
+    <img class="v-hero-v1__photo"
+         src="{{ section.settings.hero_photo | image_url: width: 1200 }}"
+         srcset="{{ section.settings.hero_photo | image_url: width: 600 }} 600w,
+                 {{ section.settings.hero_photo | image_url: width: 1200 }} 1200w,
+                 {{ section.settings.hero_photo | image_url: width: 2000 }} 2000w"
+         sizes="(min-width: 768px) 50vw, 100vw"
+         width="1200" height="1500"
+         loading="eager"
+         fetchpriority="high"
+         alt="{{ photo_alt | escape }}">
+  {%- endif -%}
+
   <div class="v-hero-v1__overlay">
     <p class="v-hero-v1__eyebrow">{{ 'sections.volta_hero_v1.eyebrow' | t }}</p>
     <h1 id="hero-v1-heading-{{ section.id }}" class="v-hero-v1__title">
@@ -116,6 +138,13 @@
       "id": "cta_label",
       "label": "t:sections.volta_hero_v1.settings.cta_label_label",
       "info": "t:sections.volta_hero_v1.settings.cta_label_info"
+    },
+    { "type": "header", "content": "t:sections.volta_hero_v1.settings.media_header" },
+    {
+      "type": "image_picker",
+      "id": "hero_photo",
+      "label": "t:sections.volta_hero_v1.settings.photo_label",
+      "info": "t:sections.volta_hero_v1.settings.photo_info"
     }
   ],
   "presets": [

@@ -167,6 +167,30 @@
   text-align: center;
 }
 
+.v-hero-v1__photo {
+  position: absolute;
+  right: clamp(16px, 5vw, 64px);
+  top: 50%;
+  transform: translateY(-50%);
+  width: auto;
+  height: auto;
+  max-width: clamp(180px, 35vw, 480px);
+  max-height: 75vh;
+  object-fit: contain;
+  z-index: 2;
+  filter: drop-shadow(0 30px 50px rgba(0, 0, 0, 0.3));
+}
+
+@media (max-width: 768px) {
+  .v-hero-v1__photo {
+    right: 50%;
+    transform: translate(50%, 0);
+    top: clamp(80px, 12vh, 140px);
+    max-width: clamp(140px, 50vw, 240px);
+    max-height: 40vh;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .v-hero-v1__cta { transition: none; }
   .v-hero-v1__cta:hover { transform: none; }

@@ -487,7 +487,9 @@
       "mentions": "[EN: TODO] Legal notices",
       "cgv": "[EN: TODO] Terms",
       "confidentialite": "[EN: TODO] Privacy",
-      "livraison": "[EN: TODO] Shipping & returns"
+      "livraison": "[EN: TODO] Shipping & returns",
+      "contact_email_label": "[EN: TODO] Contact email",
+      "contact_email_info": "[EN: TODO] Address shown as a mailto link in the footer"
     }
   },
   "localization": {

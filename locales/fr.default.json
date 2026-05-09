@@ -499,7 +499,9 @@
       "mentions": "Mentions légales",
       "cgv": "CGV",
       "confidentialite": "Confidentialité",
-      "livraison": "Livraison & retour"
+      "livraison": "Livraison & retour",
+      "contact_email_label": "Email contact",
+      "contact_email_info": "Adresse affichée comme lien mailto dans le footer"
     }
   },
   "localization": {

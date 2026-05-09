@@ -5,8 +5,8 @@
   width: 100%;
   min-height: 100svh;
   overflow: hidden;
-  /* Brand gradient — fallback when no video/poster uploaded */
-  background: linear-gradient(135deg, #7b3dd4 0%, #fbee49 100%);
+  /* Golden Kick violet (flavor accent, no project token) → brand yellow */
+  background: linear-gradient(135deg, #7b3dd4 0%, var(--volta-yellow, #FDE047) 100%);
 }
 
 .v-hero-v1__title {
@@ -16,10 +16,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: var(--ff-display, system-ui);
+  font-family: var(--font-display, system-ui);
   font-style: italic;
   font-weight: 900;
-  font-size: clamp(48px, 9vw, 144px);
+  font-size: var(--text-hero, clamp(48px, 9vw, 144px));
   letter-spacing: -0.04em;
   text-transform: uppercase;
   color: #fff;

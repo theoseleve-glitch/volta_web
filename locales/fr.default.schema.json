@@ -3548,6 +3548,36 @@
           }
         }
       }
+    },
+    "volta_hero_v1": {
+      "name": "Hero V1 — Golden Kick",
+      "settings": {
+        "text_header": "Texte du hero",
+        "title_label": "Titre",
+        "title_info": "Affiché en grand. Laisser vide pour utiliser la valeur par défaut.",
+        "tagline_label": "Tagline",
+        "description_label": "Description",
+        "description_info": "Court paragraphe sous le titre. Texte simple ou HTML. Laisser vide pour la valeur par défaut.",
+        "product_header": "Produit",
+        "product_label": "Produit principal",
+        "product_info": "Sélectionner Golden Kick",
+        "cta_label_label": "Label du bouton",
+        "cta_label_info": "Laisser vide pour utiliser « Acheter » par défaut.",
+        "media_header": "Médias",
+        "video_label": "Vidéo de fond",
+        "video_info": "Vidéo en autoplay muet, en boucle. Format MP4 recommandé. Taille max 3 MB pour préserver les performances mobiles (LCP < 2.5s). Laisser vide pour utiliser uniquement la photo ou le dégradé de fond.",
+        "poster_label": "Image poster",
+        "poster_info": "Affichée pendant le chargement de la vidéo et en fallback mobile / reduced-motion. Format paysage 1920×1080 recommandé.",
+        "photo_label": "Photo packshot bouteille",
+        "photo_info": "Recommandé : 1200×1500px ou plus, fond neutre"
+      }
+    },
+    "volta_footer_legal": {
+      "name": "Footer V1 — Légal",
+      "settings": {
+        "contact_email_label": "Email contact",
+        "contact_email_info": "Adresse affichée comme lien mailto dans le footer"
+      }
     }
   }
 }

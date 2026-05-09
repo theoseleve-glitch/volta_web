@@ -9,6 +9,28 @@
 {%- assign variant = hero_product.first_available_variant -%}
 
 <section class="v-hero-v1" aria-labelledby="hero-v1-heading-{{ section.id }}">
+  {%- if section.settings.hero_video != blank -%}
+    <video class="v-hero-v1__video"
+           autoplay muted loop playsinline
+           preload="metadata"
+           aria-hidden="true"
+           {%- if section.settings.hero_poster != blank -%}
+             poster="{{ section.settings.hero_poster | image_url: width: 1920 }}"
+           {%- endif -%}>
+      {%- for source in section.settings.hero_video.sources -%}
+        <source src="{{ source.url }}" type="{{ source.mime_type }}">
+      {%- endfor -%}
+    </video>
+  {%- elsif section.settings.hero_poster != blank -%}
+    <img class="v-hero-v1__poster"
+         src="{{ section.settings.hero_poster | image_url: width: 1920 }}"
+         alt=""
+         width="1920" height="1080"
+         loading="eager"
+         fetchpriority="high"
+         aria-hidden="true">
+  {%- endif -%}
+
   <a href="{{ routes.root_url }}" class="v-hero-v1__logo" aria-label="{{ 'accessibility.home' | t: shop_name: shop.name }}">
     <img src="{{ 'volta-logo-v2.png' | asset_url }}"
          alt="{{ shop.name }}"
@@ -38,9 +60,9 @@
       endif
     -%}
     {%- comment -%}
-      Photo packshot — LCP candidate while no video/poster set. When Task 6 adds
-      hero_poster, downgrade fetchpriority on this <img> to "auto" (the poster
-      becomes the LCP candidate at full viewport size).
+      Photo packshot — LCP candidate while no video/poster set. Once
+      hero_poster is uploaded, the full-viewport poster becomes the LCP
+      candidate, so this photo downgrades to fetchpriority="auto".
     {%- endcomment -%}
     <img class="v-hero-v1__photo"
          src="{{ section.settings.hero_photo | image_url: width: 1200 }}"
@@ -50,7 +72,7 @@
          sizes="(min-width: 768px) 50vw, 100vw"
          width="1200" height="1500"
          loading="eager"
-         fetchpriority="high"
+         fetchpriority="{% if section.settings.hero_poster != blank %}auto{% else %}high{% endif %}"
          alt="{{ photo_alt | escape }}">
   {%- endif -%}
 
@@ -104,6 +126,15 @@
   </div>
 </section>
 
+{%- if section.settings.hero_video != blank -%}
+  <script>
+    if (window.Shopify && window.Shopify.designMode) {
+      var v = document.querySelector('.v-hero-v1__video');
+      if (v) v.pause();
+    }
+  </script>
+{%- endif -%}
+
 {% schema %}
 {
   "name": "t:sections.volta_hero_v1.name",
@@ -142,6 +173,18 @@
       "info": "t:sections.volta_hero_v1.settings.cta_label_info"
     },
     { "type": "header", "content": "t:sections.volta_hero_v1.settings.media_header" },
+    {
+      "type": "video",
+      "id": "hero_video",
+      "label": "t:sections.volta_hero_v1.settings.video_label",
+      "info": "t:sections.volta_hero_v1.settings.video_info"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_poster",
+      "label": "t:sections.volta_hero_v1.settings.poster_label",
+      "info": "t:sections.volta_hero_v1.settings.poster_info"
+    },
     {
       "type": "image_picker",
       "id": "hero_photo",

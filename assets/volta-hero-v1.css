@@ -191,8 +191,19 @@
   }
 }
 
+.v-hero-v1__video,
+.v-hero-v1__poster {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .v-hero-v1__cta { transition: none; }
   .v-hero-v1__cta:hover { transform: none; }
   .v-hero-v1__cart { transition: none; }
+  .v-hero-v1__video { display: none; }
 }

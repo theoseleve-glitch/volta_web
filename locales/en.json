@@ -496,6 +496,10 @@
         "cta_label_label": "[EN: TODO] Button label",
         "cta_label_info": "[EN: TODO] Leave empty to use \"Buy\" by default.",
         "media_header": "[EN: TODO] Media",
+        "video_label": "[EN: TODO] Background video",
+        "video_info": "[EN: TODO] Muted autoplaying video, looping. MP4 format recommended. Leave empty to use only the photo or gradient background.",
+        "poster_label": "[EN: TODO] Poster image",
+        "poster_info": "[EN: TODO] Shown while the video loads and as a mobile / reduced-motion fallback. Landscape 1920x1080 recommended.",
         "photo_label": "[EN: TODO] Bottle packshot photo",
         "photo_info": "[EN: TODO] Recommended: 1200x1500px or larger, neutral background"
       }

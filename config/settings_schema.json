@@ -1463,8 +1463,7 @@
         "type": "text",
         "id": "volta_gtm_id",
         "label": "GTM container ID",
-        "info": "Exemple: GTM-XXXXXXX",
-        "default": ""
+        "info": "Exemple: GTM-XXXXXXX"
       },
       {
         "type": "header",
@@ -1474,8 +1473,7 @@
         "type": "text",
         "id": "volta_meta_pixel_id",
         "label": "Meta Pixel ID",
-        "info": "Fallback si l'intégration native Shopify n'est pas utilisée",
-        "default": ""
+        "info": "Fallback si l'intégration native Shopify n'est pas utilisée"
       },
       {
         "type": "header",
@@ -1485,8 +1483,7 @@
         "type": "text",
         "id": "volta_klaviyo_public_key",
         "label": "Clé publique Klaviyo",
-        "info": "Ex: ABCDEF — active le tracking web + l'inscription newsletter",
-        "default": ""
+        "info": "Ex: ABCDEF — active le tracking web + l'inscription newsletter"
       },
       {
         "type": "header",

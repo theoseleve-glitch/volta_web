@@ -4,10 +4,22 @@
       "type": "volta-hero",
       "settings": {}
     },
+    "flavors": {
+      "type": "volta-products",
+      "settings": {}
+    },
+    "shot_band": {
+      "type": "volta-shot-band",
+      "settings": {}
+    },
+    "story": {
+      "type": "volta-story",
+      "settings": {}
+    },
     "footer": {
-      "type": "volta-footer-legal",
+      "type": "volta-footer",
       "settings": {}
     }
   },
-  "order": ["hero", "footer"]
+  "order": ["hero", "flavors", "shot_band", "story", "footer"]
 }

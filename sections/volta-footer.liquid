@@ -1,174 +1,243 @@
 {%- comment -%}
-  volta-footer.liquid
-  Footer with big newsletter signup, link columns, social, and copyright.
-  Newsletter POSTs to Shopify's customer form endpoint; Klaviyo tracking added in Prompt 13.
+  volta-footer.liquid — Full footer with newsletter (V1 Phase 2)
+  Spec §5.5. Replaces sections/volta-footer-legal.liquid in Task 8.
+
+  Newsletter posts to Klaviyo's public-key endpoint if settings.volta_klaviyo_public_key
+  is set; otherwise shows a "Newsletter bientôt disponible" placeholder.
 {%- endcomment -%}
 
+{%- liquid
+  assign klaviyo_key = settings.volta_klaviyo_public_key
+  assign contact = section.settings.contact_email | default: 'contact@voltadrinks.com'
+-%}
+
 <footer class="v-footer" role="contentinfo">
-  <div class="v-container">
-    <div class="v-footer__newsletter v-reveal">
-      <p class="v-mono v-footer__eyebrow">{{ 'sections.volta_footer.newsletter.eyebrow' | t }}</p>
-      <h2 class="v-footer__headline v-display">{{ 'sections.volta_footer.newsletter.headline' | t }}</h2>
-      <p class="v-footer__subhead">{{ 'sections.volta_footer.newsletter.subhead' | t }}</p>
-
-      {%- form 'customer', class: 'v-footer__form', novalidate: 'novalidate' -%}
-        <input type="hidden" name="contact[tags]" value="newsletter">
-        <label class="visually-hidden" for="FooterEmail-{{ section.id }}">
-          {{ 'sections.volta_footer.newsletter.email_label' | t }}
-        </label>
-        <input
-          type="email"
-          id="FooterEmail-{{ section.id }}"
-          name="contact[email]"
-          class="v-footer__input"
-          placeholder="{{ 'sections.volta_footer.newsletter.placeholder' | t }}"
-          required
-          autocomplete="email"
-        >
-        <button type="submit" class="v-btn v-btn--primary v-magnetic" data-cursor="hover">
-          {{ 'sections.volta_footer.newsletter.submit' | t }}
-        </button>
-      {%- endform -%}
+  <div class="v-footer__top">
+    <div class="v-footer__brand">
+      <img
+        class="v-footer__courant"
+        src="{{ 'volta-courant.svg' | asset_url }}"
+        alt=""
+        width="180"
+        height="40"
+        loading="lazy"
+        decoding="async"
+      >
     </div>
 
-    <div class="v-footer__grid">
-      {%- for block in section.blocks -%}
-        {%- if block.type == 'link_list' -%}
-          <nav class="v-footer__col" {{ block.shopify_attributes }} aria-label="{{ block.settings.heading }}">
-            <h3 class="v-mono v-footer__col-title">{{ block.settings.heading }}</h3>
-            <ul>
-              {%- for link in block.settings.menu.links -%}
-                <li>
-                  <a href="{{ link.url }}" class="v-footer__link" data-cursor="hover">{{ link.title }}</a>
-                </li>
-              {%- endfor -%}
-            </ul>
-          </nav>
-        {%- elsif block.type == 'social' -%}
-          <div class="v-footer__col" {{ block.shopify_attributes }}>
-            <h3 class="v-mono v-footer__col-title">{{ block.settings.heading | default: 'Social' }}</h3>
-            <ul class="v-footer__social">
-              {%- if block.settings.instagram != blank -%}
-                <li><a href="{{ block.settings.instagram }}" class="v-footer__link" target="_blank" rel="noopener" data-cursor="hover">Instagram</a></li>
-              {%- endif -%}
-              {%- if block.settings.tiktok != blank -%}
-                <li><a href="{{ block.settings.tiktok }}" class="v-footer__link" target="_blank" rel="noopener" data-cursor="hover">TikTok</a></li>
-              {%- endif -%}
-            </ul>
+    <div class="v-footer__newsletter">
+      <p class="v-footer__newsletter-eyebrow">{{ 'sections.volta_footer.newsletter_eyebrow' | t }}</p>
+      <h2 class="v-footer__newsletter-heading">
+        {%- if section.settings.newsletter_heading != blank -%}{{ section.settings.newsletter_heading }}{%- else -%}{{ 'sections.volta_footer.newsletter_heading' | t }}{%- endif -%}
+      </h2>
+      {%- if klaviyo_key != blank -%}
+        <form class="v-footer__newsletter-form" data-v-klaviyo-form action="https://manage.kmail-lists.com/subscriptions/subscribe" method="POST" target="_blank">
+          <input type="hidden" name="g" value="">
+          <input type="hidden" name="$fields" value="email">
+          <input type="hidden" name="email_source" value="volta_footer">
+          <label class="v-footer__newsletter-label" for="v-footer-email-{{ section.id }}">{{ 'sections.volta_footer.newsletter_email_label' | t }}</label>
+          <div class="v-footer__newsletter-row">
+            <input
+              id="v-footer-email-{{ section.id }}"
+              class="v-footer__newsletter-input"
+              type="email"
+              name="email"
+              required
+              autocomplete="email"
+              placeholder="{{ 'sections.volta_footer.newsletter_email_placeholder' | t }}"
+            >
+            <button type="submit" class="v-footer__newsletter-submit" data-v-magnet>{{ 'sections.volta_footer.newsletter_submit' | t }}</button>
           </div>
-        {%- endif -%}
-      {%- endfor -%}
+          <p class="v-footer__newsletter-note">{{ 'sections.volta_footer.newsletter_note' | t }}</p>
+        </form>
+      {%- else -%}
+        <p class="v-footer__newsletter-placeholder">{{ 'sections.volta_footer.newsletter_placeholder' | t }}</p>
+      {%- endif -%}
     </div>
+  </div>
 
-    <div class="v-footer__base">
-      <span class="v-mono v-footer__copy">
-        © {{ 'now' | date: '%Y' }} {{ shop.name }} · {{ 'sections.volta_footer.made_with' | t }}
-      </span>
-    </div>
+  <div class="v-footer__bottom">
+    <ul class="v-footer__links" role="list">
+      <li><a href="/pages/mentions-legales">{{ 'sections.volta_footer.mentions' | t }}</a></li>
+      <li><a href="/pages/cgv">{{ 'sections.volta_footer.cgv' | t }}</a></li>
+      <li><a href="/pages/confidentialite">{{ 'sections.volta_footer.confidentialite' | t }}</a></li>
+      <li><a href="/pages/livraison-retour">{{ 'sections.volta_footer.livraison' | t }}</a></li>
+      <li><a href="mailto:{{ contact }}">{{ contact }}</a></li>
+    </ul>
+    <p class="v-footer__copyright">© {{ 'now' | date: '%Y' }} {{ shop.name }}</p>
   </div>
 </footer>
 
 {% stylesheet %}
-  .v-footer {
-    background: var(--volta-ink);
-    color: var(--volta-cream);
-    padding-block: var(--space-section) var(--space-12);
-  }
-  .v-footer__newsletter {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-4);
-    max-width: 720px;
-    margin-bottom: var(--space-section);
-  }
-  .v-footer__eyebrow { color: var(--volta-green); margin: 0; }
-  .v-footer__headline {
-    font-size: var(--text-3xl);
-    letter-spacing: -0.03em;
-    line-height: 1.05;
-    margin: 0;
-  }
-  .v-footer__subhead { color: color-mix(in srgb, var(--volta-cream) 60%, transparent); margin: 0; }
-  .v-footer__form {
-    display: flex;
-    gap: var(--space-3);
-    margin-top: var(--space-4);
-    flex-wrap: wrap;
-  }
-  .v-footer__input {
-    flex: 1;
-    min-width: 260px;
-    background: transparent;
-    border: 0;
-    border-bottom: 1.5px solid var(--volta-cream);
-    padding: var(--space-3) 0;
-    color: var(--volta-cream);
-    font-family: var(--font-body);
-    font-size: var(--text-lg);
-  }
-  .v-footer__input:focus { outline: none; border-color: var(--volta-green); }
-  .v-footer .v-btn--primary { background: var(--volta-green); color: var(--volta-ink); }
-  .v-footer .v-btn--primary:hover { background: var(--volta-cream); }
+.v-footer {
+  background: var(--volta-indigo-deep, #0a0930);
+  color: #fff;
+  font-family: var(--font-body, system-ui);
+}
+.v-footer__top {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: clamp(40px, 6vw, 96px);
+  padding: clamp(64px, 10vw, 120px) clamp(24px, 5vw, 80px) clamp(48px, 6vw, 80px);
+  max-width: 1280px;
+  margin-inline: auto;
+  align-items: center;
+}
+.v-footer__courant {
+  width: clamp(140px, 18vw, 220px);
+  height: auto;
+  filter: invert(1);
+  opacity: 0.9;
+}
+.v-footer__newsletter-eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.6);
+  margin: 0 0 10px;
+}
+.v-footer__newsletter-heading {
+  font-family: var(--font-display, 'dunbar-tall', sans-serif);
+  font-style: italic; font-weight: 900;
+  font-size: clamp(32px, 4vw, 56px);
+  line-height: 0.96;
+  letter-spacing: -0.02em;
+  margin: 0 0 clamp(16px, 2vw, 24px);
+}
+.v-footer__newsletter-label {
+  position: absolute;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
+.v-footer__newsletter-row {
+  display: flex;
+  gap: 8px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 999px;
+  padding: 4px;
+  max-width: 520px;
+  transition: border-color 0.2s ease;
+}
+.v-footer__newsletter-row:focus-within {
+  border-color: var(--volta-yellow, #FBEE49);
+}
+.v-footer__newsletter-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  padding: 12px 18px;
+  color: #fff;
+  font: inherit;
+  outline: none;
+}
+.v-footer__newsletter-input::placeholder { color: rgba(255,255,255,0.4); }
+.v-footer__newsletter-submit {
+  background: var(--volta-yellow, #FBEE49);
+  color: var(--volta-indigo, #12104b);
+  border: none;
+  border-radius: 999px;
+  padding: 12px 22px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform 0.2s var(--ease-out-expo, cubic-bezier(.16,1,.3,1));
+}
+.v-footer__newsletter-submit:hover { transform: translateY(-1px); }
+.v-footer__newsletter-submit:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
+.v-footer__newsletter-note {
+  font-size: 12px;
+  color: rgba(255,255,255,0.5);
+  margin: 12px 0 0;
+  max-width: 520px;
+  line-height: 1.5;
+}
+.v-footer__newsletter-placeholder {
+  font-size: 14px;
+  color: rgba(255,255,255,0.6);
+  margin: 0;
+  font-style: italic;
+}
+.v-footer__bottom {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px 24px;
+  padding: clamp(24px, 3vw, 36px) clamp(24px, 5vw, 80px);
+  border-top: 1px solid rgba(255,255,255,0.10);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.v-footer__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(12px, 1.5vw, 24px);
+  margin: 0; padding: 0;
+  list-style: none;
+}
+.v-footer__links a {
+  color: inherit;
+  text-decoration: none;
+  opacity: 0.8;
+  transition: opacity 0.2s ease;
+}
+.v-footer__links a:hover { opacity: 1; }
+.v-footer__links a:focus-visible {
+  outline: 2px solid var(--volta-yellow, #FBEE49);
+  outline-offset: 3px;
+}
+.v-footer__copyright {
+  margin: 0;
+  opacity: 0.6;
+  font-variant-numeric: tabular-nums;
+}
 
-  .v-footer__grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: var(--space-8);
-    padding-block: var(--space-12);
-    border-top: 1px solid color-mix(in srgb, var(--volta-cream) 15%, transparent);
-  }
-  .v-footer__col ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--space-2); }
-  .v-footer__col-title { color: var(--volta-green); margin: 0 0 var(--space-4); }
-  .v-footer__link {
-    color: var(--volta-cream);
-    text-decoration: none;
-    opacity: 0.8;
-    transition: opacity var(--duration-fast);
-  }
-  .v-footer__link:hover { opacity: 1; }
+@media (max-width: 720px) {
+  .v-footer__top { grid-template-columns: 1fr; text-align: left; }
+}
 
-  .v-footer__base {
-    padding-top: var(--space-6);
-    border-top: 1px solid color-mix(in srgb, var(--volta-cream) 15%, transparent);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: var(--space-4);
-  }
-  .v-footer__copy { opacity: 0.6; }
-
-  @media (max-width: 800px) {
-    .v-footer__grid { grid-template-columns: 1fr 1fr; }
-  }
-  @media (max-width: 480px) {
-    .v-footer__grid { grid-template-columns: 1fr; }
-  }
+@media (prefers-reduced-motion: reduce) {
+  .v-footer__newsletter-row,
+  .v-footer__newsletter-submit,
+  .v-footer__links a { transition: none; }
+}
 {% endstylesheet %}
 
 {% schema %}
 {
   "name": "t:sections.volta_footer.name",
-  "max_blocks": 6,
-  "blocks": [
+  "tag": "footer",
+  "class": "v-footer-wrapper",
+  "settings": [
     {
-      "type": "link_list",
-      "name": "t:sections.volta_footer.blocks.link_list.name",
-      "settings": [
-        { "type": "text", "id": "heading", "label": "t:sections.volta_footer.blocks.link_list.settings.heading.label", "default": "Navigation" },
-        { "type": "link_list", "id": "menu", "label": "t:sections.volta_footer.blocks.link_list.settings.menu.label" }
-      ]
+      "type": "header",
+      "content": "t:sections.volta_footer.newsletter_header"
     },
     {
-      "type": "social",
-      "name": "t:sections.volta_footer.blocks.social.name",
-      "settings": [
-        { "type": "text", "id": "heading", "label": "t:sections.volta_footer.blocks.social.settings.heading.label", "default": "Suivez-nous" },
-        { "type": "url", "id": "instagram", "label": "Instagram" },
-        { "type": "url", "id": "tiktok", "label": "TikTok" }
-      ]
+      "type": "text",
+      "id": "newsletter_heading",
+      "label": "t:sections.volta_footer.newsletter_heading_label",
+      "info": "t:sections.volta_footer.newsletter_heading_info"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.volta_footer.contact_header"
+    },
+    {
+      "type": "text",
+      "id": "contact_email",
+      "label": "t:sections.volta_footer.contact_email_label",
+      "info": "t:sections.volta_footer.contact_email_info",
+      "default": "contact@voltadrinks.com"
     }
   ],
-  "enabled_on": { "groups": ["footer"] }
+  "presets": [
+    { "name": "t:sections.volta_footer.name" }
+  ]
 }
 {% endschema %}

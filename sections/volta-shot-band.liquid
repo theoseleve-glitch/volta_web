@@ -1,65 +1,80 @@
 {%- comment -%}
-  volta-shot-band.liquid
-  Full-width green band. Bold "LE SHOT" type left, copy middle, CTA right.
+  volta-shot-band.liquid — 60 ml shot explainer band (V1 Phase 2)
+  Spec §5.3: brief explainer between the flavor grid and the manifesto.
 {%- endcomment -%}
 
-<section class="v-shot-band" aria-labelledby="shot-heading-{{ section.id }}">
-  <div class="v-container v-shot-band__row">
-    <h2 id="shot-heading-{{ section.id }}" class="v-shot-band__title v-display v-reveal">
-      {{ 'sections.volta_shot_band.title' | t }}
+<section class="v-shot-band" aria-labelledby="v-shot-band-heading-{{ section.id }}">
+  <div class="v-shot-band__inner">
+    <p class="v-shot-band__volume">{{ 'sections.volta_shot_band.volume' | t }}</p>
+    <h2 id="v-shot-band-heading-{{ section.id }}" class="v-shot-band__heading">
+      {%- if section.settings.heading != blank -%}{{ section.settings.heading }}{%- else -%}{{ 'sections.volta_shot_band.heading' | t }}{%- endif -%}
     </h2>
-    <p class="v-shot-band__copy v-reveal">
-      {{ 'sections.volta_shot_band.copy' | t }}
+    <p class="v-shot-band__body">
+      {%- if section.settings.body != blank -%}{{ section.settings.body }}{%- else -%}{{ 'sections.volta_shot_band.body' | t }}{%- endif -%}
     </p>
-    <a href="{{ section.settings.cta_link | default: '#products' }}"
-       class="v-btn v-btn--ink v-magnetic v-reveal"
-       data-cursor="hover">
-      {{ 'sections.volta_shot_band.cta' | t }}
-    </a>
   </div>
 </section>
 
 {% stylesheet %}
-  .v-shot-band {
-    background: var(--volta-green);
-    color: var(--volta-ink);
-    padding-block: var(--space-section);
-  }
-  .v-shot-band__row {
-    display: grid;
-    grid-template-columns: auto 1fr auto;
-    gap: var(--space-12);
-    align-items: center;
-  }
-  .v-shot-band__title {
-    font-size: var(--text-hero);
-    line-height: 0.9;
-    text-transform: uppercase;
-    letter-spacing: -0.04em;
-    margin: 0;
-  }
-  .v-shot-band__copy {
-    font-size: var(--text-lg);
-    max-width: 520px;
-    margin: 0;
-  }
-  .v-btn--ink {
-    background: var(--volta-ink);
-    color: var(--volta-green);
-  }
-  .v-btn--ink:hover { background: var(--volta-cream); color: var(--volta-ink); }
-
-  @media (max-width: 900px) {
-    .v-shot-band__row { grid-template-columns: 1fr; gap: var(--space-6); }
-  }
+.v-shot-band {
+  background: linear-gradient(180deg, var(--volta-indigo, #12104b) 0%, var(--volta-indigo-deep, #0a0930) 100%);
+  color: #fff;
+  padding: clamp(80px, 14vw, 180px) clamp(24px, 5vw, 80px);
+  font-family: var(--font-body, system-ui);
+  text-align: center;
+}
+.v-shot-band__inner {
+  max-width: 720px;
+  margin: 0 auto;
+  display: flex; flex-direction: column;
+  gap: clamp(16px, 2vw, 28px);
+}
+.v-shot-band__volume {
+  font-family: var(--font-display, 'dunbar-tall', sans-serif);
+  font-style: italic; font-weight: 900;
+  font-size: clamp(80px, 14vw, 200px);
+  line-height: 0.86;
+  letter-spacing: -0.04em;
+  color: var(--volta-yellow, #FBEE49);
+  margin: 0;
+}
+.v-shot-band__heading {
+  font-family: var(--font-display, 'dunbar-tall', sans-serif);
+  font-style: italic; font-weight: 900;
+  font-size: clamp(28px, 4vw, 56px);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+.v-shot-band__body {
+  font-size: clamp(15px, 1.4vw, 18px);
+  line-height: 1.55;
+  color: rgba(255,255,255,0.75);
+  margin: 0;
+}
 {% endstylesheet %}
 
 {% schema %}
 {
   "name": "t:sections.volta_shot_band.name",
+  "tag": "section",
+  "class": "v-shot-band-wrapper",
   "settings": [
-    { "type": "url", "id": "cta_link", "label": "t:sections.volta_shot_band.settings.cta_link.label" }
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:sections.volta_shot_band.heading_label",
+      "info": "t:sections.volta_shot_band.heading_info"
+    },
+    {
+      "type": "textarea",
+      "id": "body",
+      "label": "t:sections.volta_shot_band.body_label",
+      "info": "t:sections.volta_shot_band.body_info"
+    }
   ],
-  "presets": [{ "name": "t:sections.volta_shot_band.name" }]
+  "presets": [
+    { "name": "t:sections.volta_shot_band.name" }
+  ]
 }
 {% endschema %}

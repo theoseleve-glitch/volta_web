@@ -51,3 +51,6 @@ audits/*.local.md
 tmp/
 .tmp/
 *.tmp
+
+# Superpowers (brainstorm mockups, transient sessions)
+.superpowers/

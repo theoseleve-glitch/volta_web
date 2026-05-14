@@ -83,7 +83,10 @@
     "total_reviews": "total des critiques",
     "star_reviews_info": "{{ rating_value }} sur {{ rating_max }} étoiles",
     "collapsible_content_title": "Contenu réductible",
-    "complementary_products": "Produits complémentaires"
+    "complementary_products": "Produits complémentaires",
+    "preloader": "Chargement en cours",
+    "cart_count": "Panier — {{ count }} article(s)",
+    "cart_empty": "Panier vide"
   },
   "blogs": {
     "article": {

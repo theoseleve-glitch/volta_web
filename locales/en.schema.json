@@ -3546,6 +3546,21 @@
         }
       }
     },
+    "volta_hero": {
+      "name": "Hero — Charged",
+      "content_header": "Content",
+      "eyebrow_label": "Eyebrow (small text above headline)",
+      "eyebrow_info": "Leave empty to use translation default",
+      "title_label": "Headline",
+      "title_info": "Empty → 'VOLTA' (default). Dunbar Tall typeface.",
+      "ticker_label": "Ticker (line below headline)",
+      "ticker_info": "Short phrase like 'First batch · Shipping June 2026'",
+      "cta_header": "Buy button",
+      "featured_product_label": "Featured product",
+      "featured_product_info": "Empty → button shows 'Coming soon' disabled state",
+      "cta_label_label": "Button text",
+      "cta_label_info": "e.g., Buy. Defaults to 'Buy'."
+    },
     "volta_hero_v1": {
       "name": "Hero V1 — Golden Kick",
       "settings": {

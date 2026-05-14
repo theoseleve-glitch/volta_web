@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="_étiquette" data-name="étiquette" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1440 810">
+  <defs>
+    <style>
+      .cls-1 {
+        letter-spacing: 0em;
+      }
+
+      .cls-2 {
+        font-size: 94.26px;
+      }
+
+      .cls-2, .cls-3 {
+        fill: #fff;
+      }
+
+      .cls-3 {
+        font-size: 60px;
+      }
+
+      .cls-4 {
+        font-family: DunbarTall-Ultra, 'Dunbar Tall';
+      }
+
+      .cls-5 {
+        font-size: 49.33px;
+      }
+
+      .cls-6 {
+        fill: #ffc800;
+      }
+
+      .cls-7 {
+        letter-spacing: -.08em;
+      }
+
+      .cls-8 {
+        fill: #7b3dd4;
+      }
+
+      .cls-9 {
+        letter-spacing: -.02em;
+      }
+
+      .cls-10 {
+        letter-spacing: -.04em;
+      }
+
+      .cls-11 {
+        letter-spacing: -.04em;
+      }
+    </style>
+  </defs>
+  <image width="6000" height="3375" transform="scale(.24)" xlink:href="../Design sans titre-6.png"/>
+  <text class="cls-4" transform="translate(179.77 189.93) scale(.78 1)"><tspan class="cls-2"><tspan x="0" y="0">Bie</tspan><tspan class="cls-9" x="155.9" y="0">n</tspan><tspan class="cls-10" x="218.49" y="0">v</tspan><tspan x="284.09" y="0">enue chez </tspan><tspan class="cls-7" x="802.98" y="0">V</tspan><tspan class="cls-1" x="874.62" y="0">ol</tspan><tspan class="cls-11" x="971.71" y="0">t</tspan><tspan x="1003.75" y="0">a Drinks !</tspan></tspan><tspan class="cls-5"><tspan class="cls-8" x="197.78" y="59.2">NOTRE TOUT PREMIER SHOT </tspan><tspan class="cls-6" x="896.91" y="59.2">GOLDEN KICK</tspan></tspan><tspan class="cls-3"><tspan x="399.04" y="131.2" xml:space="preserve"> BIENTÔT DISPONIBLE</tspan></tspan></text>
+  <image width="3375" height="4219" transform="translate(593.34 293.86) scale(.09)" xlink:href="2.png"/>
+</svg>

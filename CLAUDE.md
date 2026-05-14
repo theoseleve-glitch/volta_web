@@ -34,6 +34,18 @@ These apply everywhere, always. Do not deviate without explicit user approval.
 7. **Every `<img>` has explicit width and height attributes.** Prevents CLS.
 8. **All scroll animations respect `prefers-reduced-motion`.** Non-negotiable for accessibility.
 
+### Token efficiency rules (avoid wasting context)
+
+Learned the hard way during the V1 build. Do not break these:
+
+9. **Never re-Read files already shown in this turn's system reminders.** If the harness surfaces a file's contents, use that — don't Read it again "to be safe."
+10. **For large files already flagged "too large to include" (e.g. `preview/v1.css`, `preview/index.html`):** use `Grep` with specific patterns to locate line numbers, then `Read` only the needed range with `offset`/`limit`. Never Read 900+ lines to find one block.
+11. **Prefer `Edit` over `Write` on existing files.** Edits only send the diff; Write resends the entire file.
+12. **Batch independent tool calls in one message.** Multiple Edits across different files, or Grep + Read for different scopes, go in parallel — not sequential turns.
+13. **Don't spawn subagents for visual QA when the user has the preview open.** They'll guess at issues; the user can just tell me what's broken.
+14. **Skip status-reporting MCP calls** (`swarm_status`, `token_usage`, etc.) unless explicitly asked — they spend tokens reporting on tokens.
+15. **Don't re-read a file you just edited to "verify".** Edit errors if the match fails; the harness tracks state.
+
 For the full Shopify convention set, see @.claude/rules/shopify-conventions.md.
 For the motion/performance rules, see @.claude/rules/motion-and-perf.md.
 For the accessibility baseline, see @.claude/rules/accessibility.md.

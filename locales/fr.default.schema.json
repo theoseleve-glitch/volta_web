@@ -3549,6 +3549,21 @@
         }
       }
     },
+    "volta_hero": {
+      "name": "Hero — Charged",
+      "content_header": "Contenu",
+      "eyebrow_label": "Eyebrow (texte court au-dessus du titre)",
+      "eyebrow_info": "Laisser vide pour utiliser la traduction par défaut",
+      "title_label": "Titre principal",
+      "title_info": "Vide → 'VOLTA' (par défaut). Police Dunbar Tall.",
+      "ticker_label": "Ticker (ligne sous le titre)",
+      "ticker_info": "Phrase courte type 'Premier lot · Livraison juin 2026'",
+      "cta_header": "Bouton d'achat",
+      "featured_product_label": "Produit mis en avant",
+      "featured_product_info": "Vide → bouton désactivé 'Bientôt disponible'",
+      "cta_label_label": "Texte du bouton",
+      "cta_label_info": "Ex: Acheter. Par défaut: 'Acheter'."
+    },
     "volta_hero_v1": {
       "name": "Hero V1 — Golden Kick",
       "settings": {

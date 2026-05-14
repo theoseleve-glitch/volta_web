@@ -1,0 +1,207 @@
+/*
+ * Volta DS — Colors & Type
+ * Single source of truth for color + type tokens, updated with Baptiste's confirmed palette (2026-04-18):
+ *   Primary blue:  #12104b (deep indigo — replaces the old near-black #0E0E10 surface)
+ *   Primary green: #78ff88 (mascot + accents — slightly brighter than the old #4ADE80 placeholder)
+ *   Accent yellow: #FBEE49 (warmer than the old #FDE047 placeholder)
+ *   Plus classic #FFFFFF / #000000
+ *
+ * Typeface: Dunbar Tall (CJ Type) — Ultra Italic, Extra Bold, Regular.
+ *   The client will license Dunbar Tall for production. Until files land, we fall back to
+ *   Big Shoulders Display + Archivo Black, the nearest free Google Fonts match (condensed,
+ *   tall, geometric, high-contrast). FLAG to client on every review.
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@400;700;900&family=Archivo+Black&family=Archivo:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+  /* ── Brand palette (confirmed) ────────────────────────────────────── */
+  --volta-indigo:        #12104b;   /* primary surface / brand anchor */
+  --volta-indigo-deep:   #0a0930;   /* pressed / deepest shadow */
+  --volta-indigo-soft:   #23205f;   /* hover on indigo surfaces */
+  --volta-green:         #78ff88;   /* mascot, CTAs, primary accent */
+  --volta-green-dim:     rgba(120, 255, 136, 0.5);
+  --volta-green-glow:    rgba(120, 255, 136, 0.28); /* for outer glows on indigo */
+  --volta-yellow:        #FBEE49;   /* high-energy accent */
+  --volta-white:         #FFFFFF;
+  --volta-black:         #000000;
+
+  /* Legacy cream fallbacks — kept for any page that still leans cream-ink. */
+  --volta-cream:         #F7F7F2;
+  --volta-cream-warm:    #F2EFE5;
+  --volta-ink:           #0E0E10;   /* reserved for legacy preview surfaces only */
+
+  /* ── Semantic surfaces ────────────────────────────────────────────── */
+  --bg:                  var(--volta-indigo);
+  --bg-alt:              var(--volta-indigo-deep);
+  --bg-invert:           var(--volta-white);
+  --bg-accent:           var(--volta-yellow);
+  --bg-brand:            var(--volta-green);
+
+  /* Foreground (text) */
+  --fg1:                 var(--volta-white);                         /* primary on indigo */
+  --fg2:                 rgba(255, 255, 255, 0.72);                  /* secondary */
+  --fg3:                 rgba(255, 255, 255, 0.48);                  /* tertiary / muted */
+  --fg-accent:           var(--volta-green);                         /* eyebrows, active link */
+  --fg-accent-warm:      var(--volta-yellow);
+  --fg-on-green:         var(--volta-indigo);                        /* text on green */
+  --fg-on-yellow:        var(--volta-indigo);                        /* text on yellow */
+  --fg-on-white:         var(--volta-indigo);                        /* text on white */
+
+  /* Borders / separators */
+  --border-hairline:     rgba(255, 255, 255, 0.12);
+  --border-strong:       rgba(255, 255, 255, 0.28);
+  --border-on-light:     rgba(18, 16, 75, 0.14);
+
+  /* Shadows */
+  --shadow-sm:           0 2px 8px rgba(0, 0, 0, 0.18);
+  --shadow-md:           0 12px 40px -18px rgba(0, 0, 0, 0.55);
+  --shadow-lg:           0 30px 80px -32px rgba(0, 0, 0, 0.65);
+  --shadow-glow:         0 0 48px 0 var(--volta-green-glow);
+
+  /* Status */
+  --status-success:      var(--volta-green);
+  --status-warning:      var(--volta-yellow);
+  --status-error:        #FF6B4A;
+  --status-info:         #6AA6FF;
+
+  /* ── Type families ────────────────────────────────────────────────── */
+  --font-display:   'Dunbar Tall', 'Archivo Black', 'Big Shoulders Display', system-ui, sans-serif;
+  --font-display-italic: 'Dunbar Tall', 'Big Shoulders Display', system-ui, sans-serif; /* italic variant */
+  --font-body:      'Archivo', 'Inter', system-ui, sans-serif;
+  --font-mono:      'JetBrains Mono', ui-monospace, monospace;
+
+  /* ── Type scale ───────────────────────────────────────────────────── */
+  --text-xs:   clamp(11px, 0.7vw, 12px);
+  --text-sm:   clamp(13px, 0.85vw, 14px);
+  --text-base: clamp(15px, 1vw, 17px);
+  --text-lg:   clamp(18px, 1.3vw, 22px);
+  --text-xl:   clamp(22px, 1.8vw, 28px);
+  --text-2xl:  clamp(28px, 2.4vw, 40px);
+  --text-3xl:  clamp(36px, 3.5vw, 56px);
+  --text-hero: clamp(56px, 9vw, 160px);
+
+  --lh-display: 0.95;
+  --lh-heading: 1.1;
+  --lh-body:    1.55;
+
+  --tracking-tight:   -0.03em;
+  --tracking-display: -0.02em;
+  --tracking-body:    0;
+  --tracking-label:   0.18em;
+
+  /* ── Spacing, radius, motion ──────────────────────────────────────── */
+  --space-1: 4px;  --space-2: 8px;  --space-3: 12px; --space-4: 16px;
+  --space-5: 20px; --space-6: 24px; --space-8: 32px; --space-10: 40px;
+  --space-12: 48px; --space-16: 64px; --space-20: 80px; --space-24: 96px;
+  --space-section: clamp(80px, 10vw, 160px);
+
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-pill: 999px;
+
+  --ease-out-expo:     cubic-bezier(0.19, 1, 0.22, 1);
+  --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
+  --ease-out-back:     cubic-bezier(0.34, 1.56, 0.64, 1);
+  --duration-fast:   0.18s;
+  --duration-base:   0.4s;
+  --duration-slow:   0.8s;
+  --duration-luxury: 1.2s;
+
+  --container-max: 1440px;
+  --gutter: clamp(20px, 4vw, 48px);
+}
+
+/* ── Semantic typography roles ───────────────────────────────────────── */
+.v-hero,
+.v-h0 {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-style: italic;                  /* Dunbar Tall Ultra Italic */
+  font-size: var(--text-hero);
+  line-height: var(--lh-display);
+  letter-spacing: var(--tracking-tight);
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+.v-h1 {
+  font-family: var(--font-display);
+  font-weight: 800;                    /* Dunbar Tall Extra Bold */
+  font-size: var(--text-3xl);
+  line-height: var(--lh-heading);
+  letter-spacing: var(--tracking-display);
+  text-transform: uppercase;
+}
+
+.v-h2 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: var(--text-2xl);
+  line-height: var(--lh-heading);
+  letter-spacing: var(--tracking-display);
+}
+
+.v-h3 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: var(--text-xl);
+  line-height: var(--lh-heading);
+}
+
+.v-body,
+p {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: var(--lh-body);
+  font-weight: 400;
+}
+
+.v-lead {
+  font-family: var(--font-body);
+  font-size: var(--text-lg);
+  line-height: 1.4;
+  font-weight: 400;
+}
+
+.v-small {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  line-height: 1.5;
+}
+
+.v-label,
+.v-mono {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+}
+
+.v-price {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: var(--text-2xl);
+  letter-spacing: -0.02em;
+}
+
+code, pre, .v-code {
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+}
+
+/* Default body — indigo surface, white type */
+html { font-family: var(--font-body); color: var(--fg1); background: var(--bg); }
+
+::selection { background: var(--volta-green); color: var(--volta-indigo); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

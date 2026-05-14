@@ -1,360 +1,344 @@
 <!doctype html>
-<html lang="fr" class="v-loading">
+<html lang="fr">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Volta Drinks — Preview</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#78ff88">
+<title>Volta Drinks — Le shot qui fait basculer ta journée</title>
+<meta name="description" content="Shots fonctionnels pressés en France. Quatre recettes, une seule intention : te faire basculer.">
 
-  <script>
-    window.Shopify = { designMode: false, currency: { active: 'EUR' } };
-    window.routes = { cart_add_url: '/cart/add', cart_change_url: '/cart/change', cart_update_url: '/cart/update', cart_url: '/cart' };
-    const realFetch = window.fetch;
-    window.fetch = async function (url, opts) {
-      const u = typeof url === 'string' ? url : url.url;
-      if (u.includes('/cart.js') && !u.includes('/cart/')) return new Response(JSON.stringify({ items: [], item_count: 0, total_price: 0, items_subtotal_price: 0 }), { status: 200, headers: { 'Content-Type': 'application/json' } });
-      if (u.includes('/cart/add')) return new Response(JSON.stringify({ id: 1, product_id: 1, variant_id: 1, product_title: 'Demo', quantity: 1, final_price: 300 }), { status: 200, headers: { 'Content-Type': 'application/json' } });
-      if (u.includes('/cart/change')) return new Response(JSON.stringify({ items: [], item_count: 0, total_price: 0 }), { status: 200, headers: { 'Content-Type': 'application/json' } });
-      return realFetch(url, opts);
-    };
-  </script>
+<link rel="preconnect" href="https://use.typekit.net">
+<link rel="preconnect" href="https://p.typekit.net" crossorigin>
+<link rel="stylesheet" href="https://use.typekit.net/gjt3qnf.css">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
-
-  <link rel="stylesheet" href="../assets/volta-tokens.css">
-  <link rel="stylesheet" href="volta-preview.css">
-
-  <style>
-    html.v-loading { overflow: hidden; }
-    html.v-loading body > *:not(#VoltaPreloader) { opacity: 0; pointer-events: none; }
-    .v-preloader { position: fixed; inset: 0; z-index: 9998; background: #F7F7F2; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 24px; }
-    .v-preloader__mascot { width: 320px; height: 320px; }
-    .v-preloader__counter { font-family: 'JetBrains Mono', monospace; font-size: 48px; color: #0E0E10; letter-spacing: -0.02em; }
-    .v-preloader__wipe { position: absolute; inset: 0; background: #FDE047; transform: translateY(100%); transition: transform 600ms cubic-bezier(0.76, 0, 0.24, 1); pointer-events: none; }
-
-    .visually-hidden { position: absolute; overflow: hidden; clip: rect(0 0 0 0); height: 1px; width: 1px; margin: -1px; padding: 0; border: 0; white-space: nowrap; }
-
-    .v-preview-banner {
-      position: fixed; bottom: 16px; left: 16px; z-index: 10000;
-      background: var(--volta-ink); color: var(--volta-cream);
-      padding: 12px 16px; border-radius: 8px;
-      font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase;
-      max-width: 320px; line-height: 1.5;
-    }
-
-    html, body { margin: 0; padding: 0; }
-    body { min-height: 100vh; }
-
-    .ph-1 { background: linear-gradient(135deg, #FDE047, #7FEFA8); }
-    .ph-2 { background: linear-gradient(135deg, #FF9A3C, #FDE047); }
-    .ph-3 { background: linear-gradient(135deg, #7FEFA8, #0ea5e9); }
-    .ph-4 { background: linear-gradient(135deg, #8b5cf6, #7FEFA8); }
-  </style>
+<link rel="stylesheet" href="v1.css">
 </head>
 <body>
 
-  <!-- PRELOADER -->
-  <div class="v-preloader" id="VoltaPreloader" data-volta-preloader aria-hidden="true">
-    <div class="v-preloader__mascot">
-      <div class="v-mascot v-mascot--preloader" data-volta-mascot data-mascot-state="idle" role="presentation" aria-hidden="true">
-        <img class="v-mascot__img" src="../assets/volta-logo-v2.png" alt="" loading="eager" fetchpriority="high" draggable="false">
-      </div>
-    </div>
-    <div class="v-preloader__counter v-mono"><span data-volta-preloader-num>0</span>%</div>
-    <div class="v-preloader__wipe" data-volta-preloader-wipe aria-hidden="true"></div>
+<!-- ══════════ PRELOADER ══════════ -->
+<div class="pre" id="pre" aria-hidden="true">
+  <div class="pre__courant">
+    <img src="assets/volta-courant.svg" alt="" width="320">
   </div>
+  <div class="pre__counter"><span id="pre-n">0</span>%</div>
+</div>
 
-  <!-- CURSOR -->
-  <div class="v-cursor" aria-hidden="true">
-    <div class="v-cursor__ring"></div>
-    <div class="v-cursor__dot"></div>
-    <div class="v-cursor__label"></div>
+<!-- ══════════ CUSTOM CURSOR ══════════ -->
+<div class="cursor" aria-hidden="true">
+  <div class="cursor__dot"></div>
+  <div class="cursor__ring"></div>
+  <div class="cursor__label"></div>
+</div>
+
+<!-- ══════════ NAV ══════════ -->
+<header class="nav" id="nav" data-sticky>
+  <a class="nav__logo" href="#" aria-label="Volta Drinks">
+    <img src="assets/volta-logo.png" alt="Volta Drinks" width="575" height="600" draggable="false">
+  </a>
+  <nav class="nav__links">
+    <a href="#flavors" data-cursor="hover">Recettes</a>
+    <a href="#story" data-cursor="hover">Histoire</a>
+    <a href="#subscribe" data-cursor="hover">Abonnement</a>
+    <a href="faq.html" data-cursor="hover">FAQ</a>
+  </nav>
+  <div class="nav__right">
+    <ul class="nav__lang" role="list">
+      <li><button class="nav__locale is-active" aria-pressed="true" data-locale="fr">FR</button></li>
+      <li><button class="nav__locale" aria-pressed="false" data-locale="en">EN</button></li>
+    </ul>
+    <a href="#subscribe" class="nav__cta v-magnetic" data-cursor="hover">Pré-commander</a>
   </div>
+</header>
 
-  <!-- HEADER -->
-  <volta-header class="v-header">
-    <div class="v-container v-header__row">
-      <a class="v-header__logo" href="#" aria-label="Volta Drinks">
-        <img src="../assets/volta-logo-v2.png" class="v-header__logo-img" alt="Volta Drinks" loading="eager" fetchpriority="high">
-      </a>
-      <nav class="v-header__nav">
-        <ul class="v-header__menu">
-          <li><a href="#products" class="v-header__link" data-cursor="hover" data-i18n="nav.shots">Shots</a></li>
-          <li><a href="#subscription" class="v-header__link" data-cursor="hover" data-i18n="nav.subscription">Abonnement</a></li>
-          <li><a href="#story" class="v-header__link" data-cursor="hover" data-i18n="nav.story">Notre Histoire</a></li>
-          <li><a href="#reviews" class="v-header__link" data-cursor="hover" data-i18n="nav.reviews">Avis</a></li>
-        </ul>
-      </nav>
-      <div class="v-header__actions">
-        <ul class="v-header__locale-list" role="list">
-          <li><button class="v-header__locale-btn is-active" aria-pressed="true" data-locale="fr">FR</button></li>
-          <li><button class="v-header__locale-btn" aria-pressed="false" data-locale="en">EN</button></li>
-        </ul>
-        <a href="#" class="v-header__cart" data-volta-cart-toggle data-cursor="hover" data-i18n-aria-label="nav.cart" aria-label="Ouvrir le panier">
-          <svg class="v-header__cart-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-            <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
-            <path d="M3 6h18"/>
-            <path d="M16 10a4 4 0 01-8 0"/>
-          </svg>
-          <span class="v-header__cart-count" data-volta-cart-count>0</span>
-        </a>
-      </div>
-    </div>
-  </volta-header>
+<!-- ══════════ HERO (Baptiste's mockup — exact) ══════════ -->
+<section class="hero" id="hero" aria-label="Bienvenue chez Volta Drinks — Notre tout premier shot Golden Kick, bientôt disponible">
+  <img class="hero__img" src="assets/hero-bg.png" alt="Bienvenue chez Volta Drinks — Notre tout premier shot Golden Kick, bientôt disponible" width="1920" height="1080">
+</section>
 
-  <!-- HERO (simplified: just a buy-now button over the image) -->
-  <section class="v-hero-banner" style="background-image: url('../assets/volta-hero-bg.png'); background-position: center 65%; background-size: cover; background-repeat: no-repeat;">
-    <div class="v-hero-banner__cta v-reveal">
-      <a href="#products" class="v-btn v-btn--primary v-btn--huge v-magnetic" data-cursor="hover" data-i18n="hero.cta">Acheter</a>
-    </div>
-    <div class="v-hero-banner__scroll-cue v-mono" aria-hidden="true">
-      <span data-i18n="hero.scroll">Descends</span><span>↓</span>
-    </div>
-  </section>
+<!-- V2: animated product background — reference: https://www.donmolinico.es/products/ -->
+<!-- ══════════ FLAVORS ══════════ -->
+<section class="flavors" id="flavors">
+  <header class="section-head">
+    <p class="eyebrow">La gamme</p>
+    <h2 class="v-display">Quatre recettes.<br><em>Choisis ton courant.</em></h2>
+  </header>
 
-  <!-- SHOT BAND -->
-  <section class="v-shot-band">
-    <div class="v-container v-shot-band__row">
-      <h2 class="v-shot-band__title v-display v-reveal" data-i18n="shot.title">Le Shot</h2>
-      <p class="v-shot-band__copy v-reveal" data-i18n="shot.copy">60 ml. Trois secondes. Une montée nette. Sans sucre, sans crash, sans compromis.</p>
-      <a href="#products" class="v-btn v-btn--ink v-magnetic v-reveal" data-cursor="hover" data-i18n="shot.cta">Commander</a>
-    </div>
-  </section>
-
-  <!-- PRODUCTS -->
-  <section id="products" class="v-products">
-    <div class="v-container">
-      <header class="v-products__header v-reveal">
-        <p class="v-mono v-products__eyebrow" data-i18n="products.eyebrow">La gamme</p>
-        <h2 class="v-products__title v-display" data-i18n="products.title">Choisis ton shot</h2>
-      </header>
-      <div class="v-products__grid">
-        <article class="v-products__card v-products__card--1 v-reveal">
-          <a class="v-products__link" href="#" data-cursor="view" data-cursor-label="VOIR">
-            <div class="v-products__media"><div class="v-products__img ph-1 v-parallax"></div></div>
-            <div class="v-products__meta"><span class="v-mono v-products__price">€3,00</span><h3 class="v-products__name" data-i18n="product.name_1">Ginger Classic</h3><p class="v-products__tagline v-mono" data-i18n="product.tagline_1">Le shot originel</p></div>
-            <span class="v-products__cta v-mono"><span data-i18n="products.card_cta">Ajouter</span> <span aria-hidden="true">→</span></span>
-          </a>
-        </article>
-        <article class="v-products__card v-products__card--2 v-reveal">
-          <a class="v-products__link" href="#" data-cursor="view" data-cursor-label="VOIR">
-            <div class="v-products__media"><div class="v-products__img ph-2 v-parallax"></div></div>
-            <div class="v-products__meta"><span class="v-mono v-products__price">€3,00</span><h3 class="v-products__name" data-i18n="product.name_2">Citrus Storm</h3><p class="v-products__tagline v-mono" data-i18n="product.tagline_2">Citron noir</p></div>
-            <span class="v-products__cta v-mono"><span data-i18n="products.card_cta">Ajouter</span> <span aria-hidden="true">→</span></span>
-          </a>
-        </article>
-        <article class="v-products__card v-products__card--3 v-reveal">
-          <a class="v-products__link" href="#" data-cursor="view" data-cursor-label="VOIR">
-            <div class="v-products__media"><div class="v-products__img ph-3 v-parallax"></div></div>
-            <div class="v-products__meta"><span class="v-mono v-products__price">€3,00</span><h3 class="v-products__name" data-i18n="product.name_3">Tropical Jolt</h3><p class="v-products__tagline v-mono" data-i18n="product.tagline_3">Ananas vif</p></div>
-            <span class="v-products__cta v-mono"><span data-i18n="products.card_cta">Ajouter</span> <span aria-hidden="true">→</span></span>
-          </a>
-        </article>
-        <article class="v-products__card v-products__card--4 v-reveal">
-          <a class="v-products__link" href="#" data-cursor="view" data-cursor-label="VOIR">
-            <div class="v-products__media"><div class="v-products__img ph-4 v-parallax"></div></div>
-            <div class="v-products__meta"><span class="v-mono v-products__price">€3,00</span><h3 class="v-products__name" data-i18n="product.name_4">Deep Root</h3><p class="v-products__tagline v-mono" data-i18n="product.tagline_4">Curcuma sombre</p></div>
-            <span class="v-products__cta v-mono"><span data-i18n="products.card_cta">Ajouter</span> <span aria-hidden="true">→</span></span>
-          </a>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <!-- SUBSCRIPTION -->
-  <section id="subscription" class="v-sub">
-    <div class="v-mascot v-mascot--band" data-volta-mascot data-mascot-scroll="charge" role="presentation" aria-hidden="true">
-      <img class="v-mascot__img" src="../assets/volta-logo-v2.png" alt="" loading="lazy" draggable="false">
-    </div>
-    <div class="v-container v-sub__inner">
-      <header class="v-sub__header">
-        <p class="v-mono v-sub__eyebrow v-reveal">
-          <span data-i18n="sub.eyebrow">Abonnement mensuel</span>
-          <span class="v-sub__badge" data-i18n="sub.badge">−30 %</span>
-        </p>
-        <h2 class="v-sub__title v-display v-reveal" data-i18n="sub.title">Mixé. Livré. Chaque mois.</h2>
-      </header>
-
-      <div class="v-sub__grid">
-        <article class="v-sub__card v-reveal">
-          <div class="v-sub__price">
-            <span class="v-mono v-sub__price-from" data-i18n="sub.price_from">À partir de</span>
-            <span class="v-sub__price-amount">
-              <strong>€21</strong>
-              <span class="v-sub__price-unit" data-i18n="sub.price_per_month">/ mois</span>
-            </span>
-          </div>
-          <ul class="v-sub__includes" role="list">
-            <li data-i18n="sub.includes_1">12 shots de 60 ml</li>
-            <li data-i18n="sub.includes_2">4 saveurs au choix, chaque mois</li>
-            <li data-i18n="sub.includes_3">Livraison offerte en France</li>
-          </ul>
-          <a href="#" class="v-btn v-btn--ink v-btn--huge v-magnetic" data-cursor="hover" data-i18n="sub.cta">Commencer mon abonnement</a>
-          <p class="v-mono v-sub__guarantee" data-i18n="sub.guarantee">Sans engagement · Annule en 1 clic</p>
-        </article>
-
-        <ul class="v-sub__benefits" role="list">
-          <li class="v-sub__benefit v-reveal">
-            <span class="v-sub__benefit-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/><path d="M3 21v-5h5"/>
-              </svg>
-            </span>
-            <div>
-              <h3 class="v-sub__benefit-title" data-i18n="sub.benefit_1_title">Mix à ta façon</h3>
-              <p data-i18n="sub.benefit_1">Tu choisis tes 4 saveurs chaque mois. Envie de changer ? Tu changes.</p>
-            </div>
-          </li>
-          <li class="v-sub__benefit v-reveal">
-            <span class="v-sub__benefit-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="6" y="5" width="3.5" height="14" rx="1"/><rect x="14.5" y="5" width="3.5" height="14" rx="1"/>
-              </svg>
-            </span>
-            <div>
-              <h3 class="v-sub__benefit-title" data-i18n="sub.benefit_2_title">Flexible</h3>
-              <p data-i18n="sub.benefit_2">Saute, décale ou annule à tout moment depuis ton espace client.</p>
-            </div>
-          </li>
-          <li class="v-sub__benefit v-reveal">
-            <span class="v-sub__benefit-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M3 17h1V7a1 1 0 0 1 1-1h10v11"/><path d="M15 10h4l3 3v4h-7"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/>
-              </svg>
-            </span>
-            <div>
-              <h3 class="v-sub__benefit-title" data-i18n="sub.benefit_3_title">Livré, offert</h3>
-              <p data-i18n="sub.benefit_3">Livraison incluse dans l'abonnement. Pas de frais cachés.</p>
-            </div>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <!-- STORY (premium editorial, alternating chapters) -->
-  <section id="story" class="v-story">
-    <div class="v-container">
-      <header class="v-story__intro v-reveal">
-        <p class="v-mono v-story__eyebrow" data-i18n="story.eyebrow">Notre histoire</p>
-        <h2 class="v-story__title v-display" data-i18n="story.title">D'une idée simple à ton rituel quotidien</h2>
-      </header>
-      <div class="v-story__chapters">
-        <article class="v-story__chapter v-story__chapter--right v-reveal">
-          <div class="v-story__chapter-media"><div class="v-story__img ph-1"></div></div>
-          <div class="v-story__chapter-copy">
-            <span class="v-mono v-story__chapter-num">I <span class="v-story__chapter-num-sep">·</span> <span data-i18n="story.chapter_label">Chapitre</span></span>
-            <h3 class="v-story__chapter-heading v-display" data-i18n="story.h1">Origine</h3>
-            <div class="v-story__chapter-body"><p data-i18n="story.b1">Une idée simple. Un shot qui donne un coup de fouet, sans compromis.</p></div>
-          </div>
-        </article>
-        <article class="v-story__chapter v-story__chapter--left v-reveal">
-          <div class="v-story__chapter-media"><div class="v-story__img ph-2"></div></div>
-          <div class="v-story__chapter-copy">
-            <span class="v-mono v-story__chapter-num">II <span class="v-story__chapter-num-sep">·</span> <span data-i18n="story.chapter_label">Chapitre</span></span>
-            <h3 class="v-story__chapter-heading v-display" data-i18n="story.h2">Ingrédients</h3>
-            <div class="v-story__chapter-body"><p data-i18n="story.b2">Gingembre frais. Citron. Aucun additif. Fabriqué en France.</p></div>
-          </div>
-        </article>
-        <article class="v-story__chapter v-story__chapter--right v-reveal">
-          <div class="v-story__chapter-media"><div class="v-story__img ph-3"></div></div>
-          <div class="v-story__chapter-copy">
-            <span class="v-mono v-story__chapter-num">III <span class="v-story__chapter-num-sep">·</span> <span data-i18n="story.chapter_label">Chapitre</span></span>
-            <h3 class="v-story__chapter-heading v-display" data-i18n="story.h3">Production</h3>
-            <div class="v-story__chapter-body"><p data-i18n="story.b3">Pressé à froid. Embouteillé à la main. 60 ml de pure énergie.</p></div>
-          </div>
-        </article>
-        <article class="v-story__chapter v-story__chapter--left v-reveal">
-          <div class="v-story__chapter-media"><div class="v-story__img ph-4"></div></div>
-          <div class="v-story__chapter-copy">
-            <span class="v-mono v-story__chapter-num">IV <span class="v-story__chapter-num-sep">·</span> <span data-i18n="story.chapter_label">Chapitre</span></span>
-            <h3 class="v-story__chapter-heading v-display" data-i18n="story.h4">Vision</h3>
-            <div class="v-story__chapter-body"><p data-i18n="story.b4">Un rituel quotidien. Une marque française. Zéro compromis.</p></div>
-          </div>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <!-- REVIEWS -->
-  <section id="reviews" class="v-reviews">
-    <h2 class="visually-hidden" data-i18n="reviews.a11y">Ce qu'ils en disent</h2>
-    <div class="v-reviews__marquee" aria-hidden="true">
-      <div class="v-reviews__track">
-        <div class="v-reviews__item"><span class="v-reviews__stars">★★★★★</span><p class="v-reviews__quote">"Un shot qui frappe. Je recommande."</p><span class="v-mono v-reviews__author">— Camille L.</span></div>
-        <div class="v-reviews__item"><span class="v-reviews__stars">★★★★★</span><p class="v-reviews__quote">"Le goût est dingue. Adieu le café."</p><span class="v-mono v-reviews__author">— Thomas R.</span></div>
-        <div class="v-reviews__item"><span class="v-reviews__stars">★★★★★</span><p class="v-reviews__quote">"Efficace, net. 10/10."</p><span class="v-mono v-reviews__author">— Sarah M.</span></div>
-        <div class="v-reviews__item"><span class="v-reviews__stars">★★★★★</span><p class="v-reviews__quote">"Le design de la bouteille, incroyable."</p><span class="v-mono v-reviews__author">— Léa K.</span></div>
-        <div class="v-reviews__item"><span class="v-reviews__stars">★★★★★</span><p class="v-reviews__quote">"L'abonnement mensuel, c'est parfait."</p><span class="v-mono v-reviews__author">— Julien B.</span></div>
-        <div class="v-reviews__item"><span class="v-reviews__stars">★★★★★</span><p class="v-reviews__quote">"Meilleur shot que j'ai testé."</p><span class="v-mono v-reviews__author">— Marie D.</span></div>
-        <div class="v-reviews__item"><span class="v-reviews__stars">★★★★★</span><p class="v-reviews__quote">"Un shot qui frappe. Je recommande."</p><span class="v-mono v-reviews__author">— Camille L.</span></div>
-        <div class="v-reviews__item"><span class="v-reviews__stars">★★★★★</span><p class="v-reviews__quote">"Le goût est dingue. Adieu le café."</p><span class="v-mono v-reviews__author">— Thomas R.</span></div>
-        <div class="v-reviews__item"><span class="v-reviews__stars">★★★★★</span><p class="v-reviews__quote">"Efficace, net. 10/10."</p><span class="v-mono v-reviews__author">— Sarah M.</span></div>
-        <div class="v-reviews__item"><span class="v-reviews__stars">★★★★★</span><p class="v-reviews__quote">"Le design de la bouteille, incroyable."</p><span class="v-mono v-reviews__author">— Léa K.</span></div>
-        <div class="v-reviews__item"><span class="v-reviews__stars">★★★★★</span><p class="v-reviews__quote">"L'abonnement mensuel, c'est parfait."</p><span class="v-mono v-reviews__author">— Julien B.</span></div>
-        <div class="v-reviews__item"><span class="v-reviews__stars">★★★★★</span><p class="v-reviews__quote">"Meilleur shot que j'ai testé."</p><span class="v-mono v-reviews__author">— Marie D.</span></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- FOOTER -->
-  <footer class="v-footer">
-    <div class="v-container">
-      <div class="v-footer__newsletter v-reveal">
-        <p class="v-mono v-footer__eyebrow" data-i18n="footer.eyebrow">Reste dans la boucle</p>
-        <h2 class="v-footer__headline v-display" data-i18n="footer.headline">Rejoins la Volta List</h2>
-        <p class="v-footer__subhead" data-i18n="footer.subhead">Un mail par mois. Pas de spam. Que du bon.</p>
-        <form class="v-footer__form">
-          <input type="email" class="v-footer__input" placeholder="ton@email.com" required autocomplete="email" data-i18n="footer.placeholder">
-          <button type="submit" class="v-btn v-btn--primary v-magnetic" data-cursor="hover" data-i18n="footer.submit">Je m'inscris</button>
-        </form>
-      </div>
-      <div class="v-footer__grid">
-        <nav class="v-footer__col"><h3 class="v-mono v-footer__col-title" data-i18n="footer.col_shop">Boutique</h3><ul><li><a href="#" class="v-footer__link">Shots</a></li><li><a href="#" class="v-footer__link">Abonnement</a></li><li><a href="#" class="v-footer__link">Mixed Pack</a></li></ul></nav>
-        <nav class="v-footer__col"><h3 class="v-mono v-footer__col-title" data-i18n="footer.col_help">Aide</h3><ul><li><a href="#" class="v-footer__link">Livraison</a></li><li><a href="#" class="v-footer__link">Retours</a></li><li><a href="#" class="v-footer__link">Contact</a></li></ul></nav>
-        <nav class="v-footer__col"><h3 class="v-mono v-footer__col-title" data-i18n="footer.col_legal">Légal</h3><ul><li><a href="#" class="v-footer__link">CGV</a></li><li><a href="#" class="v-footer__link">Mentions légales</a></li><li><a href="#" class="v-footer__link">Confidentialité</a></li></ul></nav>
-        <div class="v-footer__col"><h3 class="v-mono v-footer__col-title" data-i18n="footer.col_social">Suis-nous</h3><ul class="v-footer__social"><li><a href="#" class="v-footer__link">Instagram</a></li><li><a href="#" class="v-footer__link">TikTok</a></li></ul></div>
-      </div>
-      <div class="v-footer__base"><span class="v-mono v-footer__copy" data-i18n="footer.copy">© 2026 Volta Drinks · Fait avec ⚡ en France</span></div>
-    </div>
-  </footer>
-
-  <!-- CART DRAWER -->
-  <aside class="v-drawer" id="VoltaCartDrawer" data-volta-drawer data-free-threshold="2500" role="dialog" aria-modal="true" aria-hidden="true">
-    <div class="v-drawer__overlay" data-volta-drawer-overlay tabindex="-1"></div>
-    <div class="v-drawer__panel" role="document">
-      <header class="v-drawer__header">
-        <h2 class="v-drawer__title v-display"><span data-i18n="drawer.title">Ton panier</span> <span class="v-mono v-drawer__count" data-volta-drawer-count>(0)</span></h2>
-        <button class="v-drawer__close" data-volta-drawer-close data-i18n-aria-label="drawer.close" aria-label="Fermer"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 6l12 12M6 18L18 6"/></svg></button>
-      </header>
-      <ul class="v-drawer__items" data-volta-drawer-items role="list"></ul>
-      <div class="v-drawer__empty" data-volta-drawer-empty>
-        <div class="v-mascot v-mascot--drawer" data-volta-mascot data-mascot-state="sad">
-          <img class="v-mascot__img" src="../assets/volta-logo-v2.png" alt="" loading="lazy" draggable="false">
+  <div class="flavors__grid">
+    <article class="flavor flavor--focus" data-flavor="focus">
+      <div class="flavor__bg" aria-hidden="true"></div>
+      <div class="flavor__media">
+        <div class="flavor__bottle" aria-hidden="true">
+          <span class="flavor__silhouette"></span>
         </div>
-        <p class="v-drawer__empty-title v-display" data-i18n="drawer.empty">Ton panier est vide. Charge-toi.</p>
-        <a href="#products" class="v-btn v-btn--primary v-magnetic" data-volta-drawer-close data-cursor="hover" data-i18n="drawer.empty_cta">Voir les shots</a>
       </div>
-      <footer class="v-drawer__footer" data-volta-drawer-footer hidden>
-        <div class="v-drawer__subtotal"><span class="v-mono" data-i18n="drawer.subtotal">Sous-total</span><span class="v-drawer__subtotal-amount" data-volta-subtotal>€0,00</span></div>
-        <a href="#" class="v-btn v-btn--primary v-btn--huge v-magnetic" data-volta-checkout data-cursor="hover" data-i18n="drawer.checkout">Commander</a>
-      </footer>
+      <div class="flavor__meta">
+        <p class="eyebrow flavor__n">01</p>
+        <h3 class="flavor__name v-display">Maxi Focus</h3>
+        <p class="flavor__tag v-mono">Focus · Poire · grenade · guarana 10 %</p>
+        <p class="flavor__price"><b>2,50&nbsp;€</b> / shot · <span>30&nbsp;€ le pack de 12</span></p>
+        <a href="/products/maxi-focus" class="flavor__cta v-magnetic" data-cursor="hover">Détails →</a>
+      </div>
+    </article>
+
+    <article class="flavor flavor--kick" data-flavor="kick">
+      <div class="flavor__bg" aria-hidden="true"></div>
+      <div class="flavor__media">
+        <div class="flavor__bottle" aria-hidden="true">
+          <span class="flavor__silhouette"></span>
+        </div>
+      </div>
+      <div class="flavor__meta">
+        <p class="eyebrow flavor__n">02</p>
+        <h3 class="flavor__name v-display">Golden Kick</h3>
+        <p class="flavor__tag v-mono">Énergie · Gingembre 10 % · ananas · mangue</p>
+        <p class="flavor__price"><b>2,50&nbsp;€</b> / shot · <span>30&nbsp;€ le pack de 12</span></p>
+        <a href="/products/golden-kick" class="flavor__cta v-magnetic" data-cursor="hover">Détails →</a>
+      </div>
+    </article>
+
+    <article class="flavor flavor--green" data-flavor="green">
+      <div class="flavor__bg" aria-hidden="true"></div>
+      <div class="flavor__media">
+        <div class="flavor__bottle" aria-hidden="true">
+          <span class="flavor__silhouette"></span>
+        </div>
+      </div>
+      <div class="flavor__meta">
+        <p class="eyebrow flavor__n">03</p>
+        <h3 class="flavor__name v-display">Green Flag</h3>
+        <p class="flavor__tag v-mono">Détox · Concombre · pomme · gingembre</p>
+        <p class="flavor__price"><b>2,50&nbsp;€</b> / shot · <span>30&nbsp;€ le pack de 12</span></p>
+        <a href="/products/green-flag" class="flavor__cta v-magnetic" data-cursor="hover">Détails →</a>
+      </div>
+    </article>
+
+    <article class="flavor flavor--fire" data-flavor="fire">
+      <div class="flavor__bg" aria-hidden="true"></div>
+      <div class="flavor__media">
+        <div class="flavor__bottle" aria-hidden="true">
+          <span class="flavor__silhouette"></span>
+        </div>
+      </div>
+      <div class="flavor__meta">
+        <p class="eyebrow flavor__n">04</p>
+        <h3 class="flavor__name v-display">Fire Fighter</h3>
+        <p class="flavor__tag v-mono">Immunité · Gingembre · curcuma · piment</p>
+        <p class="flavor__price"><b>2,50&nbsp;€</b> / shot · <span>30&nbsp;€ le pack de 12</span></p>
+        <a href="/products/fire-fighter" class="flavor__cta v-magnetic" data-cursor="hover">Détails →</a>
+      </div>
+    </article>
+  </div>
+
+  <p class="flavors__discovery v-mono">
+    Pack découverte · <strong>30&nbsp;€</strong> · 3 shots de chaque recette, livrés en France.
+  </p>
+</section>
+
+<!-- ══════════ SHOT EXPLAINER BAND (60ml) ══════════ -->
+<section class="shot">
+  <div class="shot__inner">
+    <h2 class="shot__num v-display">60</h2>
+    <p class="shot__unit v-mono">ml</p>
+    <div class="shot__copy">
+      <p class="shot__line v-display">Trois secondes.</p>
+      <p class="shot__line v-display">Une montée nette.</p>
+      <p class="shot__line v-display">Sans sucre ajouté, sans crash.</p>
     </div>
-  </aside>
+  </div>
+</section>
 
-  <div class="v-preview-banner" data-i18n="preview.banner">Preview · image statique · pas de backend Shopify</div>
+<!-- ══════════ MANIFESTO (single editorial block) ══════════ -->
+<section class="story" id="story">
+  <div class="manifesto">
+    <aside class="manifesto__visual" aria-hidden="true">
+      <div class="manifesto__frame"></div>
+      <span class="manifesto__tag v-mono">Volta · Charge up</span>
+      <span class="manifesto__mark v-display">60<em>ml</em></span>
+    </aside>
+    <div class="manifesto__copy">
+      <p class="eyebrow">Manifeste</p>
+      <h2 class="v-display">Pas un soda.<br>Pas un supplément.<br><em>Un rituel.</em></h2>
+      <p class="manifesto__lead">Quatre recettes, une règle : rien de superflu. Pressés à froid, embouteillés à la main en France. Gingembre frais, curcuma, guarana, concombre, poire, ananas. Zéro sucre ajouté, zéro arôme artificiel.</p>
+      <ul class="manifesto__proof">
+        <li><strong>60 ml</strong><span>une dose, concentrée</span></li>
+        <li><strong>0 g</strong><span>sucre ajouté</span></li>
+        <li><strong>100%</strong><span>pressé en France</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
-  <script src="../assets/volta-motion.js"></script>
-  <script src="../assets/volta-cursor.js"></script>
-  <script src="../assets/volta-mascot.js"></script>
-  <script src="../assets/volta-cart.js"></script>
-  <script src="../assets/volta-header.js"></script>
-  <script src="../assets/volta-product.js"></script>
-  <script src="../assets/volta-preloader.js"></script>
-  <script src="volta-preview-i18n.js"></script>
+<!-- ══════════ SUBSCRIPTION BUILDER ══════════ -->
+<section class="subscribe" id="subscribe">
+  <div class="subscribe__inner">
+    <header class="section-head">
+      <p class="eyebrow">Abonnement mensuel · −10 %</p>
+      <h2 class="v-display">Compose ton pack.<br><em>Livré chaque mois.</em></h2>
+    </header>
+
+    <div class="builder">
+      <!-- Left: composer (variable pack size + lock-to-total mixer) -->
+      <div class="builder__composer" data-total="24">
+        <div class="presets presets--sizes" role="group" aria-label="Taille du pack">
+          <span class="presets__label v-mono">Pack</span>
+          <button type="button" class="preset" data-size="24" aria-pressed="true">24<span>shots</span></button>
+          <button type="button" class="preset" data-size="36" aria-pressed="false">36<span>shots</span></button>
+          <button type="button" class="preset" data-size="48" aria-pressed="false">48<span>shots</span></button>
+        </div>
+        <div class="presets" role="group" aria-label="Presets">
+          <span class="presets__label v-mono">Presets</span>
+          <button type="button" class="preset" data-preset="balanced" aria-pressed="true">Équilibré<span>6·6·6·6</span></button>
+          <button type="button" class="preset" data-preset="focus" aria-pressed="false">Focus matin<span>10·4·6·4</span></button>
+          <button type="button" class="preset" data-preset="kick" aria-pressed="false">Énergie<span>4·10·4·6</span></button>
+          <button type="button" class="preset" data-preset="green" aria-pressed="false">Détox<span>6·4·10·4</span></button>
+          <button type="button" class="preset" data-preset="fire" aria-pressed="false">Piquant<span>4·4·4·12</span></button>
+        </div>
+
+        <div class="mix-bar" role="img" aria-label="Répartition des parfums">
+          <span class="mix-seg mix-seg--focus" style="--pct:25"></span>
+          <span class="mix-seg mix-seg--kick"  style="--pct:25"></span>
+          <span class="mix-seg mix-seg--green" style="--pct:25"></span>
+          <span class="mix-seg mix-seg--fire"  style="--pct:25"></span>
+        </div>
+
+        <div class="mix-rows">
+          <div class="mix-row" data-flavor="focus">
+            <div class="mix-row__label">
+              <span class="mix-row__dot"></span>
+              <div>
+                <b>Maxi Focus</b>
+                <small class="v-mono">Poire · grenade · guarana</small>
+              </div>
+            </div>
+            <div class="mix-row__count">
+              <button type="button" class="mix-btn" data-delta="-1" aria-label="Moins Maxi Focus">−</button>
+              <output class="mix-row__val" data-val="focus">6</output>
+              <button type="button" class="mix-btn" data-delta="+1" aria-label="Plus Maxi Focus">+</button>
+            </div>
+          </div>
+          <div class="mix-row" data-flavor="kick">
+            <div class="mix-row__label">
+              <span class="mix-row__dot"></span>
+              <div>
+                <b>Golden Kick</b>
+                <small class="v-mono">Gingembre · ananas · mangue</small>
+              </div>
+            </div>
+            <div class="mix-row__count">
+              <button type="button" class="mix-btn" data-delta="-1" aria-label="Moins Golden Kick">−</button>
+              <output class="mix-row__val" data-val="kick">6</output>
+              <button type="button" class="mix-btn" data-delta="+1" aria-label="Plus Golden Kick">+</button>
+            </div>
+          </div>
+          <div class="mix-row" data-flavor="green">
+            <div class="mix-row__label">
+              <span class="mix-row__dot"></span>
+              <div>
+                <b>Green Flag</b>
+                <small class="v-mono">Concombre · pomme · gingembre</small>
+              </div>
+            </div>
+            <div class="mix-row__count">
+              <button type="button" class="mix-btn" data-delta="-1" aria-label="Moins Green Flag">−</button>
+              <output class="mix-row__val" data-val="green">6</output>
+              <button type="button" class="mix-btn" data-delta="+1" aria-label="Plus Green Flag">+</button>
+            </div>
+          </div>
+          <div class="mix-row" data-flavor="fire">
+            <div class="mix-row__label">
+              <span class="mix-row__dot"></span>
+              <div>
+                <b>Fire Fighter</b>
+                <small class="v-mono">Gingembre · curcuma · piment</small>
+              </div>
+            </div>
+            <div class="mix-row__count">
+              <button type="button" class="mix-btn" data-delta="-1" aria-label="Moins Fire Fighter">−</button>
+              <output class="mix-row__val" data-val="fire">6</output>
+              <button type="button" class="mix-btn" data-delta="+1" aria-label="Plus Fire Fighter">+</button>
+            </div>
+          </div>
+        </div>
+
+        <p class="mix-hint v-mono">
+          <span class="mix-hint__total">24/24</span> · ajustable shot par shot — dépasse ou réduis comme tu veux.
+        </p>
+      </div>
+
+      <!-- Right: offer card -->
+      <aside class="offer">
+        <div class="offer__price">
+          <span class="v-mono">À partir de</span>
+          <div class="offer__amount">
+            <s class="offer__old">60&nbsp;€</s>
+            <strong class="offer__new">54&nbsp;€</strong>
+            <span class="offer__unit v-mono">/ mois</span>
+          </div>
+          <span class="offer__badge">−10&nbsp;%</span>
+        </div>
+        <ul class="offer__includes">
+          <li>24, 36 ou 48 shots de 60 ml, à composer parmi les 4 recettes</li>
+          <li>Livraison offerte en France métropolitaine</li>
+          <li>Cadence : chaque mois ou toutes les 6&nbsp;semaines</li>
+          <li>Modifie ta recette jusqu'à 12&nbsp;jours avant l'envoi</li>
+        </ul>
+        <fieldset class="offer__cadence">
+          <legend class="v-mono">Cadence</legend>
+          <label><input type="radio" name="cadence" value="30" checked> <span>Chaque mois</span></label>
+          <label><input type="radio" name="cadence" value="42"> <span>Toutes les 6&nbsp;semaines</span></label>
+        </fieldset>
+        <button type="button" class="btn btn--primary btn--wide v-magnetic" id="preorder-cta" data-cursor="hover">
+          Pré-commander mon abonnement
+        </button>
+        <p class="offer__guarantee v-mono">Sans engagement · Annule en 1 clic</p>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ FOOTER ══════════ -->
+<footer class="footer" id="footer">
+  <div class="footer__newsletter">
+    <p class="eyebrow">Reste dans la boucle</p>
+    <h2 class="v-display">Rejoins la Volta List.</h2>
+    <p class="footer__sub">Un mail par mois, pas de spam, que du bon.</p>
+    <form class="footer__form" id="newsletter-form">
+      <input type="email" placeholder="ton@email.com" required autocomplete="email" aria-label="Email">
+      <button type="submit" class="btn btn--primary v-magnetic" data-cursor="hover">Je m'inscris</button>
+    </form>
+  </div>
+  <div class="footer__grid">
+    <div class="footer__col">
+      <h4 class="v-mono">Boutique</h4>
+      <ul><li><a href="#flavors">Recettes</a></li><li><a href="#subscribe">Abonnement</a></li><li><a href="/products">Tous les shots</a></li></ul>
+    </div>
+    <div class="footer__col">
+      <h4 class="v-mono">Aide</h4>
+      <ul><li><a href="faq.html">FAQ</a></li><li><a href="/livraison">Livraison</a></li><li><a href="/contact">Contact</a></li></ul>
+    </div>
+    <div class="footer__col">
+      <h4 class="v-mono">Légal</h4>
+      <ul><li><a href="/cgv">CGV</a></li><li><a href="/mentions">Mentions légales</a></li><li><a href="/confidentialite">Confidentialité</a></li></ul>
+    </div>
+    <div class="footer__col">
+      <h4 class="v-mono">Suis-nous</h4>
+      <ul class="footer__social">
+        <li><a href="https://instagram.com/voltadrinks" target="_blank" rel="noopener" aria-label="Instagram">Instagram</a></li>
+        <li><a href="https://tiktok.com/@voltadrinks" target="_blank" rel="noopener" aria-label="TikTok">TikTok</a></li>
+        <li><a href="https://linkedin.com/company/voltadrinks" target="_blank" rel="noopener" aria-label="LinkedIn">LinkedIn</a></li>
+        <li><a href="https://pinterest.com/voltadrinks" target="_blank" rel="noopener" aria-label="Pinterest">Pinterest</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer__base">
+    <span class="v-mono">© 2026 Volta Drinks · Pressé &amp; embouteillé en France</span>
+    <span class="footer__bolt"><img src="assets/volta-courant.svg" alt="" width="48" aria-hidden="true"></span>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js" defer></script>
+<script src="v1.js" defer></script>
 </body>
 </html>

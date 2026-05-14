@@ -1,7 +1,7 @@
 {
   "sections": {
     "hero": {
-      "type": "volta-hero-v1",
+      "type": "volta-hero",
       "settings": {}
     },
     "footer": {

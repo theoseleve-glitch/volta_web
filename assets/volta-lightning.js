@@ -23,6 +23,10 @@
   // Guard 2: Shopify Theme Editor — skip entirely
   if (window.Shopify && window.Shopify.designMode === true) return;
 
+  // Cleanup handles — survive across init() calls so we can cancel old work
+  let scheduleTimer = null;
+  let observer = null;
+
   // ─────────────────────────────────────────────────────────────
   // INIT — runs once per valid page load (or section:load event)
   // ─────────────────────────────────────────────────────────────
@@ -31,10 +35,20 @@
     const sparks = document.querySelector('#v-sparks-layer');
     if (!bolts || !sparks) return; // hero not present on this page
 
+    // Cancel any previously-running scheduler + observer (Theme Editor re-init safe)
+    if (scheduleTimer !== null) {
+      clearTimeout(scheduleTimer);
+      scheduleTimer = null;
+    }
+    if (observer !== null) {
+      observer.disconnect();
+      observer = null;
+    }
+
     // Guard 3: IntersectionObserver — pause bolts when hero is off-screen
     let running = true;
     const hero = bolts.parentElement;
-    const io = new IntersectionObserver(
+    observer = new IntersectionObserver(
       function (entries) {
         entries.forEach(function (e) {
           running = e.isIntersecting;
@@ -42,7 +56,7 @@
       },
       { threshold: 0.05 }
     );
-    io.observe(hero);
+    observer.observe(hero);
 
     // ─────── PORTED FROM docs/volta-design-extract/waitlist/project/index.html:511-620 ───────
 
@@ -149,7 +163,7 @@
       }
       // Always re-schedule so bolts resume automatically when hero scrolls back in
       var next = 900 + Math.random() * 2200;
-      setTimeout(scheduleBolts, next);
+      scheduleTimer = setTimeout(scheduleBolts, next);
     }
     scheduleBolts();
 
@@ -157,6 +171,8 @@
     // Spans use class "v-spark" — the rise CSS keyframe lives in volta-hero.liquid.
     // Sparks are created once; their CSS animation loops indefinitely.
 
+    // Clear any prior sparks (defensive — supports re-init)
+    sparks.innerHTML = '';
     for (var s = 0; s < 18; s++) {
       var span = document.createElement('span');
       span.className = 'v-spark';
@@ -188,7 +204,11 @@
 
   // Theme Editor: re-run when the hero section is injected at runtime
   document.addEventListener('shopify:section:load', function (e) {
-    if (e.target.querySelector('#v-bolts-layer')) initLightning();
+    if (!e.target.querySelector('#v-bolts-layer')) return;
+    // Re-check guards at listener fire time, not just at parse time
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (window.Shopify && window.Shopify.designMode === true) return;
+    initLightning();
   });
 
 })();

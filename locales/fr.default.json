@@ -425,12 +425,22 @@
       "cta": "Commander"
     },
     "volta_products": {
-      "eyebrow": "La gamme",
-      "title": "Choisis ton shot",
-      "card_cta": "Ajouter",
-      "cursor_view": "VOIR",
-      "placeholder_name": "Shot",
-      "placeholder_tagline": "Fonctionnel"
+      "name": "Saveurs — Grille",
+      "eyebrow": "Quatre rituels",
+      "heading": "Chaque saveur, un courant",
+      "format": "60 ml · pack de 12",
+      "coming_soon": "Bientôt",
+      "price_placeholder": "30 €",
+      "cta_buy": "Acheter",
+      "cta_pending": "Bientôt disponible",
+      "maxi_name": "Maxi Focus",
+      "maxi_desc": "Le coup de jus pour la concentration prolongée.",
+      "golden_name": "Golden Kick",
+      "golden_desc": "Le shot signature : gingembre, curcuma, citron.",
+      "green_name": "Green Flag",
+      "green_desc": "Vert intense, vitalité claire.",
+      "fire_name": "Fire Fighter",
+      "fire_desc": "Piquant, défensif, immunité renforcée."
     },
     "volta_subscription": {
       "eyebrow": "Abonnement mensuel",
@@ -451,23 +461,28 @@
       "benefit_3_title": "Livré, offert"
     },
     "volta_story": {
-      "eyebrow": "Notre histoire",
-      "title": "D'une idée simple à ton rituel quotidien",
-      "chapter_label": "Chapitre"
+      "name": "Story — Manifeste",
+      "eyebrow": "Manifeste",
+      "line_1": "Pas un soda.",
+      "line_2": "Pas un supplément.",
+      "line_3": "Un rituel."
     },
     "volta_reviews": {
       "title": "Ce qu'ils en disent"
     },
     "volta_footer": {
-      "made_with": "Fait avec ⚡ en France",
-      "newsletter": {
-        "eyebrow": "Reste dans la boucle",
-        "headline": "Rejoins la Volta List",
-        "subhead": "Un mail par mois. Pas de spam. Que du bon.",
-        "email_label": "Ton email",
-        "placeholder": "ton@email.com",
-        "submit": "Je m'inscris"
-      }
+      "name": "Footer — Complet",
+      "newsletter_eyebrow": "Volta List",
+      "newsletter_heading": "Rejoins le courant",
+      "newsletter_email_label": "Adresse email",
+      "newsletter_email_placeholder": "ton@email.com",
+      "newsletter_submit": "Je charge",
+      "newsletter_note": "Pas de spam. Des nouvelles fraîches une fois par mois.",
+      "newsletter_placeholder": "Newsletter bientôt disponible.",
+      "mentions": "Mentions légales",
+      "cgv": "CGV",
+      "confidentialite": "Confidentialité",
+      "livraison": "Livraison & retours"
     },
     "volta_product": {
       "breadcrumb_label": "Fil d'Ariane",

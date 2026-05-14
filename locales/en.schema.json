@@ -3425,12 +3425,17 @@
       }
     },
     "volta_products": {
-      "name": "Volta · Product grid",
-      "settings": {
-        "collection": {
-          "label": "Collection to display"
-        }
-      }
+      "name": "Flavors — Grid",
+      "content_header": "Content",
+      "heading_label": "Grid heading",
+      "heading_info": "Empty → default translation",
+      "featured_product_label": "Golden Kick product",
+      "featured_product_info": "Bind to Shopify product; empty → CTA shows 'Coming soon'",
+      "accents_header": "Per-flavor accent colors",
+      "accent_maxi_label": "Maxi Focus",
+      "accent_golden_label": "Golden Kick",
+      "accent_green_label": "Green Flag",
+      "accent_fire_label": "Fire Fighter"
     },
     "volta_subscription": {
       "name": "Volta · Subscription band",
@@ -3441,23 +3446,9 @@
       }
     },
     "volta_story": {
-      "name": "Volta · Story",
-      "blocks": {
-        "panel": {
-          "name": "Panel",
-          "settings": {
-            "image": {
-              "label": "Image"
-            },
-            "heading": {
-              "label": "Heading"
-            },
-            "body": {
-              "label": "Body"
-            }
-          }
-        }
-      }
+      "name": "Story — Manifesto",
+      "caption_label": "Caption below the manifesto (optional)",
+      "caption_info": "If set, appears in small text below the 3 manifesto lines"
     },
     "volta_reviews": {
       "name": "Volta · Reviews",
@@ -3476,28 +3467,13 @@
       }
     },
     "volta_footer": {
-      "name": "Volta · Footer",
-      "blocks": {
-        "link_list": {
-          "name": "Link list",
-          "settings": {
-            "heading": {
-              "label": "Heading"
-            },
-            "menu": {
-              "label": "Menu"
-            }
-          }
-        },
-        "social": {
-          "name": "Social",
-          "settings": {
-            "heading": {
-              "label": "Heading"
-            }
-          }
-        }
-      }
+      "name": "Footer — Full",
+      "newsletter_header": "Newsletter",
+      "newsletter_heading_label": "Newsletter block heading",
+      "newsletter_heading_info": "Empty → 'Join the current'",
+      "contact_header": "Contact",
+      "contact_email_label": "Contact email",
+      "contact_email_info": "Shown in the footer bottom bar"
     },
     "volta_product": {
       "name": "Volta · Product",

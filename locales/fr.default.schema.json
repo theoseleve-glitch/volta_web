@@ -3425,12 +3425,17 @@
       }
     },
     "volta_products": {
-      "name": "Volta · Grille produits",
-      "settings": {
-        "collection": {
-          "label": "Collection à afficher"
-        }
-      }
+      "name": "Saveurs — Grille",
+      "content_header": "Contenu",
+      "heading_label": "Titre de la grille",
+      "heading_info": "Vide → traduction par défaut",
+      "featured_product_label": "Produit Golden Kick",
+      "featured_product_info": "Bind au produit Shopify; vide → CTA désactivé 'Bientôt'",
+      "accents_header": "Couleurs d'accent (par saveur)",
+      "accent_maxi_label": "Maxi Focus",
+      "accent_golden_label": "Golden Kick",
+      "accent_green_label": "Green Flag",
+      "accent_fire_label": "Fire Fighter"
     },
     "volta_subscription": {
       "name": "Volta · Bande Abonnement",
@@ -3441,23 +3446,9 @@
       }
     },
     "volta_story": {
-      "name": "Volta · Histoire",
-      "blocks": {
-        "panel": {
-          "name": "Panneau",
-          "settings": {
-            "image": {
-              "label": "Image"
-            },
-            "heading": {
-              "label": "Titre"
-            },
-            "body": {
-              "label": "Texte"
-            }
-          }
-        }
-      }
+      "name": "Story — Manifeste",
+      "caption_label": "Légende sous le manifeste (optionnelle)",
+      "caption_info": "Si renseigné, apparaît en petit sous les 3 lignes du manifeste"
     },
     "volta_reviews": {
       "name": "Volta · Avis",
@@ -3476,28 +3467,13 @@
       }
     },
     "volta_footer": {
-      "name": "Volta · Footer",
-      "blocks": {
-        "link_list": {
-          "name": "Liste de liens",
-          "settings": {
-            "heading": {
-              "label": "Titre"
-            },
-            "menu": {
-              "label": "Menu"
-            }
-          }
-        },
-        "social": {
-          "name": "Réseaux sociaux",
-          "settings": {
-            "heading": {
-              "label": "Titre"
-            }
-          }
-        }
-      }
+      "name": "Footer — Complet",
+      "newsletter_header": "Newsletter",
+      "newsletter_heading_label": "Titre du bloc newsletter",
+      "newsletter_heading_info": "Vide → 'Rejoins le courant'",
+      "contact_header": "Contact",
+      "contact_email_label": "Email de contact",
+      "contact_email_info": "Affiché dans la barre de bas du footer"
     },
     "bulk-quick-order-list": {
       "name": "Commandes groupées"

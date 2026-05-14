@@ -413,12 +413,22 @@
       "cta": "Order now"
     },
     "volta_products": {
-      "eyebrow": "The lineup",
-      "title": "Pick your shot",
-      "card_cta": "Add",
-      "cursor_view": "VIEW",
-      "placeholder_name": "Shot",
-      "placeholder_tagline": "Functional"
+      "name": "Flavors — Grid",
+      "eyebrow": "Four rituals",
+      "heading": "Each flavor, a current",
+      "format": "60 ml · 12-pack",
+      "coming_soon": "Soon",
+      "price_placeholder": "€30",
+      "cta_buy": "Buy",
+      "cta_pending": "Coming soon",
+      "maxi_name": "Maxi Focus",
+      "maxi_desc": "Sustained concentration in a shot.",
+      "golden_name": "Golden Kick",
+      "golden_desc": "Our signature: ginger, turmeric, lemon.",
+      "green_name": "Green Flag",
+      "green_desc": "Bright green, clear vitality.",
+      "fire_name": "Fire Fighter",
+      "fire_desc": "Sharp, defensive, immune-supporting."
     },
     "volta_subscription": {
       "eyebrow": "Monthly subscription",
@@ -439,23 +449,28 @@
       "benefit_3_title": "Shipped, free"
     },
     "volta_story": {
-      "eyebrow": "Our story",
-      "title": "From a simple idea to a daily ritual",
-      "chapter_label": "Chapter"
+      "name": "Story — Manifesto",
+      "eyebrow": "Manifesto",
+      "line_1": "Not a soda.",
+      "line_2": "Not a supplement.",
+      "line_3": "A ritual."
     },
     "volta_reviews": {
       "title": "What they're saying"
     },
     "volta_footer": {
-      "made_with": "Made with ⚡ in France",
-      "newsletter": {
-        "eyebrow": "Stay in the loop",
-        "headline": "Join the Volta List",
-        "subhead": "One email a month. No spam. Just good things.",
-        "email_label": "Your email",
-        "placeholder": "you@email.com",
-        "submit": "Sign up"
-      }
+      "name": "Footer — Full",
+      "newsletter_eyebrow": "Volta List",
+      "newsletter_heading": "Join the current",
+      "newsletter_email_label": "Email address",
+      "newsletter_email_placeholder": "you@email.com",
+      "newsletter_submit": "Charge me up",
+      "newsletter_note": "No spam. Fresh news once a month.",
+      "newsletter_placeholder": "Newsletter coming soon.",
+      "mentions": "Legal notice",
+      "cgv": "Terms of sale",
+      "confidentialite": "Privacy",
+      "livraison": "Shipping & returns"
     },
     "volta_product": {
       "breadcrumb_label": "Breadcrumb",

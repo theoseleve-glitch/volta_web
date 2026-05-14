@@ -404,6 +404,10 @@
       "banner_aria_label": "Volta Drinks banner"
     },
     "volta_shot_band": {
+      "name": "Volta · Shot band",
+      "volume": "60 ml",
+      "heading": "The Shot",
+      "body": "Three seconds. A clean, sharp lift. No sugar, no crash, no compromise.",
       "title": "The Shot",
       "copy": "60 ml. Three seconds. A clean, sharp lift. No sugar, no crash, no compromise.",
       "cta": "Order now"

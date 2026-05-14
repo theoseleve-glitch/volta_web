@@ -3414,6 +3414,10 @@
     },
     "volta_shot_band": {
       "name": "Volta · Bande Shot",
+      "heading_label": "Titre",
+      "heading_info": "Remplace le texte par défaut du titre",
+      "body_label": "Corps du texte",
+      "body_info": "Remplace le texte par défaut du corps",
       "settings": {
         "cta_link": {
           "label": "Lien CTA"

@@ -416,6 +416,10 @@
       "banner_aria_label": "Bannière Volta Drinks"
     },
     "volta_shot_band": {
+      "name": "Volta · Bande Shot",
+      "volume": "60 ml",
+      "heading": "Le Shot",
+      "body": "Trois secondes. Une montée nette. Sans sucre, sans crash, sans compromis.",
       "title": "Le Shot",
       "copy": "60 ml. Trois secondes. Une montée nette. Sans sucre, sans crash, sans compromis.",
       "cta": "Commander"

@@ -1,160 +1,350 @@
 {%- comment -%}
-  volta-hero.liquid
-  100vh landing banner. Display "CHARGE TON JUS" headline, subhead, dual CTAs,
-  and the mascot placeholder (animated by volta-mascot.js, scroll-bound for the
-  "CHARGE UP" signature moment).
+  volta-hero.liquid — Charged Hero (V1 Phase 1).
+  Spec: docs/superpowers/specs/2026-05-14-volta-v1-charged-multisection-design.md
+  Z-stack: indigo base → radial gradients → grid floor → vignette → grain →
+           lightning → sparks → mascot → corner brackets → chrome → content → preloader.
 {%- endcomment -%}
 
-<section class="v-hero" aria-labelledby="hero-heading-{{ section.id }}">
-  <div class="v-hero__bg" aria-hidden="true"></div>
+{%- liquid
+  assign featured = section.settings.featured_product
+  assign cta_label = section.settings.cta_label
+  assign eyebrow = section.settings.eyebrow
+  assign ticker = section.settings.ticker
+-%}
 
-  {%- render 'volta-mascot', variant: 'hero', scroll: 'charge' -%}
+<section class="v-hero-charged" data-section-id="{{ section.id }}" aria-labelledby="v-hero-title-{{ section.id }}">
+  {%- comment -%} Layer 0-1: indigo + radial gradients (CSS) {%- endcomment -%}
+  <div class="v-hero-charged__bg" aria-hidden="true"></div>
 
-  <div class="v-container v-hero__inner">
-    <p class="v-hero__eyebrow v-mono v-reveal">{{ 'sections.volta_hero.eyebrow' | t }}</p>
+  {%- comment -%} Layer 2: grid floor (CSS) {%- endcomment -%}
+  <div class="v-hero-charged__grid" aria-hidden="true"></div>
 
-    <h1 id="hero-heading-{{ section.id }}" class="v-hero__headline v-display v-reveal">
-      {{ 'sections.volta_hero.headline' | t }}
+  {%- comment -%} Layer 3: vignette {%- endcomment -%}
+  <div class="v-hero-charged__vignette" aria-hidden="true"></div>
+
+  {%- comment -%} Layer 4: grain {%- endcomment -%}
+  <div class="v-hero-charged__grain" aria-hidden="true"></div>
+
+  {%- comment -%} Layer 5: lightning SVG (target for volta-lightning.js) {%- endcomment -%}
+  <svg id="v-bolts-layer" class="v-hero-charged__bolts" aria-hidden="true" preserveAspectRatio="none">
+    <defs>
+      <filter id="v-bolt-glow" x="-20%" y="-20%" width="140%" height="140%">
+        <feGaussianBlur stdDeviation="2" result="b"/>
+        <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+    </defs>
+  </svg>
+
+  {%- comment -%} Layer 6: sparks (target for volta-lightning.js) {%- endcomment -%}
+  <div id="v-sparks-layer" class="v-hero-charged__sparks" aria-hidden="true"></div>
+
+  {%- comment -%} Layer 7: mascot (right side, reactive) {%- endcomment -%}
+  <div class="v-hero-charged__mascot">
+    {%- render 'volta-mascot', variant: 'hero', scroll: 'charge' -%}
+  </div>
+
+  {%- comment -%} Layer 8: corner brackets {%- endcomment -%}
+  <span class="v-hero-charged__bracket v-hero-charged__bracket--tl" aria-hidden="true"></span>
+  <span class="v-hero-charged__bracket v-hero-charged__bracket--tr" aria-hidden="true"></span>
+  <span class="v-hero-charged__bracket v-hero-charged__bracket--bl" aria-hidden="true"></span>
+  <span class="v-hero-charged__bracket v-hero-charged__bracket--br" aria-hidden="true"></span>
+
+  {%- comment -%} Layer 9: chrome — VOLTA logo + cart {%- endcomment -%}
+  <a href="{{ routes.root_url }}" class="v-hero-charged__logo" aria-label="{{ 'accessibility.home' | t }}">
+    <img
+      src="{{ 'volta-logo-v2.png' | asset_url }}"
+      alt="Volta"
+      width="120" height="40"
+      loading="eager"
+      decoding="async"
+    >
+  </a>
+
+  <a href="{{ routes.cart_url }}" class="v-hero-charged__cart" aria-label="{%- if cart.item_count > 0 -%}{{ 'accessibility.cart_count' | t: count: cart.item_count }}{%- else -%}{{ 'accessibility.cart_empty' | t }}{%- endif -%}">
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+      <path d="M6 7h12l-1.5 11h-9z"/>
+      <path d="M9 7V5a3 3 0 0 1 6 0v2"/>
+    </svg>
+    {%- if cart.item_count > 0 -%}<span class="v-hero-charged__cart-count">{{ cart.item_count }}</span>{%- endif -%}
+  </a>
+
+  {%- comment -%} Layer 10: content {%- endcomment -%}
+  <div class="v-hero-charged__content">
+    {%- if eyebrow != blank -%}
+      <p class="v-hero-charged__eyebrow">{{ eyebrow }}</p>
+    {%- else -%}
+      <p class="v-hero-charged__eyebrow">{{ 'sections.volta_hero.eyebrow' | t }}</p>
+    {%- endif -%}
+
+    <h1 id="v-hero-title-{{ section.id }}" class="v-hero-charged__title" data-v-letters>
+      {%- if section.settings.title != blank -%}{{ section.settings.title }}{%- else -%}{{ 'sections.volta_hero.title' | t }}{%- endif -%}
     </h1>
 
-    <p class="v-hero__subhead v-reveal">
-      {{ 'sections.volta_hero.subhead' | t }}
-    </p>
+    {%- if ticker != blank -%}
+      <p class="v-hero-charged__ticker">{{ ticker }}</p>
+    {%- else -%}
+      <p class="v-hero-charged__ticker">{{ 'sections.volta_hero.ticker' | t }}</p>
+    {%- endif -%}
 
-    <div class="v-hero__actions v-reveal">
-      <a href="{{ section.settings.primary_cta_link | default: routes.all_products_collection_url }}"
-         class="v-btn v-btn--primary v-magnetic"
-         data-cursor="hover">
-        {{ 'sections.volta_hero.primary_cta' | t }}
-      </a>
-      <a href="{{ section.settings.secondary_cta_link | default: '/products/abonnement' }}"
-         class="v-btn v-btn--ghost"
-         data-cursor="hover">
-        {{ 'sections.volta_hero.secondary_cta' | t }}
-      </a>
-    </div>
+    {%- if featured != blank and featured.available -%}
+      <form action="{{ routes.cart_add_url }}" method="post" class="v-hero-charged__form" enctype="multipart/form-data">
+        <input type="hidden" name="id" value="{{ featured.variants.first.id }}">
+        <input type="hidden" name="quantity" value="1">
+        <input type="hidden" name="return_to" value="/checkout">
+        <button type="submit" class="v-hero-charged__cta" data-v-magnet>
+          <span>{%- if cta_label != blank -%}{{ cta_label }}{%- else -%}{{ 'sections.volta_hero.cta_label' | t }}{%- endif -%}</span>
+          <span class="v-hero-charged__cta-price">{{ featured.price | money }}</span>
+        </button>
+      </form>
+    {%- else -%}
+      <button type="button" class="v-hero-charged__cta v-hero-charged__cta--disabled" aria-disabled="true" disabled>
+        <span>{{ 'sections.volta_hero.cta_pending' | t }}</span>
+      </button>
+    {%- endif -%}
   </div>
 
-  <div class="v-hero__scroll-cue v-mono" aria-hidden="true">
-    <span>{{ 'sections.volta_hero.scroll_cue' | t }}</span>
-    <span class="v-hero__scroll-arrow">↓</span>
-  </div>
+  {%- comment -%} Layer 11: preloader {%- endcomment -%}
+  {%- render 'volta-preloader' -%}
 </section>
 
 {% stylesheet %}
-  .v-hero {
-    position: relative;
-    min-height: 100svh;
-    display: flex;
-    align-items: center;
-    overflow: hidden;
-    padding-block: var(--space-20) var(--space-16);
-  }
-  .v-hero__bg {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    background: radial-gradient(
-      circle at 70% 30%,
-      color-mix(in srgb, var(--volta-green) 10%, transparent) 0%,
-      transparent 60%
-    );
-  }
-  .v-hero__inner {
-    position: relative;
-    z-index: 2;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: var(--space-6);
-    max-width: 900px;
-  }
-  .v-hero__eyebrow {
-    color: var(--volta-green);
-    font-weight: 500;
-  }
-  .v-hero__headline {
-    font-size: var(--text-hero);
-    letter-spacing: -0.04em;
-    line-height: 0.95;
-    text-transform: uppercase;
-    text-wrap: balance;
-    margin: 0;
-  }
-  .v-hero__subhead {
-    font-size: var(--text-xl);
-    line-height: 1.3;
-    max-width: 560px;
-    color: color-mix(in srgb, var(--volta-ink) 80%, transparent);
-    margin: 0;
-  }
-  .v-hero__actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-4);
-    margin-top: var(--space-4);
-  }
+/* === Charged Hero === */
+.v-hero-charged {
+  position: relative;
+  min-height: 100svh;
+  background: var(--volta-indigo, #12104b);
+  color: #fff;
+  font-family: var(--font-body, system-ui);
+  overflow: hidden;
+  isolation: isolate;
+}
 
-  .v-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: var(--space-4) var(--space-8);
-    font-family: var(--font-mono);
-    font-size: var(--text-xs);
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    text-decoration: none;
-    border: 1.5px solid transparent;
-    border-radius: 999px;
-    transition: background var(--duration-base), color var(--duration-base), border-color var(--duration-base);
-    cursor: pointer;
-  }
-  .v-btn--primary {
-    background: var(--volta-ink);
-    color: var(--volta-cream);
-  }
-  .v-btn--primary:hover { background: var(--volta-green); color: var(--volta-ink); }
-  .v-btn--ghost {
-    background: transparent;
-    color: var(--volta-ink);
-    border-color: var(--volta-ink);
-  }
-  .v-btn--ghost:hover { background: var(--volta-ink); color: var(--volta-cream); }
+/* Layer 0-1: indigo base + radial colour bleeds */
+.v-hero-charged__bg {
+  position: absolute; inset: 0; z-index: 1;
+  background:
+    radial-gradient(60% 50% at 20% 30%, rgba(120,255,136,0.10), transparent 70%),
+    radial-gradient(50% 40% at 80% 75%, rgba(251,238,73,0.10), transparent 70%);
+  pointer-events: none;
+}
 
-  .v-hero__scroll-cue {
-    position: absolute;
-    bottom: var(--space-8);
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    align-items: center;
-    gap: var(--space-2);
-    color: color-mix(in srgb, var(--volta-ink) 60%, transparent);
-    z-index: 2;
+/* Layer 2: perspective grid floor */
+.v-hero-charged__grid {
+  position: absolute; left: 0; right: 0; bottom: -10%; height: 60%; z-index: 2;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+  transform: perspective(800px) rotateX(60deg) translateY(-10%);
+  transform-origin: center top;
+  pointer-events: none;
+  mask-image: linear-gradient(to top, black 30%, transparent 100%);
+}
+
+/* Layer 3: radial vignette */
+.v-hero-charged__vignette {
+  position: absolute; inset: 0; z-index: 3;
+  background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.6) 100%);
+  pointer-events: none;
+}
+
+/* Layer 4: SVG noise grain */
+.v-hero-charged__grain {
+  position: absolute; inset: 0; z-index: 4;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence baseFrequency='0.9' numOctaves='2'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .1 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  opacity: 0.6;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+
+/* Layer 5: lightning bolt SVG canvas */
+.v-hero-charged__bolts {
+  position: absolute; inset: 0; z-index: 5;
+  width: 100%; height: 100%;
+  pointer-events: none;
+}
+
+/* Layer 6: spark particle container */
+.v-hero-charged__sparks {
+  position: absolute; inset: 0; z-index: 6;
+  pointer-events: none;
+}
+
+/* Individual spark elements (created by volta-lightning.js as <span class="v-spark">) */
+.v-spark {
+  position: absolute;
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.85);
+  box-shadow: 0 0 8px rgba(255,255,255,0.6);
+  opacity: 0;
+  animation: vRise var(--dur, 6s) linear var(--delay, 0s) infinite;
+  pointer-events: none;
+}
+.v-spark--green {
+  background: var(--volta-green, #78ff88);
+  box-shadow: 0 0 8px rgba(120,255,136,0.55);
+}
+
+@keyframes vRise {
+  0%   { transform: translate(0, 0); opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { transform: translate(var(--drift, 0px), -120vh); opacity: 0; }
+}
+
+/* Layer 7: mascot wrapper (snippet positions itself via .v-mascot--hero) */
+.v-hero-charged__mascot {
+  position: absolute; right: 4vw; bottom: 8vh; z-index: 7;
+  width: clamp(160px, 26vw, 420px);
+}
+
+/* Layer 8: corner brackets */
+.v-hero-charged__bracket {
+  position: absolute; width: 32px; height: 32px; z-index: 8;
+  border: 2px solid rgba(255,255,255,0.3);
+  pointer-events: none;
+}
+.v-hero-charged__bracket--tl { top: clamp(16px, 3vw, 32px); left: clamp(16px, 3vw, 32px); border-right: 0; border-bottom: 0; }
+.v-hero-charged__bracket--tr { top: clamp(16px, 3vw, 32px); right: clamp(16px, 3vw, 32px); border-left: 0; border-bottom: 0; }
+.v-hero-charged__bracket--bl { bottom: clamp(16px, 3vw, 32px); left: clamp(16px, 3vw, 32px); border-right: 0; border-top: 0; }
+.v-hero-charged__bracket--br { bottom: clamp(16px, 3vw, 32px); right: clamp(16px, 3vw, 32px); border-left: 0; border-top: 0; }
+
+/* Layer 9: chrome — logo + cart pill */
+.v-hero-charged__logo {
+  position: absolute; top: clamp(20px, 3vw, 36px); left: clamp(20px, 3vw, 36px);
+  z-index: 9;
+  display: inline-flex;
+}
+.v-hero-charged__logo img {
+  width: clamp(96px, 10vw, 132px); height: auto; display: block;
+  filter: invert(1);
+}
+.v-hero-charged__cart {
+  position: absolute; top: clamp(20px, 3vw, 36px); right: clamp(20px, 3vw, 36px);
+  z-index: 9;
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 12px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 999px;
+  color: #fff;
+  text-decoration: none;
+  transition: background 0.2s ease;
+}
+.v-hero-charged__cart:hover { background: rgba(255,255,255,0.14); }
+.v-hero-charged__cart:focus-visible { outline: 2px solid var(--volta-yellow, #FBEE49); outline-offset: 2px; }
+.v-hero-charged__cart-count { font-size: 13px; font-weight: 600; }
+
+/* Layer 10: text + CTA content block */
+.v-hero-charged__content {
+  position: absolute; left: clamp(24px, 5vw, 80px); bottom: clamp(64px, 12vh, 120px); right: clamp(160px, 30vw, 460px);
+  z-index: 10;
+  display: flex; flex-direction: column; gap: clamp(12px, 1.6vw, 20px);
+}
+.v-hero-charged__eyebrow {
+  font-family: var(--font-body, system-ui); font-size: 11px;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: rgba(255,255,255,0.6); margin: 0;
+}
+.v-hero-charged__title {
+  font-family: var(--font-display, 'dunbar-tall', sans-serif);
+  font-style: italic; font-weight: 900;
+  font-size: clamp(72px, 11vw, 180px);
+  line-height: 0.88; letter-spacing: -0.04em;
+  color: #fff; margin: 0;
+}
+.v-hero-charged__ticker {
+  font-family: var(--font-body, system-ui); font-size: clamp(13px, 1.2vw, 15px);
+  color: rgba(255,255,255,0.7); margin: 0; max-width: 36ch;
+}
+.v-hero-charged__form { margin-top: clamp(8px, 1vw, 12px); }
+.v-hero-charged__cta {
+  display: inline-flex; align-items: center; gap: 14px;
+  padding: 14px 24px;
+  background: var(--volta-yellow, #FBEE49);
+  color: var(--volta-indigo, #12104b);
+  border: none; border-radius: 999px;
+  font-family: var(--font-body, system-ui); font-size: 13px; font-weight: 800;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  cursor: pointer;
+  transition: transform 0.2s var(--ease-out-expo, cubic-bezier(.16,1,.3,1));
+}
+.v-hero-charged__cta:hover { transform: translateY(-2px); }
+.v-hero-charged__cta:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+.v-hero-charged__cta-price { font-weight: 700; letter-spacing: 0.06em; }
+.v-hero-charged__cta--disabled { background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.6); cursor: not-allowed; }
+.v-hero-charged__cta--disabled:hover { transform: none; }
+
+/* Responsive: hide mascot + expand content on narrow viewports */
+@media (max-width: 720px) {
+  .v-hero-charged__mascot { display: none; }
+  .v-hero-charged__content { right: clamp(20px, 6vw, 40px); }
+  .v-hero-charged__bracket { width: 20px; height: 20px; }
+}
+
+/* Reduced motion: kill all decoration */
+@media (prefers-reduced-motion: reduce) {
+  .v-hero-charged *,
+  .v-hero-charged *::before,
+  .v-hero-charged *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
   }
-  .v-hero__scroll-arrow { animation: v-bounce 2s var(--ease-in-out-quart) infinite; }
-  @keyframes v-bounce {
-    0%, 100% { transform: translateY(0); }
-    50%      { transform: translateY(6px); }
-  }
+  .v-hero-charged__bolts,
+  .v-hero-charged__sparks { display: none; }
+}
 {% endstylesheet %}
+
+<script src="{{ 'volta-lightning.js' | asset_url }}" defer></script>
 
 {% schema %}
 {
   "name": "t:sections.volta_hero.name",
+  "tag": "section",
+  "class": "v-hero-charged-wrapper",
   "settings": [
     {
-      "type": "url",
-      "id": "primary_cta_link",
-      "label": "t:sections.volta_hero.settings.primary_cta_link.label"
+      "type": "header",
+      "content": "t:sections.volta_hero.content_header"
     },
     {
-      "type": "url",
-      "id": "secondary_cta_link",
-      "label": "t:sections.volta_hero.settings.secondary_cta_link.label"
+      "type": "text",
+      "id": "eyebrow",
+      "label": "t:sections.volta_hero.eyebrow_label",
+      "info": "t:sections.volta_hero.eyebrow_info"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "t:sections.volta_hero.title_label",
+      "info": "t:sections.volta_hero.title_info"
+    },
+    {
+      "type": "textarea",
+      "id": "ticker",
+      "label": "t:sections.volta_hero.ticker_label",
+      "info": "t:sections.volta_hero.ticker_info"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.volta_hero.cta_header"
+    },
+    {
+      "type": "product",
+      "id": "featured_product",
+      "label": "t:sections.volta_hero.featured_product_label",
+      "info": "t:sections.volta_hero.featured_product_info"
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "t:sections.volta_hero.cta_label_label",
+      "info": "t:sections.volta_hero.cta_label_info"
     }
   ],
-  "presets": [{ "name": "t:sections.volta_hero.name" }]
+  "presets": [
+    { "name": "t:sections.volta_hero.name" }
+  ]
 }
 {% endschema %}

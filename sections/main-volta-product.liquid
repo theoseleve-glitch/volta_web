@@ -96,9 +96,6 @@
         </fieldset>
       {%- endif -%}
 
-      {%- comment -%} ── Subscription toggle (Prompt 7 fleshes out Seal) ───── {%- endcomment -%}
-      {%- render 'volta-subscription-toggle', product: product, selling_plans: product.selling_plan_groups -%}
-
       {%- comment -%} ── Quantity ───────────────────────────────────────── {%- endcomment -%}
       <div class="v-product__qty v-reveal">
         <label class="v-mono v-product__label" for="VoltaQty-{{ section.id }}">

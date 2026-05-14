@@ -7,9 +7,11 @@
 
 :root {
   /* ── Colors ─────────────────────────────────────────────────────────── */
-  --volta-green: #7FEFA8;              /* from logo v1 (2026-04-17) — tweak per final CMYK/Pantone */
+  --volta-green: #78ff88;              /* mascot + accents (design-extract confirmed 2026-04-18) */
   --volta-green-dim: rgba(127, 239, 168, 0.5);
-  --volta-yellow: #FDE047;             /* neon accent */
+  --volta-indigo: #12104b;             /* primary surface / brand anchor (design-extract confirmed) */
+  --volta-indigo-deep: #0a0930;        /* pressed / deepest shadow (design-extract confirmed) */
+  --volta-yellow: #FBEE49;             /* high-energy accent (design-extract confirmed) */
   --volta-ink: #0E0E10;                /* near-black text */
   --volta-cream: #F7F7F2;              /* default background, NEVER #fff */
   --volta-cream-warm: #F2EFE5;         /* section-break variant */
@@ -17,7 +19,7 @@
   --volta-shadow-strong: rgba(14, 14, 16, 0.16);
 
   /* ── Typography ─────────────────────────────────────────────────────── */
-  --font-display: 'Bricolage Grotesque', system-ui, sans-serif;
+  --font-display: 'dunbar-tall', 'Bricolage Grotesque', system-ui, sans-serif;
   --font-body: 'Inter', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, monospace;
 

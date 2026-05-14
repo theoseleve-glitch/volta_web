@@ -389,7 +389,12 @@
       "switch_language_html": "Switch to {{ language }}"
     },
     "volta_hero": {
-      "eyebrow": "Functional shots · 60 ml",
+      "name": "Hero — Charged",
+      "eyebrow": "Pressed in France",
+      "title": "VOLTA",
+      "ticker": "First batch · Shipping June 2026",
+      "cta_label": "Buy",
+      "cta_pending": "Coming soon",
       "headline": "Charge up",
       "subhead": "Functional shots. 100% natural. Zero compromise.",
       "primary_cta": "Shop now",

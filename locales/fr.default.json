@@ -401,7 +401,12 @@
       "switch_language_html": "Passer en {{ language }}"
     },
     "volta_hero": {
-      "eyebrow": "Shots fonctionnels · 60 ml",
+      "name": "Hero — Charged",
+      "eyebrow": "Pressé en France",
+      "title": "VOLTA",
+      "ticker": "Premier lot · Livraison juin 2026",
+      "cta_label": "Acheter",
+      "cta_pending": "Bientôt disponible",
       "headline": "Charge ton jus",
       "subhead": "Shots fonctionnels. 100 % naturel. 0 % compromis.",
       "primary_cta": "Découvrir",

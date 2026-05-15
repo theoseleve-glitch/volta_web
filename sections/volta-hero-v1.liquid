@@ -1,6 +1,8 @@
 {%- comment -%}
-  volta-hero-v1.liquid — V1 hero (full-bleed video + photo + text overlay)
-  Spec: docs/superpowers/specs/2026-05-09-volta-v1-hero-design.md
+  volta-hero-v1.liquid — V1 orange-image hero (single-product Golden Kick launch)
+  Spec: chat 2026-05-15. Cream page, lightning-face logo top-left, cart top-right,
+  orange Golden-Kick hero image full-bleed, CTA pill auto-enables when the
+  merchant binds the Golden Kick product in Theme Editor.
 {%- endcomment -%}
 
 {{ 'volta-hero-v1.css' | asset_url | stylesheet_tag }}
@@ -8,35 +10,11 @@
 {%- assign hero_product = section.settings.hero_product -%}
 {%- assign variant = hero_product.first_available_variant -%}
 
-<section class="v-hero-v1
-                {%- if section.settings.hero_video == blank and section.settings.hero_poster == blank %} v-hero-v1--no-media{% endif -%}"
-         aria-labelledby="hero-v1-heading-{{ section.id }}">
-  {%- if section.settings.hero_video != blank -%}
-    <video class="v-hero-v1__video"
-           autoplay muted loop playsinline
-           preload="metadata"
-           aria-hidden="true"
-           {%- if section.settings.hero_poster != blank -%}
-             poster="{{ section.settings.hero_poster | image_url: width: 1920 }}"
-           {%- endif -%}>
-      {%- for source in section.settings.hero_video.sources -%}
-        <source src="{{ source.url }}" type="{{ source.mime_type }}">
-      {%- endfor -%}
-    </video>
-  {%- elsif section.settings.hero_poster != blank -%}
-    <img class="v-hero-v1__poster"
-         src="{{ section.settings.hero_poster | image_url: width: 1920 }}"
-         alt=""
-         width="1920" height="1080"
-         loading="eager"
-         fetchpriority="high"
-         aria-hidden="true">
-  {%- endif -%}
-
+<section class="v-hero-v1" aria-labelledby="hero-v1-heading-{{ section.id }}">
   <a href="{{ routes.root_url }}" class="v-hero-v1__logo" aria-label="{{ 'accessibility.home' | t: shop_name: shop.name }}">
-    <img src="{{ 'volta-logo-v2.png' | asset_url }}"
+    <img src="{{ 'volta-logo.svg' | asset_url }}"
          alt="{{ shop.name }}"
-         width="120" height="40"
+         width="80" height="80"
          loading="eager"
          fetchpriority="high">
   </a>
@@ -44,8 +22,7 @@
   <a href="{{ routes.cart_url }}"
      class="v-hero-v1__cart"
      aria-label="{% if cart.item_count > 0 %}{{ 'general.cart.view' | t: count: cart.item_count }}{% else %}{{ 'general.cart.view_empty_cart' | t }}{% endif %}">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
-         width="22" height="22" aria-hidden="true">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="22" height="22" aria-hidden="true">
       <path d="M6 7h12l-1.5 11h-9z"/>
       <path d="M9 7V5a3 3 0 0 1 6 0v2"/>
     </svg>
@@ -54,98 +31,36 @@
     {%- endif -%}
   </a>
 
-  {%- if section.settings.hero_photo != blank -%}
-    {%- liquid
-      assign photo_alt = section.settings.hero_photo.alt
-      if photo_alt == blank
-        assign photo_alt = 'sections.volta_hero_v1.photo_alt_default' | t
-      endif
-    -%}
-    {%- comment -%}
-      Photo packshot — LCP candidate while no video/poster set. Once
-      hero_poster is uploaded, the full-viewport poster becomes the LCP
-      candidate, so this photo downgrades to fetchpriority="auto".
-    {%- endcomment -%}
-    <img class="v-hero-v1__photo"
-         src="{{ section.settings.hero_photo | image_url: width: 1200 }}"
-         srcset="{{ section.settings.hero_photo | image_url: width: 600 }} 600w,
-                 {{ section.settings.hero_photo | image_url: width: 1200 }} 1200w,
-                 {{ section.settings.hero_photo | image_url: width: 2000 }} 2000w"
-         sizes="(min-width: 768px) 50vw, 100vw"
-         width="1200" height="1500"
-         loading="eager"
-         fetchpriority="{% if section.settings.hero_poster != blank %}auto{% else %}high{% endif %}"
-         alt="{{ photo_alt | escape }}">
-  {%- endif -%}
+  {%- comment -%} SR-only h1 — the visible hero text is baked into the image, but assistive tech needs a heading. {%- endcomment -%}
+  <h1 id="hero-v1-heading-{{ section.id }}" class="v-hero-v1__sr-heading">
+    {{ 'sections.volta_hero_v1.title_default' | t }}
+  </h1>
 
-  <div class="v-hero-v1__overlay">
-    <p class="v-hero-v1__eyebrow">{{ 'sections.volta_hero_v1.eyebrow' | t }}</p>
-    <h1 id="hero-v1-heading-{{ section.id }}" class="v-hero-v1__title">
-      {%- if section.settings.title != blank -%}
-        {{ section.settings.title }}
-      {%- else -%}
-        {{ 'sections.volta_hero_v1.title_default' | t }}
-      {%- endif -%}
-    </h1>
-    <p class="v-hero-v1__tagline">
-      {%- if section.settings.tagline != blank -%}
-        {{ section.settings.tagline }}
-      {%- else -%}
-        {{ 'sections.volta_hero_v1.tagline_default' | t }}
-      {%- endif -%}
-    </p>
-    <div class="v-hero-v1__description">
-      {%- if section.settings.description != blank -%}
-        {{ section.settings.description }}
-      {%- else -%}
-        <p>{{ 'sections.volta_hero_v1.description_default' | t }}</p>
-      {%- endif -%}
-    </div>
-    <p class="v-hero-v1__format">
-      {{ 'sections.volta_hero_v1.format' | t }}
-      {%- if variant -%} · <strong>{{ variant.price | money }}</strong>{%- endif -%}
-    </p>
+  <img class="v-hero-v1__bg"
+       src="{{ 'volta-hero-bg.png' | asset_url }}"
+       alt="{{ 'sections.volta_hero_v1.bg_alt' | t }}"
+       width="2400" height="1260"
+       loading="eager"
+       fetchpriority="high">
 
+  <div class="v-hero-v1__cta-area">
     {%- if variant and variant.available -%}
       <form action="{{ routes.cart_add_url }}" method="post" class="v-hero-v1__buy-form">
         <input type="hidden" name="id" value="{{ variant.id }}">
         <input type="hidden" name="quantity" value="1">
         <input type="hidden" name="return_to" value="/checkout">
         <button type="submit" class="v-hero-v1__cta">
-          {%- if section.settings.cta_label != blank -%}
-            {{ section.settings.cta_label }}
-          {%- else -%}
-            {{ 'sections.volta_hero_v1.cta_default' | t }}
-          {%- endif -%}
-          — {{ variant.price | money }} →
+          {%- if section.settings.cta_label != blank -%}{{ section.settings.cta_label }}{%- else -%}{{ 'sections.volta_hero_v1.cta_default' | t }}{%- endif -%}
+          <span class="v-hero-v1__cta-price">{{ variant.price | money }}</span>
         </button>
       </form>
     {%- else -%}
-      <button type="button" class="v-hero-v1__cta v-hero-v1__cta--disabled" disabled>
+      <button type="button" class="v-hero-v1__cta v-hero-v1__cta--disabled" aria-disabled="true" disabled>
         {{ 'sections.volta_hero_v1.cta_unavailable' | t }}
       </button>
     {%- endif -%}
   </div>
 </section>
-
-{%- if section.settings.hero_video != blank -%}
-  <script>
-    (function () {
-      var rm = window.matchMedia('(prefers-reduced-motion: reduce)');
-      function applyMotionPolicy() {
-        var v = document.querySelector('.v-hero-v1__video');
-        if (!v) return;
-        if (rm.matches || window.Shopify?.designMode) {
-          v.pause();
-          v.removeAttribute('autoplay');
-        }
-      }
-      applyMotionPolicy();
-      document.addEventListener('shopify:section:load', applyMotionPolicy);
-      if (rm.addEventListener) rm.addEventListener('change', applyMotionPolicy);
-    })();
-  </script>
-{%- endif -%}
 
 {% schema %}
 {
@@ -153,25 +68,10 @@
   "tag": "section",
   "class": "v-hero-v1-section",
   "settings": [
-    { "type": "header", "content": "t:sections.volta_hero_v1.settings.text_header" },
     {
-      "type": "text",
-      "id": "title",
-      "label": "t:sections.volta_hero_v1.settings.title_label",
-      "info": "t:sections.volta_hero_v1.settings.title_info"
+      "type": "header",
+      "content": "t:sections.volta_hero_v1.settings.product_header"
     },
-    {
-      "type": "text",
-      "id": "tagline",
-      "label": "t:sections.volta_hero_v1.settings.tagline_label"
-    },
-    {
-      "type": "richtext",
-      "id": "description",
-      "label": "t:sections.volta_hero_v1.settings.description_label",
-      "info": "t:sections.volta_hero_v1.settings.description_info"
-    },
-    { "type": "header", "content": "t:sections.volta_hero_v1.settings.product_header" },
     {
       "type": "product",
       "id": "hero_product",
@@ -181,27 +81,7 @@
     {
       "type": "text",
       "id": "cta_label",
-      "label": "t:sections.volta_hero_v1.settings.cta_label_label",
-      "info": "t:sections.volta_hero_v1.settings.cta_label_info"
-    },
-    { "type": "header", "content": "t:sections.volta_hero_v1.settings.media_header" },
-    {
-      "type": "video",
-      "id": "hero_video",
-      "label": "t:sections.volta_hero_v1.settings.video_label",
-      "info": "t:sections.volta_hero_v1.settings.video_info"
-    },
-    {
-      "type": "image_picker",
-      "id": "hero_poster",
-      "label": "t:sections.volta_hero_v1.settings.poster_label",
-      "info": "t:sections.volta_hero_v1.settings.poster_info"
-    },
-    {
-      "type": "image_picker",
-      "id": "hero_photo",
-      "label": "t:sections.volta_hero_v1.settings.photo_label",
-      "info": "t:sections.volta_hero_v1.settings.photo_info"
+      "label": "t:sections.volta_hero_v1.settings.cta_label_label"
     }
   ],
   "presets": [

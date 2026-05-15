@@ -493,8 +493,9 @@
       "description_default": "Gingembre 10%, ananas, mangue. 60 ml. Pressé en France, sans sucre ajouté.",
       "format": "Pack de 12",
       "cta_default": "Acheter",
-      "cta_unavailable": "Bientôt de retour",
+      "cta_unavailable": "Bientôt disponible",
       "photo_alt_default": "Bouteille Volta Golden Kick — pack de 12 shots de 60 ml",
+      "bg_alt": "Volta Drinks — Golden Kick, notre premier shot, bientôt disponible",
       "settings": {
         "text_header": "Texte du hero",
         "title_label": "Titre",

@@ -481,8 +481,9 @@
       "description_default": "[EN: TODO] Ginger 10%, pineapple, mango. 60 ml. Pressed in France, no added sugar.",
       "format": "[EN: TODO] Pack of 12",
       "cta_default": "[EN: TODO] Buy",
-      "cta_unavailable": "[EN: TODO] Back soon",
-      "photo_alt_default": "[EN: TODO] Volta Golden Kick bottle — pack of 12 60 ml shots",
+      "cta_unavailable": "Coming soon",
+      "photo_alt_default": "Volta Golden Kick bottle — pack of 12 60 ml shots",
+      "bg_alt": "Volta Drinks — Golden Kick, our first shot, coming soon",
       "settings": {
         "text_header": "[EN: TODO] Hero text",
         "title_label": "[EN: TODO] Title",
